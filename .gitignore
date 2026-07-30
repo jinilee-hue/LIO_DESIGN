@@ -1,0 +1,21 @@
+# ── 기획서 원본 · 내부 산출물 (공개 저장소에 올리지 않음) ──
+*.pptx
+_pptx_extract/
+_slides_png/
+_archive/
+_verify/
+_figma/
+LIO_Step2_PPTX_11-48_기획갭.md
+LIO_Step2_슬라이드_인덱스.md
+README_prototype.md
+
+# ── 중복 사본 (designA + IMAGE + prototype 복사본) ──
+A_TYPE/
+
+# ── 작업 잔여물 ──
+Anode_964.png
+node_*.png
+*.bak.png
+Thumbs.db
+desktop.ini
+.DS_Store

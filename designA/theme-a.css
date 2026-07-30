@@ -1,0 +1,412 @@
+/* =====================================================================
+   Design A — LIO Skill Core "Storybook / Illustrated" 시리즈
+   (Figma A_Intro_cut1~3 · A_Skill_list · A_Skill_selected · A_Topic_list
+    · A_Game · A_FP1 …)
+   인트로=일러스트 배경 · 스킬=골드 · 토픽=다크블루 · 앰버 헤더 · Lio 워드마크
+   ===================================================================== */
+:root{
+  --primary:#EF8A2A; --accent:#FFC531;
+  --bg:#efe4cf; --ink:#3f3222; --muted:#9b8a6c;
+  --hd-bg:#E98A22; --line:#ecddc0;
+  --bubble-lio:#fff6e9; --bubble-user:#e6f3d9;
+  --font-head:'Fredoka','Segoe UI',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+}
+body{background:radial-gradient(1100px 600px at 50% 0%,#f5ecd6,#e7d8ba)}
+.device{background:#f6efdd;box-shadow:0 24px 60px rgba(70,50,20,.28)}
+
+/* ── 헤더 : Figma A AppBar (다크 네이비 솔리드 + Lio 워드마크 + 노란 타이틀) ── */
+.hd{background:#1E2A4A;border-bottom:none;box-shadow:0 4px 4px rgba(0,0,0,.25);position:relative;z-index:6;gap:16px}
+.hd-brand{width:49px;height:32px;background:url('../IMAGE/ui/lio_wordmark.png') left center/contain no-repeat}
+.hd-logo-img,.hd-logo-text{display:none}
+.hd-pill{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;color:#ffffff}
+.hd-skill{font-family:'Inter',sans-serif;font-weight:400;font-size:14px;color:#BECFFF}
+.hd-title{font-family:'Inter',sans-serif;font-weight:700;font-size:20px;color:#FFE169}
+/* A에는 하단 pill 네비 없음 */
+.bottom-nav{display:none}
+
+/* ── 지문 패널 : 종이 ── */
+.passage{background:#fffaf0;border-right:2px solid #ecddc0}
+.ppara{color:#403423}
+.kw{color:#d97a1a;border-bottom-color:#f3caa0}
+.sent.hl-green{background:#d6ecbe}.sent.hl-yellow{background:rgba(255,225,77,.35)}.sent.cursor{background:#fbe7c2}
+.sent.tappable:hover{background:#d6ecbe}   /* hover = 정답 그린 (키워드 배경과 구분) */
+.sent.tapped{background:#bfe39c}
+.listen-btn{background:#fff2df;border-color:#f2d3a8;color:#d97a1a}
+.activity{background:#faf1de}
+
+/* ── 말풍선 ── */
+.msg .avatar{border:2px solid #f4e6c8;box-shadow:0 3px 7px rgba(120,80,20,.18)}
+.msg.lio .bubble{background:#fff6e9;border:1.5px solid #f1e0bf;color:#403423}
+.msg.user .bubble{background:#e6f3d9;color:#47592f;font-family:'Inter',sans-serif}
+.msg.user .avatar.grad{background:linear-gradient(135deg,#f0c078,#d68e34)}
+.kr{color:#c47d16;border-color:#eecf96;background:#fff5db}
+.sysline span{background:#e5f2d7;color:#5a7a34}
+
+/* ── 질문 / 선택지 ── */
+.qbox{background:#fff6e9;border-color:#eec98d}
+.qlabel{color:#c47d16}.qtext{color:#403423}
+.choice{background:#fffaf0;border-color:#ecddc0;color:#403423}
+.choice:hover{border-color:#e6c58a}
+.choice .ckey{border-color:#e0c79a;color:#93702f}
+.choice .cbullet{background:#f6e8c9;color:#93702f}
+.choice.correct{background:#e5f2d7;border-color:#a9d488}
+.choice.correct .ckey,.choice.correct .cbullet{background:#77b84a;border-color:#77b84a;color:#fff}
+.choice.sel{border-color:var(--primary);box-shadow:0 0 0 2px rgba(239,138,42,.2)}
+
+/* ── 메뉴 / 이모지 ── */
+.menu-item{background:#fffaf0;border-color:#ecddc0}
+.menu-item:hover{background:#fdf4e2;border-color:#e6c58a}
+.menu-item.sel{background:#fdefd6;border-color:var(--primary)}
+.emoji-opt{background:#fffaf0;border-color:#ecddc0}
+.emoji-opt.correct{background:#e5f2d7;border-color:#a9d488}
+
+/* ── 버튼 ── */
+.btn{border-radius:24px;box-shadow:none;font-family:'Inter',sans-serif}
+.btn.primary{background:linear-gradient(180deg,#F79B33,#E27F1B)}
+/* 초록·남색 버튼도 주황(primary)처럼 각 색상 계열 그라데이션 (버튼 스타일 통일) */
+.btn.dark,.btn.green{background:linear-gradient(180deg,#2aa06b,#177a4d);color:#fff}   /* 스킬 진입 초록 */
+.btn.purple,.btn.navy{background:linear-gradient(180deg,#2b3c66,#18233f);color:#fff}   /* 헤더 남색 */
+.btn.orange{background:linear-gradient(180deg,#eb9a34,#d47f1f)}
+.btn.ghost{background:#efe1c4;color:#6e4a24}
+/* Figma A_Intro_cut3 버튼 유지 (테마 그라데이션 덮어쓰지 않음) */
+.btn.figma-green{background:#009d54;border:4px solid #00763f;border-radius:50px;box-shadow:none;font-family:'Nunito',sans-serif;font-weight:900}
+.btn.figma-navy{background:#1E2A4A;border:4px solid #18223c;border-radius:50px;box-shadow:none;font-family:'Nunito',sans-serif;font-weight:900}
+
+/* ── 전략 카드 ── */
+.strategy{background:#F3F7FB;border:none}
+.strat-title{color:#1E2A4A}.strat-item{color:#3A4560}
+
+/* ── 기타 ── */
+/* ET 라벨 = STRATEGY 타이틀과 동일 폰트/스타일 (Inter·네이비·대문자) */
+.et-label{font-family:'Inter',sans-serif;font-weight:800;font-size:12px;letter-spacing:.5px;color:#1E2A4A;text-transform:uppercase;margin:2px 0}
+.wordchip{background:#1E2A4A}   /* 헤더 색과 동일 */
+.note{background:#fdefd3;border-color:#eaca8c;color:#8a6320}.note .muted{color:#b39a68}
+.chatinput input{border-color:#e3ce9e;background:#fffaf0}
+
+/* ══════════ 인트로/센터 : 일러스트 배경 (A_Intro_cut) ══════════ */
+/* 스킬 선택 전(인트로 cut1~cut3)까지는 헤더 없음 (기획서와 달리 풀블리드) */
+.scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd, .scr-fp2_intro .hd, .scr-game .hd{display:none}
+/* 말풍선 강조색 (Figma 원본) */
+.ib-bubble .nm{color:#2fa46f;font-weight:800}      /* Maya = 초록 */
+.ib-bubble .mi{color:#e0479e;font-weight:800}      /* Determining Main Ideas = 핑크 */
+/* 말풍선 폭 + 위치 — 텍스트 줄 길이에 맞춰 폭이 줄어들고 좌우 패딩 동일 */
+.introseq .ib,
+.quickexit .ib{
+  width:max-content !important;
+  max-width:none !important;   /* 내용(줄바꿈)에 맞게 폭 자동 */
+}
+.ib-left{left:13%;top:15%}
+.ib-right{right:13%;top:20%}
+/* Intro3 마지막 "Ready? Let's go!" — 우측 유지, LIO 쪽으로 붙이고 아래로 */
+.scr-greeting_cut3 .ib-right{
+  left:auto;right:24%;top:30%;max-width:none;
+}
+/* QE(46/49): 영어 말풍선 — LIO 머리 옆 좌우 균형 */
+.quickexit .ib-left{left:18%;top:11%}
+.quickexit .ib-right{right:18%;top:24%}
+.quickexit .ib-left .ib-bubble::after{right:28px}
+.quickexit .ib-right .ib-bubble::after{left:28px}
+/* SLIDE49: 우측 말풍선 → LIO 얼굴 가리지 않게 더 우측 */
+.scr-post_skill_pick .quickexit .ib-right{right:6%;top:22%}
+.scr-post_skill_pick .quickexit .ib-right .ib-bubble::after{left:36px}
+/* intro2/3 말풍선: 좌우 여백 동일 (패딩만으로 여백 결정) */
+.introseq .ib-bubble{
+  display:block !important;
+  width:max-content !important;
+  max-width:min(72cqw, 520px) !important;
+  box-sizing:border-box;
+  border-radius:22px;
+  padding:clamp(10px,1.5cqw,18px) clamp(14px,2.2cqw,26px) !important;
+  font-size:clamp(14px,1.95cqw,23px);font-weight:600;line-height:1.45;
+  color:#2b3550;background:rgba(255,255,255,.92);
+  font-family:var(--font-body);
+  gap:0;
+}
+.introseq .ib-bubble .ib-tx{
+  display:block;
+  flex:none !important;
+  width:max-content;
+  max-width:none;
+  font-size:inherit;font-weight:600;letter-spacing:.01em;
+  text-align:left;
+}
+/* QE(46/49): Slide7과 동일 스타일 + 긴 문장 줄바꿈 */
+.quickexit .ib-bubble{
+  display:block !important;
+  width:max-content !important;
+  max-width:min(34cqw,320px) !important;
+  box-sizing:border-box;
+  border-radius:22px;
+  padding:clamp(10px,1.5cqw,18px) clamp(14px,2.2cqw,26px) !important;
+  font-size:clamp(14px,1.95cqw,23px);font-weight:600;line-height:1.45;
+  color:#2b3550;background:rgba(255,255,255,.92);
+  font-family:var(--font-body);
+  gap:0;
+}
+.quickexit .ib-bubble .ib-tx{
+  display:block;
+  flex:none !important;
+  width:auto;
+  max-width:100%;
+  font-size:inherit;font-weight:600;letter-spacing:.01em;
+  text-align:left;
+}
+/* 말꼬리 : Figma Vector 이미지 (왼쪽 말풍선은 좌우 반전) */
+.ib-left .ib-bubble::after,.ib-right .ib-bubble::after{
+  content:'';position:absolute;width:clamp(28px,3.8cqw,46px);height:clamp(16px,2.1cqw,25px);bottom:calc(-1 * clamp(16px,2.1cqw,25px));border:none;
+  background:url('../IMAGE/ui/tail.svg') no-repeat top center/contain;
+}
+.ib-left .ib-bubble::after{left:auto;right:40px;transform:scaleX(-1)}
+.ib-right .ib-bubble::after{right:auto;left:40px}
+/* Intro3 Let's go 말풍선 꼬리 — LIO 쪽(왼쪽 아래)을 향하도록 */
+.scr-greeting_cut3 .ib-right .ib-bubble::after{left:28px;right:auto;transform:none}
+/* 이미지 버튼 (Figma 버튼 원본) */
+.imgbtn{background:none;border:none;padding:0;box-shadow:none;cursor:pointer;line-height:0}
+.imgbtn img{height:clamp(48px,6cqw,74px);width:auto;display:block;filter:drop-shadow(0 5px 9px rgba(20,60,30,.22))}
+.imgbtn:active{transform:translateY(2px)}
+.center{position:relative}
+.scr-greeting .center,.scr-plan .center{
+  background:url('../IMAGE/intro3.png') center/cover no-repeat;
+}
+.scr-fp2_intro .center{
+  background:url('../IMAGE/intro_fp2.png') center/cover no-repeat;
+}
+.scr-greeting .center::before,.scr-plan .center::before,.scr-fp2_intro .center::before{
+  content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,250,240,.30),rgba(255,245,225,.75))}
+.center>*{position:relative;z-index:1}
+.msgcard{background:rgba(255,248,235,.94);border:2px solid #efdcb2;border-radius:22px;box-shadow:0 10px 26px rgba(90,60,20,.2)}
+.msgcard p{color:#403423}
+.hl,.msgcard .hl{color:#c0641f}
+.center-mascot.big{border:4px solid #fff3dc;box-shadow:0 8px 24px rgba(90,60,20,.25)}
+
+/* ══════════ 스킬 화면 : Figma A_Skill_list_AI (한 화면 맞춤 · cqw 유동) ══════════
+   골드 배경(도서관 은은히 비침) · 헤더 없이 풀블리드 · 제목 상단중앙 · 5열 북커버 · 라이온 좌하단 */
+.scr-skill .hd, .scr-skill_selected .hd{display:none}
+.scr-skill .screen, .scr-skill_selected .screen,
+.layout-skill.scr-skill .screen, .layout-skill.scr-skill_selected .screen{overflow:hidden !important}
+.skillscreen.a-skill{
+  position:relative;height:100%;display:flex;flex-direction:column;
+  padding:clamp(10px,1.6cqw,18px) clamp(20px,4cqw,48px) clamp(8px,1.4cqw,16px);
+  overflow:hidden; box-sizing:border-box; min-height:0;
+  background:linear-gradient(180deg,rgba(247,197,60,.82),rgba(240,167,42,.90)),url('../IMAGE/intro3.png') center/cover no-repeat;
+}
+.a-skill .skill-headline{
+  color:#fff;text-align:center;
+  font-size:clamp(22px,3.6cqw,42px);line-height:1.05;
+  margin:clamp(12px,3.4cqw,40px) 0 6px;flex:0 0 auto;
+  font-weight:800;letter-spacing:.02em;z-index:5;
+  -webkit-text-stroke:clamp(2px,.35cqw,4px) #6b3a12;
+  paint-order:stroke fill;
+  text-shadow:
+    -1.5px -1.5px 0 #6b3a12, 1.5px -1.5px 0 #6b3a12,
+    -1.5px 1.5px 0 #6b3a12, 1.5px 1.5px 0 #6b3a12,
+    0 4px 8px rgba(90,50,10,.4);
+}
+.a-skill .skill-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:clamp(6px,1.2cqw,14px) clamp(8px,1.8cqw,22px);
+  max-width:1110px;width:100%;margin:clamp(8px,1.6cqw,20px) auto 0;align-content:center;
+  flex:1 1 auto;min-height:0;max-height:100%;
+  overflow:hidden;padding:clamp(8px,1.4cqw,16px) clamp(10px,1.8cqw,22px);box-sizing:border-box;
+}
+.a-skill .skill-card,.a-skill .skill-card.today{background:transparent;border:none;box-shadow:none;padding:0;transform:none;transform-origin:center center;will-change:transform;min-height:0}
+.a-skill .skill-card .sc-icon{width:100%;max-width:clamp(72px,16cqw,200px);margin:0 auto;aspect-ratio:180/240;height:auto;filter:drop-shadow(0 10px 14px rgba(120,70,10,.30))}
+.a-skill .skill-card .sc-icon img{width:100%;height:100%;object-fit:contain}
+.a-skill .skill-card .sc-name{display:none}
+.a-skill .skill-mascot{position:absolute;left:clamp(10px,1.8cqw,22px);bottom:clamp(12px,2cqw,24px);width:clamp(80px,13cqw,158px);height:auto;z-index:2;pointer-events:none}
+
+/* A_Skill_selected : Figma — 상단 중앙 타이틀 · 선택 북 중앙 · LIO 좌측에서 가리킴 */
+.a-skill.selected{padding-top:clamp(56px,11cqw,132px)}
+.a-skill.selected .skill-headline{
+  position:absolute;top:clamp(36px,8.5cqw,100px);left:0;right:0;margin:0;
+  font-size:clamp(22px,3.6cqw,42px);line-height:1.05;z-index:6;
+  -webkit-text-stroke:clamp(2px,.35cqw,4px) #6b3a12;
+  paint-order:stroke fill;
+  text-shadow:
+    -1.5px -1.5px 0 #6b3a12, 1.5px -1.5px 0 #6b3a12,
+    -1.5px 1.5px 0 #6b3a12, 1.5px 1.5px 0 #6b3a12,
+    0 4px 8px rgba(90,50,10,.4);
+}
+.a-skill.selected .skill-grid.dim{opacity:.28;filter:blur(2.5px);pointer-events:none}
+.a-skill.selected .skill-grid.dim .skill-card .sc-icon{filter:none}
+.a-skill.selected .skillsel-card{
+  position:absolute;left:52%;top:54%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;
+}
+.a-skill.selected .skillsel-card img{height:clamp(200px,40cqw,460px);width:auto;max-height:62%;filter:drop-shadow(0 18px 28px rgba(120,70,10,.45))}
+.a-skill.selected .skillsel-mascot{
+  position:absolute;left:16%;bottom:18%;height:clamp(180px,36cqw,420px);width:auto;max-height:58%;z-index:4;pointer-events:none;
+  filter:drop-shadow(0 10px 18px rgba(120,70,10,.35));
+}
+
+/* ── 스킬 찾음(제자리) : 리스트 흐림 + 찾은 스킬·LIO·후광 오버레이 ── */
+.a-skill.found .skill-grid.dim{opacity:.35;filter:blur(2.5px);pointer-events:none;transition:opacity .5s,filter .5s}
+.a-skill.found .skill-grid.dim .skill-card .sc-icon{filter:none;animation:none}
+.a-skill.found .skill-mascot{display:none}
+.a-skill.found .skillsel-card{position:absolute;left:56%;top:54%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;animation:skillReveal .55s cubic-bezier(.34,1.56,.64,1) both}
+.a-skill.found .skillsel-card img{height:clamp(220px,46cqw,540px);width:auto;max-height:68%;filter:drop-shadow(0 18px 28px rgba(120,70,10,.45))}
+.a-skill.found .skillsel-halo{left:56%;top:54%;width:clamp(280px,54cqw,630px);height:clamp(280px,54cqw,630px)}
+.a-skill.found .skillsel-mascot{position:absolute;left:calc(13% + clamp(20px,4cqw,60px));bottom:calc(22% - clamp(24px,5cqw,80px));height:clamp(180px,34cqw,400px);width:auto;max-height:55%;z-index:4;pointer-events:none;filter:drop-shadow(0 10px 18px rgba(120,70,10,.35))}
+
+/* ══════════ 토픽 화면 : Figma A_Topic_list (한 화면 맞춤 · cqw 유동) ══════════ */
+.layout-topic.scr-topic .screen{overflow:hidden !important}
+.scr-topic .topicscreen{
+  background:#1E2A4A;
+  padding:clamp(8px,1.4cqw,16px) clamp(18px,3.2cqw,40px) clamp(8px,1.6cqw,22px);
+  gap:clamp(6px,1cqw,14px);
+  height:100%; box-sizing:border-box; overflow:hidden; min-height:0;
+}
+.scr-topic .topic-lio{justify-content:center;padding:clamp(4px,.9cqw,16px) clamp(10px,1.8cqw,24px);flex:0 0 auto}
+.scr-topic .topic-lio img{display:none}            /* 안내 문구에 라이온 아바타 없음 */
+.scr-topic .topic-line{
+  font-family:var(--font-head);color:#ffffff;
+  font-size:clamp(16px,2.2cqw,28px);font-weight:600;line-height:1.25;text-align:center;
+}
+.scr-topic .topic-line .nm{color:#009d54;font-weight:700}   /* Maya = 초록(Figma #009D54) */
+.scr-topic .topic-grid{
+  grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,minmax(0,1fr));
+  gap:clamp(8px,1.5cqw,20px) clamp(10px,1.8cqw,24px);
+  max-width:min(1090px,100%); flex:1 1 auto; min-height:0; width:100%;
+}
+.scr-topic .topic-card{
+  background:#141E38;border:2px solid transparent;border-radius:16px;
+  padding:clamp(6px,1.2cqw,18px) clamp(6px,1cqw,12px) clamp(6px,1cqw,14px);
+  display:flex;flex-direction:column;align-items:center;
+  box-shadow:0 1px 1.5px rgba(0,0,0,.15); min-height:0; height:100%; overflow:hidden; box-sizing:border-box;
+}
+.scr-topic .topic-card .tc-img{
+  width:100%; flex:1 1 auto; min-height:0; height:auto;
+  border-radius:0; background-size:contain; background-repeat:no-repeat; background-position:center;
+  margin-bottom:clamp(4px,.6cqw,8px); background-color:transparent;
+}
+.scr-topic .topic-card .tc-name{
+  font-family:'Inter',sans-serif;color:#fff;
+  font-size:clamp(13px,1.85cqw,24px);font-weight:700;padding:0;line-height:1.15; flex:0 0 auto;
+}
+.scr-topic .topic-card .tc-check{display:none}
+.scr-topic .topic-card:hover{border-color:#3a4a72}
+.scr-topic .topic-card.on{border-color:#5bd08a;box-shadow:0 8px 24px rgba(91,208,138,.35)}
+.scr-topic .continue-btn.btn.primary{
+  background:url('../IMAGE/ui/btn_continue.png') center/contain no-repeat;
+  width:clamp(160px,20cqw,252px); height:clamp(48px,6.2cqw,78px);
+  min-width:0; padding:0; color:transparent; box-shadow:none; border:none; border-radius:0;
+  flex:0 0 auto; margin-top:0;
+}
+.scr-topic .continue-btn.btn.primary:disabled{opacity:.5}
+
+/* ══════════ 스킬 룰렛 애니메이션 (카드가 돌다 오늘 스킬에서 멈춤) ══════════
+   확대 효과 유지 · 그리드 패딩 안에서만 커지도록 스케일 유지 */
+.a-skill .skill-card{transition:transform .12s ease}
+.a-skill .skill-card.spin-on{transform:scale(1.12)}
+.a-skill .skill-card.spin-on .sc-icon{filter:drop-shadow(0 0 12px rgba(255,214,90,.95)) drop-shadow(0 8px 14px rgba(120,70,10,.3))}
+.a-skill .skill-card.landed{transform:scale(1.16)}
+.a-skill .skill-card.landed .sc-icon{filter:drop-shadow(0 0 18px rgba(255,205,60,1)) drop-shadow(0 12px 22px rgba(120,70,10,.45))}
+
+/* ── 책 등장 인터랙션 : 스태거 팝인 (.sc-icon에 적용 → 룰렛 scale과 충돌 없음) ── */
+@keyframes skillPop{0%{opacity:0;transform:scale(.4) translateY(26px)}70%{opacity:1;transform:scale(1.08) translateY(0)}100%{opacity:1;transform:scale(1)}}
+.scr-skill .a-skill .skill-card .sc-icon{animation:skillPop .5s cubic-bezier(.34,1.56,.64,1) both}
+.a-skill .skill-card:nth-child(1) .sc-icon{animation-delay:.05s}
+.a-skill .skill-card:nth-child(2) .sc-icon{animation-delay:.11s}
+.a-skill .skill-card:nth-child(3) .sc-icon{animation-delay:.17s}
+.a-skill .skill-card:nth-child(4) .sc-icon{animation-delay:.23s}
+.a-skill .skill-card:nth-child(5) .sc-icon{animation-delay:.29s}
+.a-skill .skill-card:nth-child(6) .sc-icon{animation-delay:.35s}
+.a-skill .skill-card:nth-child(7) .sc-icon{animation-delay:.41s}
+.a-skill .skill-card:nth-child(8) .sc-icon{animation-delay:.47s}
+.a-skill .skill-card:nth-child(9) .sc-icon{animation-delay:.53s}
+.a-skill .skill-card:nth-child(10) .sc-icon{animation-delay:.59s}
+/* 선택완료 화면의 흐린 그리드는 팝인 생략 */
+.a-skill.selected .skill-card .sc-icon{animation:none}
+
+/* ── 선택된 스킬 책 : 후광 + 회전 광선 + 등장 ── */
+.skillsel-halo{position:absolute;left:52%;top:54%;transform:translate(-50%,-50%);width:clamp(260px,46cqw,540px);height:clamp(260px,46cqw,540px);z-index:2;pointer-events:none}
+.skillsel-halo .glow{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,244,190,.95) 0%, rgba(255,214,96,.55) 34%, rgba(255,200,60,0) 68%);
+  animation:haloPulse 2.4s ease-in-out infinite}
+.skillsel-halo .rays{position:absolute;inset:-6%;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg, rgba(255,255,255,.30) 0deg 5deg, rgba(255,255,255,0) 5deg 17deg);
+  -webkit-mask:radial-gradient(circle, transparent 33%, #000 36%, #000 60%, transparent 68%);
+  mask:radial-gradient(circle, transparent 33%, #000 36%, #000 60%, transparent 68%);
+  animation:haloSpin 14s linear infinite;opacity:.55}
+@keyframes haloPulse{0%,100%{transform:scale(.92);opacity:.85}50%{transform:scale(1.06);opacity:1}}
+@keyframes haloSpin{to{transform:rotate(360deg)}}
+.a-skill.selected .skillsel-card{animation:skillReveal .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes skillReveal{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}70%{transform:translate(-50%,-50%) scale(1.06)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+/* ══════════ 게임 화면 : A_Game_active (풀 일러스트) ══════════ */
+.layout-game .screen{overflow:hidden !important}
+.gamescreen.a-game{position:absolute;inset:0;display:block;background:#0e1630;overflow:hidden}
+.a-game .game-illust{width:100%;height:100%;object-fit:cover;display:block}
+.a-game .game-cta{position:absolute;left:0;right:0;bottom:clamp(16px,3.2cqw,38px);display:flex;justify-content:center;z-index:5}
+.a-game .game-cta .btn.primary{background:#43c15f;color:#fff;min-width:0;width:clamp(160px,22cqw,240px);padding:clamp(10px,1.6cqw,19px) clamp(20px,3.5cqw,44px);font-size:clamp(15px,1.95cqw,23px);font-weight:800;border-radius:44px;box-shadow:0 6px 0 #2f9e49}
+.a-game .game-cta .imgbtn img{height:clamp(48px,6cqw,74px)}
+
+/* ══════════ A 리딩(FP) : Figma A_FP1 — 흰 카드 2단 레이아웃 ══════════ */
+.reading{background:#E5EBF2;padding:clamp(8px,1.5cqw,18px);gap:clamp(8px,1.5cqw,18px);grid-template-columns:1fr 1fr;height:100%;box-sizing:border-box;min-height:0;overflow:hidden}
+.reading.nopassage{grid-template-columns:1fr}
+.passage{background:#fff;border:1px solid #e6eaf1;border-right:1px solid #e6eaf1;border-radius:16px;box-shadow:0 4px 14px rgba(30,40,70,.06)}
+.activity{background:#fff;border:1px solid #e6eaf1;border-radius:16px;box-shadow:0 4px 14px rgba(30,40,70,.06)}
+.ppara{color:#2b3550}
+.kw{color:#33415e;font-weight:600;background:#e7edf7;border-radius:6px;padding:1px 6px;border-bottom:none}
+/* Figma FP1: Listen 버튼(티일) + KR 배지 + 스피커 아이콘 — 텍스트 크기 동일 */
+.listen-btn{background:#e6f4f1;border:none;color:#0f6d61;font-family:'Inter',sans-serif;font-weight:500;font-size:12px;border-radius:999px;padding:3px 8px;display:inline-flex;align-items:center;gap:0}
+.kr{background:#d5f0e9;color:#0f6d61;border:none;border-radius:4px;font-family:'Inter',sans-serif;font-weight:500;font-size:12px;padding:3px 6px;line-height:1.2}
+.kr.on{background:#0f6d61;color:#fff}   /* 한국어 표시 중(EN 버튼) */
+.msg .avatar{border:2px solid #eef1f6}
+.msg.lio .bubble{background:#eef2f8;border:none;color:#0a0a0a;font-family:'Inter',sans-serif;font-size:var(--fz-bubble)}
+.msg.lio.retry .bubble{background:#eef2f8;border:none}   /* retry 말풍선도 일반과 동일 색 */
+.qbox{background:#fff;border:2px solid #26314f;border-radius:14px}
+.qlabel{display:inline-block;background:#26314f;color:#fff;padding:3px 9px;border-radius:6px;font-size:10px;letter-spacing:.5px}
+.qtext{color:#26314f}
+.choice{background:#fff;border:1.5px solid #E0E4EC;border-radius:14px;color:#2b3550}
+.choice:hover{background:#fff;border-color:#C5CDDA}
+.choice .ckey{border:none;color:#2b3550;background:#F0F2F5}
+.choice .cbullet{background:#eef2fb;color:#5a6785;border:none}
+.choice.correct{background:#e6f9ee;border:1.5px solid #8fe0ac}
+.choice.wrong{background:#ffe9ea;border:1.5px solid #ffb3b6}
+.choice.sel{background:#fffaf3;border:1.5px solid #f0a93b;box-shadow:0 0 0 3px #fbe7c2}
+/* FP 전략 카드 — 외곽 라인 없음, 버튼은 흰 라운드+그림자 */
+.reading .strategy{background:linear-gradient(180deg,#FFF4DA,#FBE7BE);border:1px solid #F0D99A;border-radius:14px;gap:0;box-shadow:0 4px 14px rgba(150,110,30,.14);margin-top:14px}
+.reading .strat-title{color:#1E2A4A;font-family:'Inter',sans-serif;letter-spacing:.4px;margin-bottom:12px}   /* 타이틀 아래 여백 12px */
+.reading .strat-item{color:#3A4560;font-family:'Inter',sans-serif;background:#fff;border:none;border-radius:12px;padding:4px 10px;box-shadow:0 4px 14px rgba(30,40,70,.10)}
+.reading .strat-item + .strat-item{margin-top:8px}   /* 항목 간격 */
+.si-ic{flex:0 0 34px;width:34px;height:34px}
+.si-ic .si-img{width:34px;height:34px}
+.reading .strat-item.on,.reading .strat-item.sel{border:none;box-shadow:0 6px 18px rgba(30,40,70,.16),0 0 0 2px rgba(38,49,79,.14)}
+
+/* ── word peek ── */
+.wp-line{color:#403423}
+.wp-front{background:#fff2d8;border-color:#eccf96;color:#8a5a2b}
+.wpcard.alt .wp-front{background:#e5f2d7;border-color:#bcdca0;color:#5a7a34}
+.wp-back{border-color:var(--primary)}.wp-w{color:var(--primary)}
+.findflip .wp-front{background:#6e4a24;color:#fff2d8}
+
+/* ── quick exit ── */
+.qe-banner{background:#fdeecb;border-color:#eacd8f;color:#9a6a12}
+.qe-question{background:#fff5e0;border-color:#eac988;color:#403423}
+.qe-card{background:#fffaf0;border-color:#ecddc0}.qe-card .qe-title{color:#403423}
+.qe-card.primary{background:#fdefd6;border-color:var(--primary)}.qe-card.primary .qe-title{color:#d97a1a}
+
+/* ── splash : A_Intro_cut1 인트로 영상(intro_a.mp4) ── */
+.layout-splash .device{background:#1b2712}
+.splash.video{padding:0;background:#1b2712}
+.splash-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.splash .splash-tap{color:#fff;background:rgba(20,14,6,.55);padding:9px 22px;border-radius:22px;bottom:40px;font-weight:700;z-index:2}
+/* 영상이 없을 때 폴백(정지 이미지) */
+.splash:not(.video){background:url('../IMAGE/heroA.png') center/cover no-repeat}
+.splash:not(.video) .splash-inner{display:none}
+
+/* ===== slide 19 확장 : Teach · Memory · Detective · Explore (Storybook 톤) ===== */
+.layout-memory .screen,.layout-detective .screen{background:#E5EBF2}
+.tcard .tc-w,.gp-btn,.det-card,.det-clue-head,.mem-pairs,.mem-hint,.mem-peek,
+.td-w,.td-extag,.mc-front.word b,.exi .exi-w{font-family:'Inter',sans-serif}
+.gp-btn.active{background:#0f9d6c;border-color:#0f9d6c}
+.det-clue-head{color:#1E2A4A}
+.det-card{color:#3a4560;background:#fffaf0;border-color:#ecddc0}
+.det-card:hover{box-shadow:0 8px 20px rgba(60,70,110,.16)}
+.mc-back{background:#1E2A4A}
+/* Teach 단어 카드 : 이모지 보기(emoji-opt)와 동일한 크림/베이지 톤으로 통일 */
+.tcard{background:#fffaf0;border-color:#ecddc0}
+/* Skill Practice CTA : 기획서 딥그린 버튼 */
+.explore .activity .btnrow .btn.primary{background:linear-gradient(180deg,#2aa06b,#177a4d);box-shadow:none}
+.explore .activity .btnrow .btn.primary:hover{filter:brightness(1.06)}
