@@ -16,8 +16,10 @@
   --bg:#e9eefb; --ink:#22315e; --muted:#8a93b5;
   --hd-bg:#1E51D6; --line:#e4e9f6;
   --bubble-lio:#f2f5ff; --bubble-user:#dbe6ff;
-  --font-head:'Baloo 2','Inter',system-ui,sans-serif;
-  --font-body:'Inter',system-ui,sans-serif;
+  /* Figma B 는 전 화면 Nunito. (designB/index.html 이 Nunito 400~900 을 이미 로드)
+     base.css 가 .passage/.ppara 등에 'Inter' 를 하드코딩한 곳은 아래 지문 섹션에서 따로 덮는다. */
+  --font-head:'Nunito','Baloo 2',system-ui,sans-serif;
+  --font-body:'Nunito','Inter',system-ui,sans-serif;
 
   /* Figma B_FP1 에서 뽑은 값 */
   --b-card-line:#e8ebf2;      /* 카드 얇은 회색 보더 */
@@ -146,14 +148,40 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .quickexit .ib-bubble{max-width:min(34vw,320px)}
 .scr-post_skill_pick .quickexit .ib-right{right:6%;top:22%}
 
-/* ── skill 화면 : 동심원 배경 ── */
-.skillscreen{background:
-  radial-gradient(circle at 30% 45%, #dbe6ff 0 60px, transparent 61px),
-  radial-gradient(circle at 30% 45%, transparent 0 90px, #e6edff 91px 92px, transparent 93px),
-  radial-gradient(circle at 30% 45%, transparent 0 130px, #edf2ff 131px 132px, transparent 133px)}
-.skill-headline{color:var(--primary)}
-.skill-card{border-radius:20px}
-.skill-card.today{background:linear-gradient(180deg,#fff,#eef4ff)}
+/* ── skill 화면 : Figma B_Skill_list (114:1066) · B_Skill_selected (114:1230) ──
+   배경 네이비 #02195C + 동심원(#1C4BD6 / #335DDA / #0F2564) + 최하단 물결 #2B5CE6.
+   카드는 스킬별 solid 컬러 + 흰 점선 인셋 보더 + 흰 볼드 라벨. */
+.skillscreen{position:relative;
+  background:
+    radial-gradient(circle at 40% 1%, #1C4BD6 0 15%, transparent 15.3%),
+    radial-gradient(circle at 40% 1%, transparent 0 20.6%, #335DDA 20.6% 21.1%, transparent 21.4%),
+    radial-gradient(circle at 40% 1%, transparent 0 29%, #0F2564 29% 30.1%, transparent 30.4%),
+    radial-gradient(circle at 40% 1%, transparent 0 38%, #0F2564 38% 38.9%, transparent 39.2%),
+    #02195C}
+.skillscreen::after{content:'';position:absolute;left:0;right:0;bottom:0;height:auto;
+  aspect-ratio:1577/51.547;pointer-events:none;z-index:0;
+  background:url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 100%}
+.skill-headline{color:#fff;font-family:var(--font-head);font-weight:800}
+/* 카드 : flow-data 의 --sc 는 A 팔레트이므로 B 전용 --scB 로 덮는다 */
+.skill-card{background:var(--scB,#3593FF);border:none;border-radius:20px;position:relative;z-index:1}
+.skill-card::after{content:'';position:absolute;inset:7px;pointer-events:none;
+  border:2px dashed rgba(255,255,255,.92);border-radius:13px}
+.skill-card .sc-name{color:#fff;font-family:var(--font-head);font-weight:800}
+.skill-card.today,
+.skill-card.pickable.on,
+.skill-card.pickable.today{background:var(--scB,#3593FF);border-color:transparent;
+  box-shadow:0 12px 28px rgba(0,0,0,.35)}
+/* Figma Skill_list 카드 색 (SKILLS 배열 순서 = data-skill 인덱스) */
+.skill-card[data-skill="0"]{--scB:#3593FF}   /* Main Ideas */
+.skill-card[data-skill="1"]{--scB:#00BE5F}   /* Recalling Facts 1 */
+.skill-card[data-skill="2"]{--scB:#FF9C7E}   /* Recalling Facts 2 */
+.skill-card[data-skill="3"]{--scB:#FFC72F}   /* Recalling Facts 3 */
+.skill-card[data-skill="4"]{--scB:#F46169}   /* Drawing Conclusions */
+.skill-card[data-skill="5"]{--scB:#B078FF}   /* Making Inferences */
+.skill-card[data-skill="6"]{--scB:#748CFF}   /* Cause & Effect */
+.skill-card[data-skill="7"]{--scB:#FF974C}   /* Analyzing Characters */
+.skill-card[data-skill="8"]{--scB:#FF7CCF}   /* Author's Purpose */
+.skill-card[data-skill="9"]{--scB:#4FC73F}   /* Literary Genres */
 
 /* ── topic 화면 : Figma B_Topic_list ──
    마스코트가 상단 중앙 → 헤드라인 → 카드 1×6 → 카드 밖 라벨 + 넓은 체크 pill */
@@ -228,11 +256,17 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    (마크업·문구는 공용 engine.js 소관이라 손대지 않고 CSS 로만 대체) */
 .splash .splash-inner{display:none}
 .splash .splash-tap{display:none}
-/* 마스코트 · 대형 로고 · 하단 물결 = Figma 에셋 */
+/* 마스코트 · 대형 로고 · 하단 물결 = Figma 에셋
+   ⚠ background-position 의 퍼센트는 컨테이너 기준이 아니라 (컨테이너 − 이미지) 기준
+     오프셋이다. 즉 `left 59.1%` 는 "왼쪽에서 59.1% 지점"이 아니다.
+     아래 값은 목표 좌표에서 역산한 것 — 눈대중으로 고치면 다시 어긋난다.
+     목표(cut1 실측, 카드 대비 비율)
+       마스코트 주황 영역 x0=0.066 y1=0.734 높이 0.600
+       로고 Lio 자획      x0=0.596 y0=0.312 폭  0.226 */
 .splash::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    url("../IMAGE/b/logo_lockup_lg.png") no-repeat left 59.1% top 28.5% / auto 29.7%,
-    url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 4% bottom 25% / auto 64%,
+    url("../IMAGE/b/logo_lockup_lg.png") no-repeat left 77.5% top 40.5% / auto 28.3%,
+    url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 9.1% bottom 62.8% / auto 64%,
     url("../IMAGE/b/bottom_wave.svg") no-repeat left bottom / 100% 31.25%}
 /* Let's Go! pill : 장식용(탭 타깃은 .splash 전체) — 라벨을 Figma 문구로 표시 */
 .splash::after{content:"Let's Go!";position:absolute;z-index:2;pointer-events:none;
