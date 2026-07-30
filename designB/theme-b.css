@@ -1,6 +1,15 @@
 /* =====================================================================
    Design B — App UI  (Figma node 114-497 : Platform_B)
    로열블루 #1E51D6 · 3D 마스코트 · 컬러 라운드 카드 · 웨이브 헤더 · 라운드 폰트
+
+   ※ 이 파일은 designB 전용이다. Design A 는 이 파일을 로드하지 않으므로
+     여기서 무엇을 바꿔도 A 에는 영향이 없다.
+     공용 파일(prototype/base.css · engine.js · flow-data.js)은 건드리지 않는다.
+     base.css 기본값이 A(양피지·크림) 기준인 곳은 아래에서 B 팔레트로 덮는다.
+
+   기준 프레임 : B_Intro 114-970 · B_Skill_list 114-1066 · B_Skill_selected 114-1230
+                B_Topic_list 114-1393 · B_Game Intro 129-1572 · B_Game 162-14
+                B_FP Intro 145-1673 · B_FP1 146-2041
    ===================================================================== */
 :root{
   --primary:#1E51D6; --accent:#FFC531;
@@ -9,20 +18,56 @@
   --bubble-lio:#f2f5ff; --bubble-user:#dbe6ff;
   --font-head:'Baloo 2','Inter',system-ui,sans-serif;
   --font-body:'Inter',system-ui,sans-serif;
+
+  /* Figma B_FP1 에서 뽑은 값 */
+  --b-card-line:#e8ebf2;      /* 카드 얇은 회색 보더 */
+  --b-text:#1f2530;           /* 지문·선택지 본문 (A보다 진하고 중성) */
+  --b-chip:#e6eefb;           /* 키워드 하이라이트 칩 배경 */
+  --b-mint:#e3f3ee;           /* Listen pill 배경 */
+  --b-mint-line:#c3e4d8;
+  --b-mint-ink:#12796a;
+  --b-navy:#17203a;           /* QUESTION 보더·라벨 */
 }
 body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 
-/* ── 헤더 : 로열블루 + 하단 웨이브 + Lio 워드마크 ── */
+/* ── 헤더 : 로열블루 + 하단 웨이브 + Lio/SKILLCORE 락업 ──
+   로고·웨이브는 CSS 근사가 아니라 Figma 에서 내려받은 실제 에셋을 쓴다.
+   · IMAGE/b/logo_lockup.png  ← Figma 114:1155 "BI" PNG@4x 를 배경 네이비(#02195C)
+     기준으로 언믹스해 투명 처리 (흰 Lio + 노란 별/호 + SKILLCORE 원본 그대로)
+   · IMAGE/b/wave_header.svg  ← Figma 114:1149 "wav > Icon > Vector" 경로 원본 */
 .hd{background:var(--primary);overflow:visible}
-.hd::after{content:'';position:absolute;left:0;right:0;bottom:-13px;height:15px;z-index:6;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='15' viewBox='0 0 120 15'%3E%3Cpath d='M0 6 Q30 15 60 7 T120 6 V15 H0 Z' fill='white'/%3E%3C/svg%3E") repeat-x;
-  background-size:120px 15px}
-.hd-logo-text{font-size:26px;letter-spacing:.5px}
-.hd-logo-text::after{content:'';position:absolute;left:2px;right:6px;bottom:4px;height:5px;border-radius:6px;
-  background:var(--accent);opacity:.9;transform:scaleX(.45);transform-origin:right}
+/* 잘라낸 crest(1577×11.547)를 헤더 하단에 딱 맞춘다. 폭이 변해도 Figma 비율 유지 */
+.hd::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:auto;
+  aspect-ratio:1577/11.547;z-index:6;pointer-events:none;
+  background:url("../IMAGE/b/wave_header.svg") no-repeat center bottom;
+  background-size:100% 100%}
+/* 텍스트로 흉내 낸 로고는 감추고 Figma 락업 이미지를 넣는다
+   (마크업의 .hd-logo-img src 는 A 전용 에셋으로 하드코딩돼 있어 건드리지 않는다) */
+.hd-logo-text{display:none}
+.hd-brand{align-items:center;position:relative;z-index:7}
+.hd-brand::before{content:'';display:block;
+  height:clamp(30px,3.4cqw,42px);aspect-ratio:303/231;
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat left center;
+  background-size:contain}
 .hd-pill{color:#eaf0ff;font-weight:800}
 .hd-skill{color:#b9c8f4}
 .hd-title{color:var(--accent);font-size:20px}
+
+/* ── 지문 / 활동 : Figma 는 분리된 2장의 라운드 화이트 카드 ──
+   .reading 자체에는 padding 을 주지 않는다 — .det-card / .word-popup 이
+   .reading 을 기준으로 absolute 배치되므로 좌표가 밀린다. 패널에 margin 만 준다. */
+.reading .passage,
+.reading .activity{background:#fff;border:1px solid var(--b-card-line);border-radius:16px}
+.reading .passage{border-right:1px solid var(--b-card-line);margin:14px 7px 14px 14px}
+.reading .activity{margin:14px 14px 14px 7px}
+.ppara{color:var(--b-text);line-height:1.68;font-size:calc(var(--fz-passage) * .94)}
+
+/* 키워드 : A는 파란 밑줄, Figma B는 연블루 배경 칩 */
+.passage .kw{background:var(--b-chip);color:var(--b-text);border-bottom:none;
+  border-radius:6px;padding:1px 6px;font-weight:600}
+/* Listen : A는 연블루, Figma B는 민트 pill */
+.listen-btn{background:var(--b-mint);border-color:var(--b-mint-line);color:var(--b-mint-ink);
+  border-radius:16px;padding:3px 10px;font-weight:700}
 
 /* ── 말풍선 / 아바타 ── */
 .msg .avatar{border:2px solid #fff;box-shadow:0 3px 8px rgba(30,81,214,.18)}
@@ -38,23 +83,64 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .btn.figma-green{background:#009d54;border:4px solid #00763f;border-radius:50px;box-shadow:none;font-family:'Nunito',sans-serif;font-weight:900}
 .btn.figma-navy{background:#1E2A4A;border:4px solid #18223c;border-radius:50px;box-shadow:none;font-family:'Nunito',sans-serif;font-weight:900}
 
-/* ── 선택지 ── */
-.choice{border-radius:16px}
-.qbox{border-radius:16px;border-color:#c3d2f7;background:#f7faff}
+/* ── 질문 / 선택지 : Figma B_FP1 ──
+   QUESTION = 흰 배경 + 진한 네이비 2px 보더, 라벨은 네이비 solid pill */
+.qbox{border-radius:14px;border:2px solid var(--b-navy);background:#fff}
+.qlabel{display:inline-block;background:var(--b-navy);color:#fff;
+  border-radius:5px;padding:3px 8px;letter-spacing:.09em;margin-bottom:7px}
+.qtext{color:var(--b-text)}
+/* 선택지 : 얇은 회색 보더 + 좌측 회색 원형 대문자 배지 */
+.choice{border-radius:12px;border:1px solid var(--b-card-line);color:var(--b-text);font-weight:500}
+.choice:hover{border-color:#c2d0f5}
+.choice .ckey,.choice .cbullet{width:28px;height:28px;flex:0 0 28px;
+  background:#f0f2f5;color:#6b7690;text-transform:uppercase;font-size:13px}
 
 /* ── center / message ── */
 .msgcard{border-radius:22px;background:#f5f8ff;border-color:#e0e8fb;box-shadow:0 8px 22px rgba(30,81,214,.06)}
 .center-mascot.big{border:4px solid #fff;box-shadow:0 8px 24px rgba(30,81,214,.2)}
 
-/* ── 인트로 순차 말풍선 (greeting / plan / fp2_intro) ── */
+/* ── 인트로 (greeting / plan / fp2_intro) : Figma B_Intro_cut1·cut2 / Game Intro / FP Intro ──
+   Figma 는 플랫 로열블루 #1C4BD6 + 하단 3겹 물결 + 좌상단 소형 로고 + 흰 pill 버튼,
+   말풍선 없이 흰 텍스트가 배경 위에 바로 올라간다.
+   .introseq 의 배경 일러스트는 flow-data(공용)의 inline style 이라 손대지 않고
+   ::before 오버레이로 덮는다. (마스코트 z-index:3, 말풍선 z-index:2 는 위에 남는다) */
 .scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd, .scr-fp2_intro .hd{display:none}
-.ib-bubble .nm{color:#2fa46f;font-weight:800}
-.ib-bubble .mi{color:#7C4DFF;font-weight:800}
+/* 배경 = 소형 로고(좌상단) + Figma 마스코트(좌측, 물결 위) + 하단 3겹 물결 + 플랫 블루.
+   마스코트 크기·위치는 Figma 좌표 기준 : lio 프레임 673/1072 = 높이 62.8%,
+   좌측 x=115/1577 ≈ 7.3% (cut2) · x=59/1577 ≈ 3.7% (Game/FP Intro) */
+.introseq::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    url("../IMAGE/b/logo_lockup.png") no-repeat 22px 18px / auto clamp(26px,3cqw,36px),
+    var(--b-intro-lio, none) no-repeat 7% bottom / auto 68%,
+    url("../IMAGE/b/bottom_wave.svg") no-repeat left bottom / 100% 31.25%,
+    #1C4BD6}
+.scr-greeting  .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_cut2.png")}
+.scr-plan      .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_plan.png")}
+.scr-fp2_intro .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_fp2.png")}
+.introseq .introseq-scrim{display:none}
+/* Figma : 말풍선 없이 흰 본문 텍스트. Maya=옐로, 스킬명=시안
+   본문 블록은 마스코트 오른쪽 (Figma x=653/1577≈41%, y=240/1072≈22%) */
+.introseq .ib{max-width:52%}
+.introseq .ib-left,
+.introseq .ib-right{left:41%;right:auto;top:22%}
+.introseq .ib-bubble{background:transparent;box-shadow:none;color:#fff;padding:0}
+.introseq .ib-bubble::after{display:none}
+.introseq .ib-bubble .nm{color:var(--accent);font-weight:800}
+.introseq .ib-bubble .mi{color:#3EE0D0;font-weight:800}
+.introseq .ib-spk{color:#cfe0ff}
+/* Quick Exit 계열은 기존 흰 말풍선 유지 (Figma 인트로 규칙을 적용하지 않는다) */
+.quickexit .ib-bubble .nm{color:#2fa46f;font-weight:800}
+.quickexit .ib-bubble .mi{color:#7C4DFF;font-weight:800}
 .introseq .ib-bubble,
 .quickexit .ib-bubble{
   font-family:var(--font-body);
   font-size:22px;font-weight:600;line-height:1.45;
 }
+/* Let's Go! : 흰 pill + 파란 굵은 텍스트 */
+.introseq .introseq-next.btn,
+.introseq .introseq-next.btn.primary{background:#fff;color:var(--primary);
+  border-radius:999px;font-weight:800;padding:14px 30px;font-size:19px;
+  box-shadow:0 8px 20px rgba(8,30,90,.22)}
 .quickexit .ib-left{left:18%;top:11%}
 .quickexit .ib-right{right:18%;top:24%}
 .quickexit .ib-bubble{max-width:min(34vw,320px)}
@@ -69,13 +155,60 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skill-card{border-radius:20px}
 .skill-card.today{background:linear-gradient(180deg,#fff,#eef4ff)}
 
-/* ── topic 화면 ── */
-.topic-line{color:#22315e}
-.topic-card{border-radius:18px;box-shadow:0 4px 12px rgba(30,60,120,.08)}
-.topic-card .tc-check{border:2px solid #fff}
+/* ── topic 화면 : Figma B_Topic_list ──
+   마스코트가 상단 중앙 → 헤드라인 → 카드 1×6 → 카드 밖 라벨 + 넓은 체크 pill */
+.topic-lio{flex-direction:column;gap:6px;text-align:center;max-width:900px}
+.topic-lio img{width:clamp(56px,6.4cqw,86px);height:clamp(56px,6.4cqw,86px)}
+.topic-line{font-size:clamp(16px,1.85cqw,23px);color:var(--b-text);line-height:1.4}
+/* 카드가 고정 비율이므로 그리드가 남은 높이를 먹지 않게 flex:0 0 auto 로 되돌린다
+   (base.css 는 flex:1 1 auto — 그대로 두면 위아래로 여백이 벌어진다) */
+.topic-grid{grid-template-columns:repeat(6,1fr);grid-template-rows:auto;
+  max-width:1180px;gap:clamp(6px,.9cqw,12px);
+  flex:0 0 auto;margin-top:clamp(4px,1.2cqw,16px)}
+/* 카드 배경·보더를 없애 이미지만 라운드로 떠 보이게 (Figma 는 라벨이 카드 밖) */
+.topic-card{background:transparent;border-color:transparent;border-radius:20px;gap:6px;
+  padding-bottom:0;height:auto}
+/* Figma 카드 이미지 213×290 = 0.735 비율 유지 (안 잡으면 그리드 높이만큼 늘어남) */
+.topic-card .tc-img{border-radius:20px;flex:0 0 auto;aspect-ratio:213/290}
+.topic-card .tc-name{font-size:clamp(10.5px,1.1cqw,13px);color:var(--b-text);
+  padding:2px 2px 0;line-height:1.25}
+.topic-card .tc-check{width:clamp(38px,4cqw,52px);height:clamp(22px,2.2cqw,28px);
+  border-radius:999px;background:#d3d8e2;font-size:13px;margin-bottom:2px}
+.topic-card.on{border-color:transparent;box-shadow:none}
+.topic-card.on .tc-img{box-shadow:0 8px 20px rgba(30,81,214,.28)}
+.topic-card.on .tc-check{background:var(--primary);color:var(--accent)}
 
 /* ── word peek ── */
 .wp-line{color:#22315e}
+
+/* ── Teach / Game / Explore : base.css 기본값이 A(크림 #fffaf0 · 보더 #ecddc0)라
+      파란 앱 UI 안에서 베이지로 떠 보인다 → B 팔레트로 교체 ── */
+.mcard,
+.mc-front,
+.mc-front.word{background:#f2f5ff}
+.mc-front{border-color:#d7e0fa;color:var(--b-text)}
+.mc-front.word b{color:var(--b-text)}
+.mc-back{background:var(--primary);color:#cfdcff}
+.det-card{background:#f2f5ff;border-color:#d7e0fa;color:var(--b-text)}
+.det-clue-head{color:var(--b-navy)}
+/* Detective 보드 판 : A는 크림 + 노란 점선 */
+.det-board{background:#f8faff;border:1.5px dashed #cfdcfa}
+.wp-front{background:#f2f5ff;border-color:#d7e0fa;color:var(--primary)}
+.wp-front.alt,.wpcard.alt .wp-front{background:var(--b-mint);border-color:var(--b-mint-line);color:var(--b-mint-ink)}
+/* Find & Flip 카드 앞면 : A는 크림 */
+.ff-front{background:#f2f5ff;border-color:#d7e0fa}
+.ff-front b{color:var(--b-text)}
+/* Teach 단어카드 recap : A는 크림 + 갈색 텍스트 */
+.td-recap{background:var(--b-mint);border:1px dashed var(--b-mint-line);color:#12655a}
+.td-recap-tag{color:var(--b-mint-ink)}
+.td-recap-ex{color:#2f7a6c}
+/* Memory Hint : A는 주황, B는 액센트 옐로 + 진한 글자 */
+.mem-hint{background:var(--accent);color:var(--b-navy)}
+.mem-peek b{color:var(--accent)}
+/* Quick Exit 상단 배너 : A는 크림 + 갈색 */
+.qe-banner{background:#eaf0fd;border-color:#cfdcfa;color:#2c3f77}
+.passage .xword:hover{background:#e6eefb}
+.passage .xword.picked{background:#d7e0fa;border-bottom-color:var(--primary)}
 
 /* ── quick exit ── */
 .qe-card{border-radius:22px}
@@ -94,5 +227,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .splash::before{content:'';position:absolute;left:0;right:0;bottom:0;height:120px;
   background:rgba(255,255,255,.06);border-radius:50% 50% 0 0/100% 100% 0 0}
 
-/* ── bottom nav 강조 ── */
-.bottom-nav{background:linear-gradient(180deg,#3a6bea,#1E51D6)}
+/* ── bottom nav : Figma 는 더 넓은 pill, active 만 흰 반투명 배경 ── */
+.bottom-nav{background:linear-gradient(180deg,#3a6bea,#1E51D6);gap:10px;padding:8px 14px;border-radius:999px}
+.bottom-nav .bn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;color:#bdd0ff}
+.bottom-nav .bn.active{color:#fff;background:rgba(255,255,255,.18)}
