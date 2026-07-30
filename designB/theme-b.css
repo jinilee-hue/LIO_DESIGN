@@ -213,19 +213,39 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* ── quick exit ── */
 .qe-card{border-radius:22px}
 
-/* ── splash : 로열블루 풀블리드 + 물결 ── */
-.layout-splash .device{background:var(--primary)}
+/* ── splash (진입 표지) : Figma B_Intro_cut1 (114:970) ──
+   Figma : 플랫 #1C4BD6 + 동심원 + 손 든 마스코트(HI! 말풍선) + 대형 Lio SKILL CORE 락업
+           + 흰 "Let's Go! ›" pill + 하단 3겹 물결.
+   좌표는 cut1 렌더에서 실측한 화면 비율 : 마스코트 x6.6~41.9% y13.4~73.4%,
+   로고 x59.6~82.2% y29.2~57.1%, 버튼 x60.1~81.6% y67.8~78.8%. */
+.layout-splash .device{background:#1C4BD6}
 .splash{background:
-  radial-gradient(circle at 26% 46%, rgba(255,255,255,.10) 0 120px, transparent 121px),
-  radial-gradient(circle at 26% 46%, rgba(255,255,255,.06) 0 190px, transparent 191px),
-  var(--primary)}
-.splash-inner{gap:40px}
-.sl-lio{color:#fff}
-.sl-lio::after{content:'✦';font-size:26px;color:var(--accent);vertical-align:top;margin-left:6px}
-.sl-sub{color:#fff;opacity:.95}
-.splash-tap{color:#cdd9ff}
-.splash::before{content:'';position:absolute;left:0;right:0;bottom:0;height:120px;
-  background:rgba(255,255,255,.06);border-radius:50% 50% 0 0/100% 100% 0 0}
+  radial-gradient(circle at 24% 44%, rgba(255,255,255,.055) 0 21%, transparent 21.2%),
+  radial-gradient(circle at 24% 44%, rgba(255,255,255,.045) 0 31%, transparent 31.2%),
+  radial-gradient(circle at 24% 44%, rgba(255,255,255,.035) 0 41%, transparent 41.2%),
+  #1C4BD6}
+/* 기본 마크업의 작은 마스코트 + CSS 텍스트 로고 + "Tap to start" 는 감춘다
+   (마크업·문구는 공용 engine.js 소관이라 손대지 않고 CSS 로만 대체) */
+.splash .splash-inner{display:none}
+.splash .splash-tap{display:none}
+/* 마스코트 · 대형 로고 · 하단 물결 = Figma 에셋 */
+.splash::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    url("../IMAGE/b/logo_lockup_lg.png") no-repeat left 59.1% top 28.5% / auto 29.7%,
+    url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 4% bottom 25% / auto 64%,
+    url("../IMAGE/b/bottom_wave.svg") no-repeat left bottom / 100% 31.25%}
+/* Let's Go! pill : 장식용(탭 타깃은 .splash 전체) — 라벨을 Figma 문구로 표시 */
+.splash::after{content:"Let's Go!";position:absolute;z-index:2;pointer-events:none;
+  left:60.1%;top:67.8%;width:21.5%;height:11%;
+  display:flex;align-items:center;
+  box-sizing:border-box;padding:0 clamp(46px,5.4cqw,66px) 0 clamp(18px,2.4cqw,30px);
+  font-family:var(--font-head);font-weight:800;color:var(--primary);
+  font-size:clamp(15px,2cqw,26px);letter-spacing:-.2px;
+  border-radius:999px;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat;
+  background-position:right clamp(8px,1cqw,13px) center;
+  background-size:auto 62%;
+  box-shadow:0 10px 26px rgba(6,26,84,.24)}
 
 /* ── bottom nav : Figma 는 더 넓은 pill, active 만 흰 반투명 배경 ── */
 .bottom-nav{background:linear-gradient(180deg,#3a6bea,#1E51D6);gap:10px;padding:8px 14px;border-radius:999px}
