@@ -1,7 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1577" height="51.547" viewBox="0 0 51.547 51.547" fill="none" preserveAspectRatio="none">
-<!-- Figma Platform_B / wav > Icon > Vector (114:1149) 경로 원본, 전체 높이 사용.
-     Skill_list · Skill_selected 화면 최하단 물결 — 원본 fill #2B5CE6 (네이비 #02195C 배경 위). -->
-<svg width="1577" height="51.547" viewBox="0 0 1577 51.547" preserveAspectRatio="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="1577" height="51.547" viewBox="0 0 1577 51.547" fill="none" preserveAspectRatio="none">
+<!-- Figma Platform_B / wav — Skill_list · Skill_selected 최하단 물결 fill #2B5CE6 -->
 <path d="M0 11.547C350.444 51.547 459.958 -28.453 788.5 11.547C1117.04 51.547 1226.56 -28.453 1577 11.547V51.547H0V11.547Z" fill="#2B5CE6"/>
-</svg>
 </svg>
