@@ -414,7 +414,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 마스코트 : slide 5·6 과 같은 크기(높이 64%)로 키운다. Figma skill_list 의 lio 는
    (-23,259) 633×673 → 좌측 -1.5% / 아래 13.1% / 높이 62.8% 위치다.
    카드 위에 겹쳐도 무방하다는 요청에 따라 z-index 를 카드보다 위로 둔다. */
-.skillscreen .skill-mascot{position:absolute;left:9%;bottom:11%;
+/* LIO 는 z-index:5 로 카드보다 위에 있지만, 폭이 245px 이고 left 9% 라
+   오른쪽 끝(496px)이 그리드 시작(509px)에 13px 못 미쳐 실제로는 겹치지 않았다.
+   → left 를 더 밀어 카드 첫 열과 확실히 겹치게 한다. */
+.skillscreen .skill-mascot{position:absolute;left:15%;bottom:11%;
   height:64%;width:auto;max-width:none;max-height:none;z-index:5;pointer-events:none}
 .skill-card[data-skill="0"]{grid-area:1/1}   /* Main Ideas */
 .skill-card[data-skill="1"]{grid-area:1/3}   /* Recalling Facts 1 */
@@ -711,6 +714,6 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 
 /* 물음표 말풍선 : base 는 .skill-left 기준 top30%/right16% 인데 마스코트를 절대배치로
    옮겼으므로 화면 기준으로 다시 잡는다. 요청대로 더 위·오른쪽으로. */
-.skillscreen:not(.selected) .think-bubble{position:absolute;top:20%;left:32%;right:auto;
+.skillscreen:not(.selected) .think-bubble{position:absolute;top:19%;left:38%;right:auto;
   width:clamp(30px,3.6cqw,54px);height:clamp(30px,3.6cqw,54px);
   font-size:var(--fz-title-md);z-index:6}
