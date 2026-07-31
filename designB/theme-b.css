@@ -54,7 +54,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   --fz-title-md: clamp(16px,   1.90cqw, 26px);   /* 게임 제목 · 단어 카드 앞면 */
   /* 카드 라벨은 카드 폭이 곧 상자라서 px 하한을 크게 두면 저해상도에서 넘친다.
      하한을 낮추고(아래 overflow:hidden 과 함께) 카드 비율에 따라 줄어들게 둔다. */
-  --fz-cardname: clamp(9px,    1.20cqw, 16px);   /* 스킬 · 토픽 카드 라벨 */
+  --fz-cardname: clamp(10px,   1.47cqw, 22px);   /* 스킬 · 토픽 카드 라벨 (Figma 실측) */
   --fz-ui:       clamp(13px,   1.35cqw, 18px);   /* 일반 UI 본문 */
   --fz-ui-sm:    clamp(11px,   1.05cqw, 14px);   /* 배지 · 캡션 */
   --fz-emoji:    clamp(20px,   2.30cqw, 32px);   /* 이모지 · 아이콘 글리프 */
@@ -346,7 +346,17 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen::after{content:'';position:absolute;left:0;right:0;bottom:0;height:auto;
   aspect-ratio:1577/51.547;pointer-events:none;z-index:0;
   background:url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 100%}
+/* 헤드라인 : Figma 실측 (542,424) 373×104 → x 34.4~58.0% · y 39.6~49.3%.
+   마스코트 오른쪽·카드 영역에 겹쳐 놓이는 구성이라 절대 배치하고 위로 올린다. */
 .skill-headline{color:#fff;font-family:var(--font-head);font-weight:800;font-size:var(--fz-headline)}
+/* ⚠ Figma 의 x34.4% 는 마스코트가 프레임 왼쪽(-1.5%~38.7%)에 있을 때 그 오른쪽 여백에
+   해당한다. 프로토는 마스코트를 slide 5·6 과 같은 크기(64%)로 키워 오른쪽 끝이
+   더 나오므로, 그대로 두면 얼굴 위에 글자가 얹힌다.
+   → 마스코트 오른쪽 경계 밖으로 내보내고 세로 위치는 Figma 대로 둔다.
+   말풍선(마스코트 이미지에 포함)도 가리지 않는다. */
+.skillscreen:not(.selected) .skill-headline{position:absolute;left:2.5%;bottom:6%;
+  width:30%;text-align:left;z-index:6;line-height:1.15;
+  text-shadow:0 3px 14px rgba(2,25,92,.65)}
 /* 카드 : flow-data 의 --sc 는 A 팔레트이므로 B 전용 --scB 로 덮는다 */
 .skill-card{background:var(--scB,#3593FF);border:none;border-radius:20px;position:relative;z-index:1}
 .skill-card::after{content:'';position:absolute;inset:7px;pointer-events:none;
@@ -382,8 +392,11 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skill-card{height:100%;width:auto;max-width:100%;aspect-ratio:213/284;
   padding:8% 6% 6%;justify-content:center;gap:5%;overflow:hidden}
 .skill-card .sc-icon{width:auto;height:46%;flex:0 0 auto}
-/* 왼쪽 열 : 마스코트가 헤드라인을 밀어내지 않게 높이로 제한 */
-.skillscreen .skill-mascot{width:auto;height:auto;max-height:46%;max-width:100%}
+/* 마스코트 : slide 5·6 과 같은 크기(높이 64%)로 키운다. Figma skill_list 의 lio 는
+   (-23,259) 633×673 → 좌측 -1.5% / 아래 13.1% / 높이 62.8% 위치다.
+   카드 위에 겹쳐도 무방하다는 요청에 따라 z-index 를 카드보다 위로 둔다. */
+.skillscreen .skill-mascot{position:absolute;left:-1.5%;bottom:13.1%;
+  height:64%;width:auto;max-width:none;max-height:none;z-index:5;pointer-events:none}
 .skill-card[data-skill="0"]{grid-area:1/1}   /* Main Ideas */
 .skill-card[data-skill="1"]{grid-area:1/3}   /* Recalling Facts 1 */
 .skill-card[data-skill="2"]{grid-area:1/4}   /* Recalling Facts 2 */
