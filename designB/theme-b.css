@@ -152,6 +152,17 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .ppara{color:#2b3550;font-size:var(--fz-passage);line-height:1.9}
 .passage .kw{color:#33415e;background:#e7edf7;font-weight:600;
   border-radius:6px;padding:1px 6px;border-bottom:none}
+/* ⚠ Explore 화면의 핵심어는 마크업이 class="kw kwbox" 다.
+   base 의 .passage .kwbox 와 위 .passage .kw 가 특이도가 같아(0,2,0) 나중에 로드되는
+   이 파일의 .kw 가 kwbox 를 덮어버려, A 와 달리 회청색 배경 + 어두운 글자로 나왔다.
+   → A(= base 기본값)와 같게 되돌린다. 흰 배경 + 마젠타 2px 보더 + 마젠타 볼드. */
+.passage .kwbox{background:#fff;border:2px solid #e24aa0;border-radius:8px;padding:0 4px;
+  color:#c0247e;font-weight:700}
+.passage .kwbox:hover,
+.passage .kwbox.picked{background:#fff;box-shadow:0 2px 8px rgba(226,74,160,.22)}
+/* Find & Flip 변형(연블루)도 base 값 유지 */
+.findflip .passage .kwbox{background:#e3ecff;border:none;border-radius:6px;
+  padding:1px 5px;color:#2b5bd0}
 .listen-btn{background:#e6f4f1;border:none;color:#0f6d61;font-weight:500;
   border-radius:999px;padding:3px 8px}
 .et-label{font-weight:800;letter-spacing:.5px;color:#1E2A4A;text-transform:uppercase;margin:2px 0}
