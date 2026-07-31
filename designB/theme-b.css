@@ -32,6 +32,60 @@
 }
 body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 
+/* ── 유동 타이포 (B 전용) ──────────────────────────────────────────────
+   base.css 는 reading(FP) 계열에만 유동 토큰(--fz-passage/bubble/q/choice/opt)을
+   쓰고 intro · skill · topic · game · teach 는 px 고정이었다.
+   그래서 태블릿·저해상도에서 화면은 줄어드는데 글자 크기는 그대로라 비율이 깨지고,
+   저학년 가독성 하한도 없었다. FP 와 같은 방식(cqw 기반 clamp)으로 토큰을 추가한다.
+   · 1cqw = #stage 폭의 1% (#stage 가 container-type:inline-size)
+   · .device 는 aspect-ratio 1577/1072 고정이라 폭·높이에 함께 스케일된다
+   · clamp 하한은 저학년 최소 가독 크기, 상한은 대형 화면 과대 방지 */
+.device{
+  --fz-hd-title: clamp(15px,   1.62cqw, 24px);   /* 헤더 우측 화면명 */
+  --fz-hd-meta:  clamp(11.5px, 1.15cqw, 16px);   /* STEP · 스킬명 */
+  --fz-intro:    clamp(17px,   2.05cqw, 30px);   /* 인트로 본문 · 토픽 헤드라인 */
+  --fz-cta:      clamp(15px,   1.85cqw, 26px);   /* Let's Go 등 CTA */
+  --fz-headline: clamp(20px,   2.50cqw, 38px);   /* skill 헤드라인 */
+  --fz-title-md: clamp(16px,   1.90cqw, 26px);   /* 게임 제목 · 단어 카드 앞면 */
+  /* 카드 라벨은 카드 폭이 곧 상자라서 px 하한을 크게 두면 저해상도에서 넘친다.
+     하한을 낮추고(아래 overflow:hidden 과 함께) 카드 비율에 따라 줄어들게 둔다. */
+  --fz-cardname: clamp(9px,    1.20cqw, 16px);   /* 스킬 · 토픽 카드 라벨 */
+  --fz-ui:       clamp(13px,   1.35cqw, 18px);   /* 일반 UI 본문 */
+  --fz-ui-sm:    clamp(11px,   1.05cqw, 14px);   /* 배지 · 캡션 */
+  --fz-emoji:    clamp(20px,   2.30cqw, 32px);   /* 이모지 · 아이콘 글리프 */
+}
+
+/* 헤더 */
+.hd-title{font-size:var(--fz-hd-title)}
+.hd-pill,.hd-skill{font-size:var(--fz-hd-meta)}
+
+/* 공용 소형 UI (KR 토글 · TTS · 배지 · 라벨) */
+.kr,.tts,.ko-gloss,.note .muted,.td-extag,.td-recap-tag,.wp-kr,.wp-ex{font-size:var(--fz-ui-sm)}
+.qlabel{font-size:var(--fz-ui-sm)}
+.choice .ckey,.choice .cbullet{font-size:var(--fz-ui-sm)}
+.sysline span,.note,.et-label,.wordchip,.emoji-opt,
+.actcard .ac-title,.actcard .ac-sub{font-size:var(--fz-ui)}
+.msgcard p{font-size:var(--fz-bubble)}
+.think-bubble,.mi-ic,.eo-ic,.tcard .tc-emoji,.td-ic,
+.ff-front .ff-emo,.msg .avatar.grad{font-size:var(--fz-emoji)}
+
+/* 단어 팝업 · 단어 카드 */
+.word-popup .wp-word,.td-w{font-size:var(--fz-title-md)}
+.word-popup .wp-def,.word-popup .wp-ex,.td-def,.td-ex,.td-recap{font-size:var(--fz-ui)}
+.word-popup .wp-kr{font-size:var(--fz-ui-sm)}
+.wp-line,.wp-w{font-size:var(--fz-ui)}
+.wp-front{font-size:var(--fz-title-md)}
+.wp-def{font-size:var(--fz-ui-sm)}
+
+/* 게임 · Detective · Explore */
+.game-title{font-size:var(--fz-title-md)}
+.game-round,.game-hint,.game-transition .msgcard p{font-size:var(--fz-ui)}
+.det-clue-head{font-size:var(--fz-ui)}
+.exi{font-size:var(--fz-ui)}
+
+/* Quick Exit */
+.qe-banner{font-size:var(--fz-ui)}
+
 /* ── 헤더 : 로열블루 + 하단 웨이브 + Lio/SKILLCORE 락업 ──
    로고·웨이브는 CSS 근사가 아니라 Figma 에서 내려받은 실제 에셋을 쓴다.
    · IMAGE/b/logo_lockup.png  ← Figma 114:1155 "BI" PNG@4x 를 배경 네이비(#02195C)
@@ -67,7 +121,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background-size:contain}
 .hd-pill{color:#eaf0ff;font-weight:800}
 .hd-skill{color:#b9c8f4}
-.hd-title{color:var(--accent);font-size:20px}
+.hd-title{color:var(--accent)}
 
 /* 헤더를 최상위로 : base 의 z-index:5 를 올려서 하단 물결이 어떤 화면에서도
    본문 패널에 가리지 않고 그대로 보이게 한다 (FP/reading 계열에서 특히 문제였음). */
@@ -162,7 +216,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .introseq .ib-bubble,
 .quickexit .ib-bubble{
   font-family:var(--font-body);
-  font-size:22px;font-weight:600;line-height:1.45;
+  font-size:var(--fz-intro);font-weight:600;line-height:1.45;
 }
 /* Let's Go! : Figma 는 흰 pill + 파란 셰브론 원, 위치 x60.1~81.6% / y67.8~78.8%.
    마크업 문구가 "Let's go! ▶"(flow-data, 공용)라 font-size:0 으로 감추고
@@ -177,8 +231,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background-size:auto 62%;
   box-shadow:0 10px 26px rgba(6,26,84,.24)}
 .introseq .introseq-next.btn::before{content:"Let's Go!";
-  font-family:var(--font-head);font-weight:800;font-size:clamp(15px,2cqw,26px);letter-spacing:-.2px}
-.introseq .introseq-replay{bottom:5%;right:3%}
+  font-family:var(--font-head);font-weight:800;font-size:var(--fz-cta);letter-spacing:-.2px}
+.introseq .ib-spk{font-size:var(--fz-ui)}
+.introseq .introseq-replay{bottom:5%;right:3%;font-size:var(--fz-ui-sm)}
 .quickexit .ib-left{left:18%;top:11%}
 .quickexit .ib-right{right:18%;top:24%}
 .quickexit .ib-bubble{max-width:min(34vw,320px)}
@@ -197,12 +252,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen::after{content:'';position:absolute;left:0;right:0;bottom:0;height:auto;
   aspect-ratio:1577/51.547;pointer-events:none;z-index:0;
   background:url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 100%}
-.skill-headline{color:#fff;font-family:var(--font-head);font-weight:800}
+.skill-headline{color:#fff;font-family:var(--font-head);font-weight:800;font-size:var(--fz-headline)}
 /* 카드 : flow-data 의 --sc 는 A 팔레트이므로 B 전용 --scB 로 덮는다 */
 .skill-card{background:var(--scB,#3593FF);border:none;border-radius:20px;position:relative;z-index:1}
 .skill-card::after{content:'';position:absolute;inset:7px;pointer-events:none;
   border:2px dashed rgba(255,255,255,.92);border-radius:13px}
-.skill-card .sc-name{color:#fff;font-family:var(--font-head);font-weight:800}
+.skill-card .sc-name{color:#fff;font-family:var(--font-head);font-weight:800;
+  font-size:var(--fz-cardname);line-height:1.15;overflow:hidden}
 .skill-card.today,
 .skill-card.pickable.on,
 .skill-card.pickable.today{background:var(--scB,#3593FF);border-color:transparent;
@@ -222,8 +278,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   gap:1.1cqw 1.2cqw;height:100%;min-height:0;align-content:center;
   justify-items:center;align-items:center;overflow:visible}
 .skill-card{height:100%;width:auto;max-width:100%;aspect-ratio:213/284;
-  padding:8% 6% 6%;justify-content:center;gap:6%}
-.skill-card .sc-icon{width:auto;height:52%;flex:0 0 auto}
+  padding:8% 6% 6%;justify-content:center;gap:5%;overflow:hidden}
+.skill-card .sc-icon{width:auto;height:46%;flex:0 0 auto}
 /* 왼쪽 열 : 마스코트가 헤드라인을 밀어내지 않게 높이로 제한 */
 .skillscreen .skill-mascot{width:auto;height:auto;max-height:46%;max-width:100%}
 .skill-card[data-skill="0"]{grid-area:1/1}   /* Main Ideas */
@@ -299,8 +355,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* ── topic 화면 : Figma B_Topic_list ──
    마스코트가 상단 중앙 → 헤드라인 → 카드 1×6 → 카드 밖 라벨 + 넓은 체크 pill */
 .topic-lio{flex-direction:column;gap:6px;text-align:center;max-width:900px}
-.topic-lio img{width:clamp(56px,6.4cqw,86px);height:clamp(56px,6.4cqw,86px)}
-.topic-line{font-size:clamp(16px,1.85cqw,23px);color:var(--b-text);line-height:1.4}
+/* px 하한을 크게 두면 저해상도에서 세로가 넘쳐 Continue 가 잘린다 → 하한을 낮춘다 */
+.topic-lio img{width:auto;height:clamp(34px,6.4cqw,86px);aspect-ratio:1}
+.topic-line{font-size:var(--fz-intro);color:var(--b-text);line-height:1.4}
 /* 카드가 고정 비율이므로 그리드가 남은 높이를 먹지 않게 flex:0 0 auto 로 되돌린다
    (base.css 는 flex:1 1 auto — 그대로 두면 위아래로 여백이 벌어진다) */
 .topic-grid{grid-template-columns:repeat(6,1fr);grid-template-rows:auto;
@@ -310,11 +367,14 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .topic-card{background:transparent;border-color:transparent;border-radius:20px;gap:6px;
   padding-bottom:0;height:auto}
 /* Figma 카드 이미지 213×290 = 0.735 비율 유지 (안 잡으면 그리드 높이만큼 늘어남) */
-.topic-card .tc-img{border-radius:20px;flex:0 0 auto;aspect-ratio:213/290}
-.topic-card .tc-name{font-size:clamp(10.5px,1.1cqw,13px);color:var(--b-text);
-  padding:2px 2px 0;line-height:1.25}
-.topic-card .tc-check{width:clamp(38px,4cqw,52px);height:clamp(22px,2.2cqw,28px);
-  border-radius:999px;background:#d3d8e2;font-size:13px;margin-bottom:2px}
+.topic-card .tc-img{
+  border-radius:20px;flex:0 0 auto;aspect-ratio:213/290;width:100%;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+}
+.topic-card .tc-name{font-size:var(--fz-cardname);color:var(--b-text);
+  padding:2px 2px 0;line-height:1.15;overflow:hidden}
+.topic-card .tc-check{width:clamp(28px,4cqw,52px);height:clamp(16px,2.2cqw,28px);
+  border-radius:999px;background:#d3d8e2;font-size:var(--fz-ui);margin-bottom:2px}
 .topic-card.on{border-color:transparent;box-shadow:none}
 .topic-card.on .tc-img{box-shadow:0 8px 20px rgba(30,81,214,.28)}
 .topic-card.on .tc-check{background:var(--primary);color:var(--accent)}
@@ -387,15 +447,15 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   display:flex;align-items:center;
   box-sizing:border-box;padding:0 clamp(46px,5.4cqw,66px) 0 clamp(18px,2.4cqw,30px);
   font-family:var(--font-head);font-weight:800;color:var(--primary);
-  font-size:clamp(15px,2cqw,26px);letter-spacing:-.2px;
+  font-size:var(--fz-cta);letter-spacing:-.2px;
   border-radius:999px;
   background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat;
   background-position:right clamp(8px,1cqw,13px) center;
   background-size:auto 62%;
   box-shadow:0 10px 26px rgba(6,26,84,.24)}
 
-/* ── bottom nav : Figma 는 더 넓은 pill, active 만 흰 반투명 배경 ── */
-.bottom-nav{background:linear-gradient(180deg,#3a6bea,#1E51D6);gap:10px;padding:8px 14px;border-radius:999px}
-.bottom-nav .bn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;color:#bdd0ff}
-.bottom-nav .bn.active{color:#fff;background:rgba(255,255,255,.18)}
+/* ── bottom nav : 요청에 따라 미사용 ──
+   engine.js 는 layout==='topic' (slide 8) 에서만 이 pill 네비를 렌더한다.
+   Figma B_Topic_list 에는 있지만 실제 동작이 없어 화면만 가리므로 B 에서 숨긴다.
+   (마크업 제거는 공용 engine.js 소관이라 CSS 로만 감춘다) */
+.bottom-nav{display:none}
