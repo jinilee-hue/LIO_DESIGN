@@ -16,6 +16,8 @@ A_TYPE/
 Anode_964.png
 node_*.png
 *.bak.png
+*_bak.png
+*_bak_*/
 Thumbs.db
 desktop.ini
 .DS_Store
