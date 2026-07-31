@@ -111,6 +111,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
     linear-gradient(var(--primary),var(--primary)) no-repeat top center;
   background-size:100% 100%, 100% 80%}
 .layout-skill .hd::after{--b-wave-img:url("../IMAGE/b/wave_header_navy.svg")}
+
 /* 텍스트로 흉내 낸 로고는 감추고 Figma 락업 이미지를 넣는다
    (마크업의 .hd-logo-img src 는 A 전용 에셋으로 하드코딩돼 있어 건드리지 않는다) */
 .hd-logo-text{display:none}
@@ -127,34 +128,60 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    본문 패널에 가리지 않고 그대로 보이게 한다 (FP/reading 계열에서 특히 문제였음). */
 .hd{z-index:30}
 
-/* ── 지문 / 활동 : Figma 는 분리된 2장의 라운드 화이트 카드 ──
-   .reading 자체에는 padding 을 주지 않는다 — .det-card / .word-popup 이
-   .reading 을 기준으로 absolute 배치되므로 좌표가 밀린다. 패널에 margin 만 준다. */
-/* Figma B_FP1 은 배경 전체가 순백(#FFFFFF)이다. 여백이 회끼면 흰 물결이 끊겨 보이므로
-   reading 계열(teach/memory/detective/explore/findflip 포함) 배경을 흰색으로 맞춘다. */
-.reading{background:#fff}
+/* ── FP 콘텐츠 영역 : Design A 와 동일하게 (요청) ────────────────────────
+   theme-a.css 345~375행의 reading 콘텐츠 규칙을 그대로 옮긴다.
+   A 의 FP 영역은 크림톤이 아니라 중립 스킴이라 B 와 충돌하지 않는다
+   — #E5EBF2 여백 + 흰 라운드 카드 + 네이비 QUESTION + 민트 Listen + 연블루 키워드 칩.
+   버튼 컬러값은 요청대로 B(블루) 유지. strategy 컨테이너도 A 는 크림/골드라
+   B 팔레트(연블루)로만 바꾸고 구조·간격·그림자는 A 와 동일하게 둔다.
+   ※ 콘텐츠 배경은 흰색이다(요청). A 는 여백이 #E5EBF2 지만 B 는 순백을 쓰고,
+     그래야 헤더의 흰 물결이 본문과 이음매 없이 이어진다.
+     카드는 #e6eaf1 보더 + 옅은 그림자로 구분된다. */
+.reading{background:#fff;padding:clamp(8px,1.5cqw,18px);gap:clamp(8px,1.5cqw,18px);
+  box-sizing:border-box;min-height:0;overflow:hidden}
 .reading .passage,
-.reading .activity{background:#fff;border:1px solid var(--b-card-line);border-radius:16px}
-.reading .passage{border-right:1px solid var(--b-card-line);margin:14px 7px 14px 14px}
-.reading .activity{margin:14px 14px 14px 7px}
+.reading .activity{background:#fff;border:1px solid #e6eaf1;border-radius:16px;
+  box-shadow:0 4px 14px rgba(30,40,70,.06);margin:0}
+.reading .passage{border-right:1px solid #e6eaf1}
 /* base.css 가 .passage / .ppara / .qtext / .choice 등에 'Inter' 를 하드코딩해 두었다.
    Figma B 는 전 화면 Nunito 이므로 지문·질문·선택지까지 Nunito 로 덮는다. */
 .reading .passage,
 .reading .activity,
 .ppara,.qtext,.choice,.msg .bubble,.listen-btn{font-family:var(--font-body)}
-.ppara{color:var(--b-text);line-height:1.68;font-size:calc(var(--fz-passage) * .94)}
+/* 지문 : A 와 동일한 크기·행간 (이전엔 0.94배 축소 + 1.68 이라 A 보다 작았다) */
+.ppara{color:#2b3550;font-size:var(--fz-passage);line-height:1.9}
+.passage .kw{color:#33415e;background:#e7edf7;font-weight:600;
+  border-radius:6px;padding:1px 6px;border-bottom:none}
+.listen-btn{background:#e6f4f1;border:none;color:#0f6d61;font-weight:500;
+  border-radius:999px;padding:3px 8px}
+.et-label{font-weight:800;letter-spacing:.5px;color:#1E2A4A;text-transform:uppercase;margin:2px 0}
 
-/* 키워드 : A는 파란 밑줄, Figma B는 연블루 배경 칩 */
-.passage .kw{background:var(--b-chip);color:var(--b-text);border-bottom:none;
-  border-radius:6px;padding:1px 6px;font-weight:600}
-/* Listen : A는 연블루, Figma B는 민트 pill */
-.listen-btn{background:var(--b-mint);border-color:var(--b-mint-line);color:var(--b-mint-ink);
-  border-radius:16px;padding:3px 10px;font-weight:700}
+/* 질문 / 선택지 : A 와 동일 */
+.qbox{background:#fff;border:2px solid #26314f;border-radius:14px}
+.qlabel{display:inline-block;background:#26314f;color:#fff;
+  padding:3px 9px;border-radius:6px;letter-spacing:.5px;margin-bottom:7px}
+.qtext{color:#26314f}
+.choice{background:#fff;border:1.5px solid #E0E4EC;border-radius:14px;color:#2b3550;font-weight:500}
+.choice:hover{background:#fff;border-color:#C5CDDA}
+.choice .ckey{border:none;color:#2b3550;background:#F0F2F5;
+  width:28px;height:28px;flex:0 0 28px;text-transform:uppercase}
+.choice .cbullet{background:#eef2fb;color:#5a6785;border:none;
+  width:28px;height:28px;flex:0 0 28px}
+
+/* strategy : 구조·간격·그림자는 A 와 동일, 색만 B 팔레트 */
+.reading .strategy{background:linear-gradient(180deg,#EDF3FF,#DCE6FB);border:1px solid #C9D8F7;
+  border-radius:14px;gap:0;box-shadow:0 4px 14px rgba(30,60,140,.14);margin-top:14px}
+.reading .strat-title{color:#1E2A4A;letter-spacing:.4px;margin-bottom:12px}
+.reading .strat-item{color:#3A4560;background:#fff;border:none;border-radius:12px;
+  padding:4px 10px;box-shadow:0 4px 14px rgba(30,40,70,.10)}
+.reading .strat-item + .strat-item{margin-top:8px}
+.reading .strat-item.on,.reading .strat-item.sel{border:none;
+  box-shadow:0 6px 18px rgba(30,40,70,.16),0 0 0 2px rgba(38,49,79,.14)}
 
 /* ── 말풍선 / 아바타 ── */
 .msg .avatar{border:2px solid #fff;box-shadow:0 3px 8px rgba(30,81,214,.18)}
 .msg .bubble{border-radius:18px}
-.msg.lio .bubble{background:#f2f5ff}
+.msg.lio .bubble{background:#eef2f8;border:none;color:#0a0a0a}
 
 /* ── 버튼 : 라운드, 굵게 ── */
 .btn{border-radius:26px;box-shadow:0 4px 0 rgba(0,0,0,.06)}
