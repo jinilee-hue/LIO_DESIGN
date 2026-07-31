@@ -147,7 +147,7 @@ const SCREENS = [
 
 /* 6b ─ A_Intro_cut3 (일러스트 + 순차 말풍선 + TTS) — Design A 전용 */
 {
-  id:'greeting_cut3', slide:6, section:'Greeting', title:'STEP2_Intro', cut:'cut3', layout:'center', aOnly:true,
+  id:'greeting_cut3', slide:6, section:'Greeting', title:'STEP2_Intro', cut:'cut3', layout:'center',
   message:[],
   introSeq:{
     image:'intro2.png',   // A_Intro_cut3 배경 (도서관 — cut2와 동일)

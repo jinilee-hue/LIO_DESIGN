@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1686" height="335" viewBox="-81 0 1686 335" fill="none" preserveAspectRatio="none">
+<!-- Figma bottom_wav 의 맨 앞 물결(Vector_6). 이 경로만 x = -81 ~ 1605 (폭 1686) 로
+     다른 겹(0~1577)과 폭이 달라, 1577 기준으로 타일링하면 이음매에 단차가 생겼다.
+     자기 폭에 맞춘 viewBox 를 써야 가로 반복이 매끄럽다.
+     → CSS 에서 background-size 를 106.912%(=1686/1577), 한 칸 이동량을 106.912cqw 로 둔다. -->
+<path d="M1605 187C1230.33 227 1113.25 147 762 187C410.75 227 293.667 147 -81 187V227H1605V187Z" fill="#2B5CE6"/>
+</svg>

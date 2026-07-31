@@ -43,8 +43,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .device{
   --fz-hd-title: clamp(15px,   1.62cqw, 24px);   /* 헤더 우측 화면명 */
   --fz-hd-meta:  clamp(11.5px, 1.15cqw, 16px);   /* STEP · 스킬명 */
-  --fz-intro:    clamp(17px,   2.05cqw, 30px);   /* 인트로 본문 · 토픽 헤드라인 */
-  --fz-cta:      clamp(15px,   1.85cqw, 26px);   /* Let's Go 등 CTA */
+  --fz-intro:    clamp(17px,   2.05cqw, 30px);   /* 토픽 헤드라인 */
+  /* 인트로 본문 : Figma B_Intro_cut2 실측 — 줄 피치 64/1400 = 4.571cqw,
+     line-height 1.45 기준 폰트 3.15cqw. 기존 2.05cqw 는 54% 작았다. */
+  --fz-introtxt: clamp(20px,   3.15cqw, 46px);   /* 인트로 본문 */
+  /* Figma cut1 Button_go 실측 : pill 106px / 캡높이 ≈23px → 폰트 ≈2.3cqw.
+     기존 1.85cqw 는 약 24% 작았다. */
+  --fz-cta:      clamp(17px,   2.30cqw, 34px);   /* Let's Go 등 CTA */
   --fz-headline: clamp(20px,   2.50cqw, 38px);   /* skill 헤드라인 */
   --fz-title-md: clamp(16px,   1.90cqw, 26px);   /* 게임 제목 · 단어 카드 앞면 */
   /* 카드 라벨은 카드 폭이 곧 상자라서 px 하한을 크게 두면 저해상도에서 넘친다.
@@ -237,19 +242,50 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    좌측 x=115/1577 ≈ 7.3% (cut2) · x=59/1577 ≈ 3.7% (Game/FP Intro) */
 .introseq::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    url("../IMAGE/b/logo_lockup.png") no-repeat 22px 18px / auto clamp(26px,3cqw,36px),
-    var(--b-intro-lio, none) no-repeat 7% bottom / auto 68%,
-    url("../IMAGE/b/bottom_wave.svg") no-repeat left bottom / 100% 31.25%,
+    url("../IMAGE/b/wave_front.svg") repeat-x left bottom / 106.912% 31.25%,
+    url("../IMAGE/b/wave_mid.svg")   repeat-x left bottom / 100% 31.25%,
+    url("../IMAGE/b/wave_back.svg")  repeat-x left bottom / 100% 31.25%,
+    /* 요청 : slide 6 의 lio 를 slide 5(splash)와 같은 크기·위치로 통일 */
+    var(--b-intro-lio, none) no-repeat left 9.1% bottom 44% / auto 64%,
     #1C4BD6}
 .scr-greeting  .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_cut2.png")}
+/* cut3 는 Figma B 에 별도 프레임이 없다. 같은 배경·마스코트로 이어지며
+   남은 두 문장만 바뀌는 구성이라 cut2 에셋을 그대로 쓴다. */
+.scr-greeting_cut3 .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_cut2.png")}
 .scr-plan      .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_plan.png")}
 .scr-fp2_intro .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_fp2.png")}
 .introseq .introseq-scrim{display:none}
+/* 좌상단 로고를 배경 스택에서 떼어 별도 레이어로 둔다 (::before 는 배경·물결·마스코트).
+   slide 5 는 대형 로고가 우측 중앙에 있고, slide 6 에서 좌상단으로 축소·이동한다.
+   두 화면이 한 흐름으로 읽히도록 slide 6 진입 시 slide 5 의 좌표·크기에서 시작한다.
+   ※ 실제로 두 슬라이드를 한 페이지로 합치는 것은 engine.js/flow-data(공용) 소관이라
+     여기서는 진입 애니메이션으로 연속감만 만든다. */
+.introseq::after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat left 2% top 2% / auto 5.2%}
+.scr-greeting .introseq::after{animation:bLogoDock .9s cubic-bezier(.35,.05,.2,1) both}
+@keyframes bLogoDock{
+  from{background-position:left 79.5% top 42.1%; background-size:auto 25.4%}
+  to  {background-position:left 2% top 2%;       background-size:auto 5.2%}
+}
 /* Figma : 말풍선 없이 흰 본문 텍스트. Maya=옐로, 스킬명=시안
-   본문 블록은 마스코트 오른쪽 (Figma x=653/1577≈41%, y=240/1072≈22%) */
-.introseq .ib{max-width:52%}
-.introseq .ib-left,
-.introseq .ib-right{left:41%;right:auto;top:22%}
+   본문 블록은 마스코트 오른쪽 (Figma x=653/1577≈41%)
+   ⚠ engine 의 layoutIntroSeq 는 말풍선을 하나씩 띄우고 지운다(A 인트로 시퀀스).
+     그래서 B 는 대사가 한 줄씩 깜빡이다 사라져 화면이 비어 보였다.
+     Figma cut2 / Game Intro / FP Intro 는 여러 줄이 한 번에 보이므로
+     .ib 를 겹치지 않게 세로로 쌓고 항상 보이게 한다.
+     (자동 전환 타이머는 engine.js 소관이라 그대로 남는다) */
+/* 문장은 위에서부터 아래로 쌓인다. center 로 두면 문장이 추가될 때마다 이미 나온
+   문장이 위로 밀려 올라가 읽는 흐름이 끊긴다 → flex-start 로 첫 줄 위치를 고정. */
+.introseq .ib-layer{left:46.9%;right:8.6%;top:32.9%;bottom:12%;
+  display:flex;flex-direction:column;justify-content:flex-start;gap:.45em}
+.introseq .ib{position:static;left:auto;right:auto;top:auto;bottom:auto;
+  max-width:100%}
+/* engine 은 .show 를 붙였다 떼고 .done 을 붙인다 → 지나간 문장이 사라졌다.
+   문장은 TTS 속도에 맞춰 하나씩 등장하고 그대로 남아야 하므로 두 상태 모두 노출한다. */
+.introseq .ib.show,
+.introseq .ib.done{opacity:1;transform:none}
+/* Let's Go 버튼은 시퀀스가 끝나야 inline style 로 표시된다 → Figma 처럼 항상 보이게 */
+.introseq .introseq-next{display:inline-flex!important}
 .introseq .ib-bubble{background:transparent;box-shadow:none;color:#fff;padding:0}
 .introseq .ib-bubble::after{display:none}
 .introseq .ib-bubble .nm{color:var(--accent);font-weight:800}
@@ -261,11 +297,15 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .introseq .ib-bubble,
 .quickexit .ib-bubble{
   font-family:var(--font-body);
-  font-size:var(--fz-intro);font-weight:600;line-height:1.45;
+  font-size:var(--fz-introtxt);font-weight:600;line-height:1.45;
 }
 /* Let's Go! : Figma 는 흰 pill + 파란 셰브론 원, 위치 x60.1~81.6% / y67.8~78.8%.
    마크업 문구가 "Let's go! ▶"(flow-data, 공용)라 font-size:0 으로 감추고
    ::before 로 Figma 라벨을 그린다. 접근성 이름은 원문 그대로 남는다. */
+/* plan / fp2_intro 는 flow-data 가 ctaImg 를 지정해 A 의 초록 Figma PNG(imgbtn)로
+   렌더된다. B 는 Figma 대로 흰 pill 이어야 하므로 이미지를 감추고 같은 pill 로 통일한다. */
+.introseq .introseq-next img{display:none}
+.introseq .introseq-next,
 .introseq .introseq-next.btn,
 .introseq .introseq-next.btn.primary{
   position:absolute;left:60.1%;bottom:21.2%;transform:none;
@@ -273,9 +313,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   box-sizing:border-box;display:inline-flex;align-items:center;
   border-radius:999px;font-size:0;color:var(--primary);
   background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
-  background-size:auto 62%;
+  background-size:auto 48%;
   box-shadow:0 10px 26px rgba(6,26,84,.24)}
-.introseq .introseq-next.btn::before{content:"Let's Go!";
+.introseq .introseq-next::before{content:"Let's Go!";
   font-family:var(--font-head);font-weight:800;font-size:var(--fz-cta);letter-spacing:-.2px}
 .introseq .ib-spk{font-size:var(--fz-ui)}
 .introseq .introseq-replay{bottom:5%;right:3%;font-size:var(--fz-ui-sm)}
@@ -493,8 +533,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .splash::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
     url("../IMAGE/b/logo_lockup.png") no-repeat left 79.5% top 42.1% / auto 25.4%,
-    url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 9.1% bottom 62.8% / auto 64%,
-    url("../IMAGE/b/bottom_wave.svg") no-repeat left bottom / 100% 31.25%}
+    url("../IMAGE/b/wave_front.svg") repeat-x left bottom / 106.912% 31.25%,
+    url("../IMAGE/b/wave_mid.svg")   repeat-x left bottom / 100% 31.25%,
+    url("../IMAGE/b/wave_back.svg")  repeat-x left bottom / 100% 31.25%,
+    url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 9.1% bottom 44% / auto 64%}
 /* Let's Go! pill : 장식용(탭 타깃은 .splash 전체) — 라벨을 Figma 문구로 표시 */
 .splash::after{content:"Let's Go!";position:absolute;z-index:2;pointer-events:none;
   left:60.1%;top:67.8%;width:21.5%;height:11%;
@@ -505,7 +547,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   border-radius:999px;
   background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat;
   background-position:right clamp(8px,1cqw,13px) center;
-  background-size:auto 62%;
+  background-size:auto 48%;
   box-shadow:0 10px 26px rgba(6,26,84,.24)}
 
 /* ── bottom nav : 요청에 따라 미사용 ──
@@ -513,3 +555,52 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    Figma B_Topic_list 에는 있지만 실제 동작이 없어 화면만 가리므로 B 에서 숨긴다.
    (마크업 제거는 공용 engine.js 소관이라 CSS 로만 감춘다) */
 .bottom-nav{display:none}
+
+/* ── 하단 물결 파도 인터랙션 ───────────────────────────────────────────
+   bottom_wav 를 앞·중간·뒤 3겹(wave_front/mid/back)으로 분리해 각각 다른 방향·
+   속도로 흘린다. 배경 레이어는 하나의 animation 으로만 움직일 수 있으므로
+   background-position 목록 전체를 키프레임에 적어 두고, 물결 레이어만 값을 바꾼다.
+   ⚠ 타일 폭을 컨테이너 폭(background-size:100%)으로 두면 위치 지정 영역이
+     (컨테이너 - 이미지) = 0 이 되어 퍼센트 오프셋이 전부 0 으로 계산돼 움직이지 않는다.
+     → 길이 단위로 이동시킨다. 1cqw = #stage 폭의 1% 이므로 100cqw 가 정확히 타일 한 칸.
+   앞 +106.912cqw(자기 타일 1칸) / 중간 -200cqw / 뒤 +300cqw → 속도 1 : 2 : 3, 방향 교차. */
+.splash::before{animation:bWaveSplash 26s linear infinite}
+@keyframes bWaveSplash{
+  from{background-position:
+    left 79.5% top 42.1%,          /* 로고 (고정) */
+    0 bottom, 0 bottom, 0 bottom,
+    left 9.1% bottom 44%}          /* 마스코트 (고정) */
+  to  {background-position:
+    left 79.5% top 42.1%,
+    106.912cqw bottom, -200cqw bottom, 300cqw bottom,
+    left 9.1% bottom 44%}
+}
+.introseq::before{animation:bWaveIntro 26s linear infinite}
+@keyframes bWaveIntro{
+  from{background-position:
+    0 bottom, 0 bottom, 0 bottom,
+    left 9.1% bottom 44%}
+  to  {background-position:
+    106.912cqw bottom, -200cqw bottom, 300cqw bottom,
+    left 9.1% bottom 44%}
+}
+/* 모션 최소화를 원하는 사용자는 정지 */
+@media (prefers-reduced-motion:reduce){
+  .splash::before,.introseq::before{animation:none}
+}
+
+/* ── Let's Go 버튼 hover 인터랙션 ────────────────────────────────────────
+   파란 셰브론 원이 좌우로 부드럽게 왕복한다. 셰브론은 배경 이미지 레이어이므로
+   background-position 을 키프레임으로 흔든다. splash 의 pill 은 ::after 장식이라
+   탭 타깃인 .splash 의 hover 로 구동한다. */
+@keyframes bChevNudge{
+  0%,100%{background-position:right clamp(8px,1cqw,13px) center}
+  50%    {background-position:right clamp(0px,0.1cqw,3px)  center}
+}
+.introseq .introseq-next:hover,
+.splash:hover::after{animation:bChevNudge .9s ease-in-out infinite;
+  box-shadow:0 14px 32px rgba(6,26,84,.32)}
+.introseq .introseq-next{transition:box-shadow .18s}
+@media (prefers-reduced-motion:reduce){
+  .introseq .introseq-next:hover,.splash:hover::after{animation:none}
+}
