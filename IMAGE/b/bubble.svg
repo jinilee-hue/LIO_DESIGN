@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 97 94" fill="none">
+<!-- Figma #component > ic_question / ic_go / icon_hi (250:1834 / 250:1843 / 250:1837) 의 말풍선.
+     세 컴포넌트가 같은 말풍선 래스터를 공유하고 글자만 다른 구조인데, rawImage 에는
+     "HI!" 가 박혀 있어 물음표에 재사용할 수 없었다 → 실측 지오메트리로 벡터 재현.
+     Ellipse 1 = 71×71 → r 35.5 / 프레임 97×94 / 크림 #FEEBCD / 글자 #A35910.
+     원 중심 (48.5, 40) : 아래 9px 는 꼬리 영역. 글자는 CSS 로 얹으므로
+     .think-bubble 의 정렬 기준(중앙)과 맞도록 원을 프레임 중앙에서 살짝 위로 둔다. -->
+<defs>
+  <filter id="bshadow" x="-30%" y="-30%" width="170%" height="170%">
+    <feDropShadow dx="0" dy="2.5" stdDeviation="2.6" flood-color="#0b1c46" flood-opacity="0.30"/>
+  </filter>
+</defs>
+<g filter="url(#bshadow)">
+  <path d="M32 62C24 75 15 83 7 87C19 85 31 79 41 72Z" fill="#FEEBCD"/>
+  <circle cx="48.5" cy="40" r="35.5" fill="#FEEBCD"/>
+</g>
+</svg>

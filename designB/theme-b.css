@@ -721,14 +721,17 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    옮겼으므로 화면 기준으로 다시 잡는다. 요청대로 더 위·오른쪽으로. */
 /* slide 6 의 GO 말풍선과 같은 크기로 (자체 렌더 실측 지름 6.81cqw) 사자 오른쪽에 띄운다.
    LIO 는 left 27% + 폭 약 25.5% → 오른쪽 끝 ≈52.5%. 그 바로 밖에 배치. */
-/* ⚠ 말풍선 에셋을 Figma 에서 받아 봤지만(ic_go > icon_hi 209:437, 97×94 투명 PNG)
-   래스터에 "HI!" 글자가 이미 박혀 있어 "?" 를 얹으면 두 글자가 겹친다.
-   Figma B_Skill_list 의 lio 에는 물음표 말풍선 노드가 없어 재사용할 도형이 없다.
-   → 크기·위치만 Figma GO 말풍선 기준(6.15cqw)으로 맞추고 도형은 CSS 원으로 그린다.
-   물음표 전용 말풍선을 Figma 에 추가해 주시면 에셋으로 교체하겠다. */
+/* 말풍선 : Figma #component 의 ic_question / ic_go / icon_hi (250:1834/1843/1837) 기준.
+   세 컴포넌트가 같은 말풍선 래스터를 공유하고 글자만 다른데, rawImage 에 "HI!" 가
+   박혀 있어 그대로는 물음표에 못 쓴다 → 실측 지오메트리(원 71×71 = r35.5, 프레임 97×94,
+   크림 #FEEBCD, 글자 #A35910)로 IMAGE/b/bubble.svg 에 동일 형태를 벡터로 재현했다.
+   크기는 Figma 기준 97/1577 = 6.15cqw. */
 .skillscreen:not(.selected) .think-bubble{position:absolute;top:23%;left:51%;right:auto;
-  width:clamp(44px,6.15cqw,92px);height:clamp(44px,6.15cqw,92px);
-  border-radius:50%;background:#fff;
-  box-shadow:0 6px 18px rgba(2,25,92,.35);
-  font-size:var(--fz-headline);color:#e2673b;z-index:6;
-  display:flex;align-items:center;justify-content:center}
+  width:clamp(44px,6.15cqw,92px);height:auto;aspect-ratio:97/94;
+  background:url("../IMAGE/b/bubble.svg") no-repeat center / 100% 100%;
+  border-radius:0;box-shadow:none;
+  font-size:var(--fz-headline);font-weight:800;color:#A35910;z-index:6;
+  /* ⚠ 절대배치 요소의 퍼센트 padding 은 자기 크기가 아니라 컨테이너 폭(990px) 기준으로
+     계산된다 → 15% 가 148.5px 이 되어 박스가 194px 로 부풀고 글자가 밖으로 밀렸다.
+     원 중심이 프레임 세로 40/94 지점이므로 em 단위로 올린다. */
+  display:flex;align-items:center;justify-content:center;padding-bottom:.30em}
