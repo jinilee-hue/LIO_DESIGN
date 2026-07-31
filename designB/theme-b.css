@@ -497,31 +497,37 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    가지고 있고 AppBar 노드가 없음). 헤더를 숨기고 네이비 배경을 화면 위까지 이어지게 한 뒤
    좌상단에 BI 로고만 올린다. Figma 좌표 : BI (36,20) 78×55.83 → 높이 55.83/1577≈3.54cqw */
 .layout-skill .hd{display:none !important}
-/* ⚠ 카드 그리드(.skillscreen)를 position:absolute 로 두면 부모 .screen 은
-   in-flow 자식이 없어 높이 0~콘텐츠로 붕괴한다. 그 상태에서 inset:0 은
-   “짧은 박스”만 채워 하단이 디바이스 패널색(연회색)으로 비고, 파도도
-   그 짧은 박스 밑에서 직선으로 끊긴다.
-   → .screen 자체를 .device(aspect-ratio 로 높이 확정)에 absolute 풀블리드. */
-.layout-skill.device{background:#02195C}
+/* skillscreen 높이를 캔버스(=파도) 끝까지 강제.
+   · device 높이 ≈ 폭×1072/1577 ≈ 68cqw  → min-height:68cqw 로 % 붕괴를 우회
+   · base 의 padding:26px 30px 가 하단 26px 여백을 만들므로 패딩 재정의
+   · 파도는 skillscreen 이 아니라 .screen 하단에 고정(높이 붕괴와 무관) */
+.layout-skill.device{background:#02195C;position:relative}
 .layout-skill .screen{
   position:absolute !important;inset:0 !important;
   width:100% !important;height:100% !important;
   flex:none !important;display:block !important;
-  overflow:hidden;z-index:1}
+  overflow:hidden;z-index:1;background:#02195C}
 .layout-skill .skillscreen{
-  position:absolute;inset:0;width:100%;height:100%;
-  box-sizing:border-box;margin:0;gap:0;background:#02195C}
-/* 로고는 아래 ::after 에 물결과 함께 얹고, ::before 는 파장 전용으로 쓴다
-   (배경 레이어는 개별 opacity 를 줄 수 없어, 투명도까지 애니메이션하려면
-    전용 요소가 필요하다). */
-/* 로고와 콘텐츠가 겹치지 않게 상단 여백 확보 (헤더가 없어진 만큼 높이는 오히려 넉넉해진다) */
+  position:absolute !important;left:0;top:0;right:0;bottom:0;
+  width:100% !important;
+  height:100% !important;min-height:68cqw !important;
+  box-sizing:border-box !important;margin:0 !important;gap:0 !important;
+  background:#02195C !important;
+  /* base padding 제거 — 하단 26px 때문에 파도 아래 회색이 보이던 주원인 */
+  padding:clamp(46px,5.6cqw,88px) 0 0 !important}
+/* 로고: skillscreen / 파도: screen 바닥 고정(skillscreen 높이 이슈와 분리) */
 .skillscreen{padding-top:clamp(46px,5.6cqw,88px)}
-/* 파도: 하단 곡선 + 아래는 같은 톤으로 디바이스 끝까지 채움(직선 여백 방지) */
 .skillscreen::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
   background:
     url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px),
     url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 8%;
   background-size:auto clamp(26px,3.54cqw,56px), 100% 8%}
+.layout-skill .skillscreen::after{
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px);
+  background-size:auto clamp(26px,3.54cqw,56px)}
+.layout-skill .screen::after{content:'';position:absolute;left:0;right:0;bottom:0;
+  height:8.5%;z-index:4;pointer-events:none;
+  background:#02195C url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 100%}
 /* 헤드라인 : Figma 실측 (542,424) 373×104 → x 34.4~58.0% · y 39.6~49.3%.
    마스코트 오른쪽·카드 영역에 겹쳐 놓이는 구성이라 절대 배치하고 위로 올린다. */
 .skill-headline{color:#fff;font-family:var(--font-head);font-weight:800;font-size:var(--fz-headline)}
