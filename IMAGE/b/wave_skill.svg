@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1577" height="51.547" viewBox="0 0 1577 51.547" fill="none" preserveAspectRatio="none">
-<!-- Figma Platform_B / wav — Skill_list · Skill_selected 최하단 물결 fill #2B5CE6 -->
-<path d="M0 11.547C350.444 51.547 459.958 -28.453 788.5 11.547C1117.04 51.547 1226.56 -28.453 1577 11.547V51.547H0V11.547Z" fill="#2B5CE6"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1577" height="80" viewBox="0 0 1577 80" fill="none" preserveAspectRatio="none">
+<!-- Figma Platform_B / wav — Skill 하단 물결.
+     원본 경로 꼭짓점이 y=-28.453 으로 viewBox(0~51) 밖이라 피크가 직선으로 잘렸다.
+     y+=28.453 만큼 내려 곡선 전체가 viewBox 안에 들어오게 보정. fill #2B5CE6 -->
+<path d="M0 40C350.444 80 459.958 0 788.5 40C1117.04 80 1226.56 0 1577 40V80H0V40Z" fill="#2B5CE6"/>
 </svg>
