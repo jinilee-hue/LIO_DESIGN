@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1577" height="11.547" viewBox="0 0 1577 11.547" fill="none" preserveAspectRatio="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="1577" height="24" viewBox="0 0 1577 24" fill="none" preserveAspectRatio="none">
 <!-- Figma Platform_B / wav > Icon > Vector (114:1149) 경로 원본.
-     원본 viewBox 는 0 0 1577 51.547 이고 파형 기준선이 y=11.547 이다.
-     기준선 아래(11.547~51.547)는 흰 본문 영역과 겹쳐 보이지 않으므로,
-     파란 헤더를 파고드는 기준선 위쪽 crest 만 남기도록 viewBox 를 잘랐다.
+     원본 viewBox 는 0 0 1577 51.547, 파형 기준선이 y=11.547 이다.
+     곡선의 실제 진폭은 y≈0(crest) ~ y≈23.1(최심부) — 예전에 11.547 로 자르는 바람에
+     아래쪽 절반이 날아가 물결이 절반 깊이로 보였다. 24 까지 남겨 전체 진폭을 살린다.
+     기준선(11.547/24 = 48.1%)을 헤더 하단에 맞춰 배치한다.
      Figma 원본 fill 은 #2B5CE6(네이비 배경 위) — 헤더에서는 흰 본문으로 넘어가므로 흰색. -->
 <path d="M0 11.547C350.444 51.547 459.958 -28.453 788.5 11.547C1117.04 51.547 1226.56 -28.453 1577 11.547V51.547H0V11.547Z" fill="#ffffff"/>
 </svg>

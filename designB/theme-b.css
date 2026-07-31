@@ -38,10 +38,11 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
      기준으로 언믹스해 투명 처리 (흰 Lio + 노란 별/호 + SKILLCORE 원본 그대로)
    · IMAGE/b/wave_header.svg  ← Figma 114:1149 "wav > Icon > Vector" 경로 원본 */
 .hd{background:var(--primary);overflow:visible}
-/* 잘라낸 crest(1577×11.547)를 헤더 하단에 딱 맞춘다. 폭이 변해도 Figma 비율 유지 */
-.hd::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:auto;
-  aspect-ratio:1577/11.547;z-index:6;pointer-events:none;
-  background:url("../IMAGE/b/wave_header.svg") no-repeat center bottom;
+/* 물결(1577×24, 진폭 전체)의 기준선 y=11.547 → 48.1% 지점을 헤더 하단에 맞춘다.
+   폭이 변해도 aspect-ratio 로 Figma 비율이 유지된다. */
+.hd::after{content:'';position:absolute;left:0;right:0;top:100%;height:auto;
+  aspect-ratio:1577/24;transform:translateY(-48.1%);z-index:6;pointer-events:none;
+  background:url("../IMAGE/b/wave_header.svg") no-repeat center center;
   background-size:100% 100%}
 /* 텍스트로 흉내 낸 로고는 감추고 Figma 락업 이미지를 넣는다
    (마크업의 .hd-logo-img src 는 A 전용 에셋으로 하드코딩돼 있어 건드리지 않는다) */
@@ -55,9 +56,16 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .hd-skill{color:#b9c8f4}
 .hd-title{color:var(--accent);font-size:20px}
 
+/* 헤더를 최상위로 : base 의 z-index:5 를 올려서 하단 물결이 어떤 화면에서도
+   본문 패널에 가리지 않고 그대로 보이게 한다 (FP/reading 계열에서 특히 문제였음). */
+.hd{z-index:30}
+
 /* ── 지문 / 활동 : Figma 는 분리된 2장의 라운드 화이트 카드 ──
    .reading 자체에는 padding 을 주지 않는다 — .det-card / .word-popup 이
    .reading 을 기준으로 absolute 배치되므로 좌표가 밀린다. 패널에 margin 만 준다. */
+/* Figma B_FP1 은 배경 전체가 순백(#FFFFFF)이다. 여백이 회끼면 흰 물결이 끊겨 보이므로
+   reading 계열(teach/memory/detective/explore/findflip 포함) 배경을 흰색으로 맞춘다. */
+.reading{background:#fff}
 .reading .passage,
 .reading .activity{background:#fff;border:1px solid var(--b-card-line);border-radius:16px}
 .reading .passage{border-right:1px solid var(--b-card-line);margin:14px 7px 14px 14px}
