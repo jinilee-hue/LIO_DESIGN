@@ -38,12 +38,20 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
      기준으로 언믹스해 투명 처리 (흰 Lio + 노란 별/호 + SKILLCORE 원본 그대로)
    · IMAGE/b/wave_header.svg  ← Figma 114:1149 "wav > Icon > Vector" 경로 원본 */
 .hd{background:var(--primary);overflow:visible}
-/* 물결(1577×24, 진폭 전체)의 기준선 y=11.547 → 48.1% 지점을 헤더 하단에 맞춘다.
-   폭이 변해도 aspect-ratio 로 Figma 비율이 유지된다. */
+/* 물결 밴드 : 헤더 하단에 걸치는 띠 하나로 처리한다.
+   ⚠ 파형은 헤더 밑선을 기준으로 위(crest)·아래(최심부) 양쪽으로 출렁인다.
+     그래서 "헤더 아래에 파란 띠"만 깔거나 "헤더 안에 흰 물결"만 얹으면
+     반대쪽 반이 비어 물결이 중간에 잘려 보인다.
+     → 띠 전체에 헤더 블루를 깔고(아래 레이어), 그 위에 곡선 아래쪽이 본문색으로
+       채워진 SVG 를 얹어(위 레이어) 경계가 통째로 파형이 되게 만든다.
+   본문색은 화면마다 달라 --b-wave-img 로 교체한다 (기본 흰색 / skill 은 네이비).
+   기준선 y=11.547 → 띠 높이의 48.1% 지점이 헤더 밑선에 오도록 정렬. */
 .hd::after{content:'';position:absolute;left:0;right:0;top:100%;height:auto;
   aspect-ratio:1577/24;transform:translateY(-48.1%);z-index:6;pointer-events:none;
-  background:url("../IMAGE/b/wave_header.svg") no-repeat center center;
-  background-size:100% 100%}
+  background:var(--b-wave-img,url("../IMAGE/b/wave_header.svg")) no-repeat center center,
+             var(--primary);
+  background-size:100% 100%, auto}
+.layout-skill .hd::after{--b-wave-img:url("../IMAGE/b/wave_header_navy.svg")}
 /* 텍스트로 흉내 낸 로고는 감추고 Figma 락업 이미지를 넣는다
    (마크업의 .hd-logo-img src 는 A 전용 에셋으로 하드코딩돼 있어 건드리지 않는다) */
 .hd-logo-text{display:none}
