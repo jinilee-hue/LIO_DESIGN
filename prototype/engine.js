@@ -769,7 +769,10 @@
 
     // B 스킬 선택 : 카드를 직접 탭하면 Figma B_Skill_selected 상태로 전환
     // (A 는 룰렛으로 자동 진행하므로 이 분기에 들어오지 않는다 — THEME 가드로 완전 분리)
-    if (THEME === 'B' && scr.layout === 'skill' && !scr.skillSelected && !scr.skillPick) bindSkillPickB();
+    if (THEME === 'B' && scr.layout === 'skill' && !scr.skillSelected && !scr.skillPick) {
+      buildSkillLanesB();   // 컬럼 단위 세로 무한 스크롤
+      bindSkillPickB();
+    }
 
     // Word Check : 우측 chip은 처음엔 숨기고, 왼쪽 단어가 날아가 박힐 때 나타남
     if (scr.focusWord) {
@@ -1662,6 +1665,42 @@
   }
 
   // 스킬 찾음 : 화면 전환(페이드) 없이 제자리에서 리스트를 흐리게 + 찾은 스킬·LIO·후광 등장
+  /* Design B 전용 : 스킬 그리드를 "줄 트랙" 4개로 재구성해 줄마다 세로 무한 스크롤.
+     왕복(alternate)이 아니라 실제로 계속 흐르게 하려면 줄 내용이 세로로 복제돼 있어야
+     한다. 각 트랙(.b-lane)은 높이가 한 줄이고 overflow:hidden 이며, 안에 같은 줄 세트를
+     두 벌 쌓아(.b-lane-set ×2) translateY 를 한 세트 높이만큼 돌린다 → 이음매 없음.
+     A 는 호출되지 않는다(THEME 가드). */
+  /* Design B 전용 : 스킬 그리드를 세로 컬럼 트랙 4개로 재구성해 컬럼마다 무한 스크롤.
+     각 트랙(.b-lane)은 화면(그리드) 높이를 꽉 쓰고 overflow:hidden 이며,
+     안에 그 컬럼의 카드 세트를 여러 벌 이어 붙여(.b-lane-set) 한 세트 높이만큼
+     translateY 를 돌린다 → 카드는 온전한 모양을 유지하며 위/아래로 계속 흘러간다.
+     세트를 laneH 보다 길게 채워야 이음매가 안 보이므로 필요한 만큼 복제한다.
+     컬럼마다 이동 거리(--set)가 달라 keyframes 에서 var() 로 받는다.
+     홀수 컬럼은 위로, 짝수 컬럼은 아래로 (교차). A 는 호출되지 않는다(THEME 가드). */
+  const B_SKILL_COLS = [[0, 4, 8], [6], [1, 3], [2, 5, 7, 9]];   // 컬럼별 data-skill (Figma 배치)
+  const B_CARD_PITCH = 20.2;                                     // 카드 18cqw + 간격 2.2cqw
+  function buildSkillLanesB() {
+    const stage = document.getElementById('stage');
+    const grid = stage.querySelector('.skillscreen .skill-grid');
+    if (!grid || grid.classList.contains('b-laned')) return;
+    const byIdx = {};
+    grid.querySelectorAll('.skill-card').forEach(c => { byIdx[c.dataset.skill] = c.outerHTML; });
+    // 컬럼에는 원래 카드만 넣는다(패딩용 추가 카드 없음). 다만 끊김 없는 루프에는
+    // 이어붙일 한 벌이 필요하므로 같은 세트를 정확히 2벌만 쌓고, 이동 거리를 한 세트
+    // 높이로 두어 되돌아오는 순간 두 번째 벌이 첫 벌 자리를 정확히 메우게 한다.
+    const lanes = B_SKILL_COLS.map((col, ci) => {
+      const setH = col.length * B_CARD_PITCH;
+      const dir  = (ci % 2 === 0) ? 'up' : 'down';   // 1·3열 위로 / 2·4열 아래로
+      const set = `<div class="b-lane-set">` +
+        col.map(i => `<div class="b-cell">${byIdx[i] || ''}</div>`).join('') + `</div>`;
+      return `<div class="b-lane b-lane-${dir}">
+                <div class="b-lane-inner" style="--set:${setH}cqw">${set}${set}</div>
+              </div>`;
+    }).join('');
+    grid.classList.add('b-laned');
+    grid.innerHTML = lanes;
+  }
+
   /* Design B 전용 : 스킬 카드를 탭하면 Figma B_Skill_selected 구성으로 전환한다.
      - 뒤 카드 그리드는 흐려지고(.dim) 헤드라인이 "I found your skills!" 로 바뀐다
      - 선택한 스킬의 대형 카드 + 마스코트 오버레이가 올라온다

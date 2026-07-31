@@ -621,34 +621,55 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   .introseq .introseq-next:hover,.splash:hover::after{animation:none}
 }
 
-/* ── skill 카드 : 줄별 교차 상하 루프 ──────────────────────────────────
-   1행 위 / 2행 아래 / 3행 위 / 4행 아래 로 번갈아 떠오르게 해서
-   카드가 별자리처럼 천천히 흐르는 느낌을 준다. 같은 행은 위상을 맞춘다.
-   ※ base 의 .skill-card.today{transform:scale(1.06)} 는 animation 이 transform 을
-     잡으면 무효가 되므로 today 전용 키프레임에 scale 을 함께 넣는다. */
-/* 같은 줄의 카드는 delay 없이 같은 키프레임을 쓰므로 줄 전체가 한 덩어리로 움직인다.
-   진폭 1.0cqw · 7s ease-in-out alternate → 줄이 천천히 위/아래로 흐르는 스크롤 느낌.
-   인접 줄이 서로 반대로 가므로 줄 간격(2.2cqw)을 진폭×2(2.0cqw)보다 크게 잡아 겹침을 막았다.
-   ※ 한 방향으로 끝없이 스크롤하려면 줄 내용이 세로로 복제돼 있어야 하는데
-     마크업은 공용 engine.js 소관이라, 여기서는 왕복(alternate) 루프로 구현했다. */
-@keyframes bCardUp   {from{transform:translateY(1cqw)}   to{transform:translateY(-1cqw)}}
-@keyframes bCardDown {from{transform:translateY(-1cqw)}  to{transform:translateY(1cqw)}}
-@keyframes bCardUpToday{from{transform:scale(1.06) translateY(1cqw)}
-                        to  {transform:scale(1.06) translateY(-1cqw)}}
-.skill-card{animation:bCardUp 7s ease-in-out infinite alternate}
-/* 2행 */
-.skill-card[data-skill="3"],
-.skill-card[data-skill="5"]{animation-name:bCardDown}
-/* 3행 */
-.skill-card[data-skill="4"],
-.skill-card[data-skill="6"],
-.skill-card[data-skill="7"]{animation-name:bCardUp}
-/* 4행 */
-.skill-card[data-skill="8"],
-.skill-card[data-skill="9"]{animation-name:bCardDown}
-/* 오늘 스킬(Main Ideas) 은 확대 상태를 유지하며 함께 움직인다 */
-.skill-card.today{animation-name:bCardUpToday}
-@media (prefers-reduced-motion:reduce){ .skill-card{animation:none} }
+/* ── skill 카드 : 세로 컬럼 무한 스크롤 ────────────────────────────────
+   engine.js(B 전용 buildSkillLanesB)가 그리드를 세로 컬럼 트랙 4개로 재구성한다.
+   각 트랙은 그리드 높이를 꽉 쓰고 overflow:hidden, 안에 그 컬럼의 카드 세트를
+   여러 벌 이어 붙여 한 세트 높이(--set)만큼 돌린다 → 카드는 온전한 모양을 유지하며
+   위/아래로 계속 흘러간다. 홀수 컬럼은 위로, 짝수 컬럼은 아래로 교차. */
+/* .skillscreen → .skill-grid 의 높이 사슬이 확정되지 않아 height:100% 가 0 으로
+   계산된다(앞서 행 높이에서도 같은 문제). 디바이스 비율이 고정이므로 cqw 로 못박는다.
+   화면 높이 ≈ 68cqw, 상단 로고 여백을 감안해 트랙은 62cqw. */
+/* ⚠ .skill-grid 에 justify-items:center 가 걸려 있어 트랙이 내용 크기로 줄어드는데,
+   내부(.b-lane-inner)가 absolute 라 내재 폭이 없어 트랙 폭이 0 이 됐다.
+   → b-laned 에서는 stretch 로 되돌리고 트랙 폭을 100% 로 명시한다. */
+/* 트랙은 화면 높이를 꽉 쓴다. 디바이스 높이 = 100cqw/1.4711 ≈ 68cqw.
+   .skillscreen 의 상·하 padding 은 좌측(마스코트) 열용이라 그리드에서는 음수 마진으로
+   상쇄해 위아래 여백 없이 트랙이 끝까지 닿게 한다. */
+.skill-grid.b-laned{display:grid;grid-template-columns:repeat(4,1fr);
+  grid-template-rows:68cqw;gap:0 1.2cqw;align-content:start;
+  justify-items:stretch;align-items:stretch;
+  /* base 의 .skill-grid{padding:6px} 가 트랙을 6px 아래로 밀어 상단 여백을 만들었다 */
+  padding:0;
+  margin-top:calc(-1 * clamp(46px,5.6cqw,88px));
+  margin-bottom:calc(-1 * clamp(8px,1.2cqw,12px));
+  height:auto}
+.b-lane{position:relative;width:100%;height:68cqw;min-height:0;overflow:hidden}
+.b-lane-inner{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column}
+.b-lane-set{display:flex;flex-direction:column;gap:2.2cqw;flex:0 0 auto;
+  padding-bottom:2.2cqw}                      /* 세트 사이 간격도 카드 간격과 같게 */
+/* .skill-card 가 height:100% 라서 셀에 확정 높이가 없으면 0 이 된다 → 카드 높이 명시 */
+.b-cell{height:18cqw;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.b-cell .skill-card{animation:none}           /* 카드는 흔들지 않는다 — 트랙이 움직인다 */
+/* base 의 .skill-card.today{transform:scale(1.06)} 때문에 Main Ideas 만 6% 커 보였다.
+   트랙에서는 모든 카드 크기를 같게 맞춘다. */
+.b-cell .skill-card.today{transform:none}
+.b-lane-up   .b-lane-inner{animation:bLaneUp   var(--dur,16s) linear infinite}
+.b-lane-down .b-lane-inner{animation:bLaneDown var(--dur,16s) linear infinite}
+/* 같은 세트 2벌을 쌓고 한 세트 높이만큼만 이동한다 → 되돌아오는 순간 두 번째 벌이
+   첫 벌 자리를 정확히 메워 이음매가 보이지 않고, 트랙이 비는 구간도 없다.
+   1·3열은 위로(아래에서 올라옴), 2·4열은 아래로(위에서 내려옴). */
+@keyframes bLaneUp  {from{transform:translateY(0)}
+                     to  {transform:translateY(calc(-1 * var(--set)))}}
+@keyframes bLaneDown{from{transform:translateY(calc(-1 * var(--set)))}
+                     to  {transform:translateY(0)}}
+/* 이동 거리(laneH + setH)가 컬럼마다 달라 체감 속도가 같도록 duration 을 맞춘다 */
+.skill-grid.b-laned .b-lane:nth-child(1) .b-lane-inner{--dur:17s}   /* 카드 3장 · 위로 */
+.skill-grid.b-laned .b-lane:nth-child(2) .b-lane-inner{--dur:12s}   /* 카드 1장 · 아래로 */
+.skill-grid.b-laned .b-lane:nth-child(3) .b-lane-inner{--dur:15s}   /* 카드 2장 · 위로 */
+.skill-grid.b-laned .b-lane:nth-child(4) .b-lane-inner{--dur:20s}   /* 카드 4장 · 아래로 */
+/* 선택 상태에서는 흐름을 멈춘다 */
+.skillscreen.selected .b-lane-inner{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){ .b-lane-inner{animation:none} }
 
 /* 선택 상태(B_Skill_selected) : 뒤 카드는 흐려지고 움직임도 멈춘다 */
 .skillscreen.selected .skill-card{animation:none}
