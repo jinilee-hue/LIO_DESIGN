@@ -50,7 +50,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   /* Figma cut1 Button_go 실측 : pill 106px / 캡높이 ≈23px → 폰트 ≈2.3cqw.
      기존 1.85cqw 는 약 24% 작았다. */
   --fz-cta:      clamp(17px,   2.30cqw, 34px);   /* Let's Go 등 CTA */
-  --fz-headline: clamp(20px,   2.50cqw, 38px);   /* skill 헤드라인 */
+  --fz-headline: clamp(22px,   3.30cqw, 48px);   /* skill 헤드라인 (2줄 · 확대) */
   --fz-title-md: clamp(16px,   1.90cqw, 26px);   /* 게임 제목 · 단어 카드 앞면 */
   /* 카드 라벨은 카드 폭이 곧 상자라서 px 하한을 크게 두면 저해상도에서 넘친다.
      하한을 낮추고(아래 overflow:hidden 과 함께) 카드 비율에 따라 줄어들게 둔다. */
@@ -328,29 +328,25 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* ── skill 화면 : Figma B_Skill_list (114:1066) · B_Skill_selected (114:1230) ──
    배경 네이비 #02195C + 동심원(#1C4BD6 / #335DDA / #0F2564) + 최하단 물결 #2B5CE6.
    카드는 스킬별 solid 컬러 + 흰 점선 인셋 보더 + 흰 볼드 라벨. */
-/* 배경 원 파장 : Figma light(114:1070)는 흰색 반투명 원(투명도 0.05~0.2)이라
-   기존의 진한 링보다 부드럽다. 크기를 줄이고, 어떤 스킬을 찾을지 둘러보듯
-   카드 사이를 돌아다니며 음파를 퍼뜨리는 애니메이션을 준다. */
+/* ⚠ .skill-mascot / .think-bubble / .skill-headline 은 마크업상 .skill-left 안에 있다.
+   .skill-left 가 position:relative 라 절대배치 기준이 좁은 왼쪽 열(≈290px)이었고,
+   그래서 헤드라인 width:46% 가 133px 밖에 안 되어 4줄로 접혔다.
+   → .skill-left 를 static 으로 두어 기준을 .skillscreen(화면 전체)로 올린다. */
+.skillscreen .skill-left{position:static}
+/* 배경 원 파장 : Figma light(114:1070) 에서 흰색 반투명 원만 뽑아
+   IMAGE/b/sonar.svg 로 저장해 그대로 쓴다(CSS 그라디언트 근사 → 실제 에셋).
+   어떤 스킬을 찾을지 둘러보듯 카드 사이를 돌아다니며 크기가 커졌다 작아진다. */
 .skillscreen{position:relative;background-color:#02195C;
-  background-image:
-    radial-gradient(circle closest-side, rgba(255,255,255,.17) 0 34%, transparent 36%),
-    radial-gradient(circle closest-side, transparent 0 46%, rgba(255,255,255,.11) 46% 51%, transparent 53%),
-    radial-gradient(circle closest-side, transparent 0 66%, rgba(255,255,255,.06) 66% 70%, transparent 72%);
+  background-image:url("../IMAGE/b/sonar.svg");
   background-repeat:no-repeat;
   animation:bSonar 15s ease-in-out infinite}
 @keyframes bSonar{
-  0%   {background-position:36% 16%, 36% 16%, 36% 16%;
-        background-size:17cqw 17cqw, 26cqw 26cqw, 35cqw 35cqw}
-  20%  {background-position:68% 24%, 68% 24%, 68% 24%;
-        background-size:21cqw 21cqw, 32cqw 32cqw, 43cqw 43cqw}
-  40%  {background-position:86% 56%, 86% 56%, 86% 56%;
-        background-size:17cqw 17cqw, 26cqw 26cqw, 35cqw 35cqw}
-  60%  {background-position:58% 74%, 58% 74%, 58% 74%;
-        background-size:21cqw 21cqw, 32cqw 32cqw, 43cqw 43cqw}
-  80%  {background-position:42% 44%, 42% 44%, 42% 44%;
-        background-size:17cqw 17cqw, 26cqw 26cqw, 35cqw 35cqw}
-  100% {background-position:36% 16%, 36% 16%, 36% 16%;
-        background-size:21cqw 21cqw, 32cqw 32cqw, 43cqw 43cqw}
+  0%   {background-position:30% 14%; background-size:34cqw auto}
+  20%  {background-position:64% 22%; background-size:44cqw auto}
+  40%  {background-position:86% 56%; background-size:34cqw auto}
+  60%  {background-position:56% 76%; background-size:44cqw auto}
+  80%  {background-position:38% 44%; background-size:34cqw auto}
+  100% {background-position:30% 14%; background-size:44cqw auto}
 }
 @media (prefers-reduced-motion:reduce){ .skillscreen{animation:none} }
 /* Figma B_Skill_list 에는 헤더 바가 없다 (114:1066 은 light/skill_list/lio/wav/BI 만
@@ -373,9 +369,12 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    → 마스코트 오른쪽 경계 밖으로 내보내고 세로 위치는 Figma 대로 둔다.
    말풍선(마스코트 이미지에 포함)도 가리지 않는다. */
 /* 헤드라인은 LIO 위(좌상단 로고 아래)에 놓는다 */
-.skillscreen:not(.selected) .skill-headline{position:absolute;left:3%;top:9%;
-  width:34%;text-align:left;z-index:6;line-height:1.15;
+/* 마크업은 "Let's find<br>your skill!" 이라 원래 2줄이다.
+   폭이 좁아 4줄로 접혔던 것 → 폭을 넓히고 줄바꿈을 막아 정확히 2줄로 둔다. */
+.skillscreen:not(.selected) .skill-headline{position:absolute;left:3%;top:8%;
+  width:30%;max-width:30%;text-align:left;z-index:6;line-height:1.18;
   text-shadow:0 3px 14px rgba(2,25,92,.65)}
+.skillscreen:not(.selected) .skill-headline br{display:block}
 /* 카드 : flow-data 의 --sc 는 A 팔레트이므로 B 전용 --scB 로 덮는다 */
 .skill-card{background:var(--scB,#3593FF);border:none;border-radius:20px;position:relative;z-index:1}
 .skill-card::after{content:'';position:absolute;inset:7px;pointer-events:none;
@@ -417,8 +416,11 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* LIO 는 z-index:5 로 카드보다 위에 있지만, 폭이 245px 이고 left 9% 라
    오른쪽 끝(496px)이 그리드 시작(509px)에 13px 못 미쳐 실제로는 겹치지 않았다.
    → left 를 더 밀어 카드 첫 열과 확실히 겹치게 한다. */
-.skillscreen .skill-mascot{position:absolute;left:15%;bottom:11%;
-  height:64%;width:auto;max-width:none;max-height:none;z-index:5;pointer-events:none}
+/* LIO 폭은 높이에 비례(높이 64%일 때 약 24.7%)한다. 화면 왼쪽 끝에 두면서 카드와
+   겹치려면 폭이 51% 이상이어야 해 불가능하므로, 카드 첫 열에 살짝 걸치는 위치로 둔다.
+   (74%/left25% 는 첫·둘째 열을 다 덮어 카드가 가려졌다) */
+.skillscreen .skill-mascot{position:absolute;left:27%;bottom:9%;
+  height:66%;width:auto;max-width:none;max-height:none;z-index:5;pointer-events:none}
 .skill-card[data-skill="0"]{grid-area:1/1}   /* Main Ideas */
 .skill-card[data-skill="1"]{grid-area:1/3}   /* Recalling Facts 1 */
 .skill-card[data-skill="2"]{grid-area:1/4}   /* Recalling Facts 2 */
@@ -714,6 +716,6 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 
 /* 물음표 말풍선 : base 는 .skill-left 기준 top30%/right16% 인데 마스코트를 절대배치로
    옮겼으므로 화면 기준으로 다시 잡는다. 요청대로 더 위·오른쪽으로. */
-.skillscreen:not(.selected) .think-bubble{position:absolute;top:19%;left:38%;right:auto;
+.skillscreen:not(.selected) .think-bubble{position:absolute;top:22%;left:49%;right:auto;
   width:clamp(30px,3.6cqw,54px);height:clamp(30px,3.6cqw,54px);
   font-size:var(--fz-title-md);z-index:6}
