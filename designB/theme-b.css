@@ -506,6 +506,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background:
     url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px),
     url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 4.8%}
+/* 파도만 스킬카드(z1)·레인 transform 위로 — 로고는 skillscreen::after 유지 */
+.layout-skill .skillscreen::after{
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px)}
+.layout-skill .skill-grid{position:relative;z-index:1}
+.layout-skill .screen::after{content:'';position:absolute;left:0;right:0;bottom:0;
+  height:4.8%;z-index:10;pointer-events:none;
+  background:url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 100%}
 /* 헤드라인 : Figma 실측 (542,424) 373×104 → x 34.4~58.0% · y 39.6~49.3%.
    마스코트 오른쪽·카드 영역에 겹쳐 놓이는 구성이라 절대 배치하고 위로 올린다. */
 .skill-headline{color:#fff;font-family:var(--font-head);font-weight:800;font-size:var(--fz-headline)}
