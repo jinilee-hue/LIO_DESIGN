@@ -283,6 +283,15 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
     radial-gradient(circle at 40% 1%, transparent 0 29%, #0F2564 29% 30.1%, transparent 30.4%),
     radial-gradient(circle at 40% 1%, transparent 0 38%, #0F2564 38% 38.9%, transparent 39.2%),
     #02195C}
+/* Figma B_Skill_list 에는 헤더 바가 없다 (114:1066 은 light/skill_list/lio/wav/BI 만
+   가지고 있고 AppBar 노드가 없음). 헤더를 숨기고 네이비 배경을 화면 위까지 이어지게 한 뒤
+   좌상단에 BI 로고만 올린다. Figma 좌표 : BI (36,20) 78×55.83 → 높이 55.83/1577≈3.54cqw */
+.layout-skill .hd{display:none}
+.skillscreen::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat
+    left clamp(12px,2.3cqw,36px) top clamp(10px,1.9cqw,30px) / auto clamp(26px,3.54cqw,56px)}
+/* 로고와 콘텐츠가 겹치지 않게 상단 여백 확보 (헤더가 없어진 만큼 높이는 오히려 넉넉해진다) */
+.skillscreen{padding-top:clamp(46px,5.6cqw,88px)}
 .skillscreen::after{content:'';position:absolute;left:0;right:0;bottom:0;height:auto;
   aspect-ratio:1577/51.547;pointer-events:none;z-index:0;
   background:url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 100%}
