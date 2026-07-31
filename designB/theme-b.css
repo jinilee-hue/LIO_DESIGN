@@ -368,8 +368,16 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 행 높이를 1fr/% 로 두면 .layout-skill .screen 이 display:block 이라 미정으로 남아
    카드가 아래로 넘친다. 디바이스 비율(1577/1072)이 고정이므로 cqw 로 못박는다.
    화면 높이 ≈ 68cqw, 헤더·패딩 제외 ≈ 58cqw → 4행 × 13.4cqw */
-.skill-grid{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,13.4cqw);
-  gap:1.1cqw 1.2cqw;height:100%;min-height:0;align-content:center;
+/* 카드 1.2배 : 13.4cqw → 16.08cqw.
+   상단 padding 은 좌측(마스코트·헤드라인) 열이 로고를 피하려고 준 것이고
+   그리드는 우측 열이라 로고와 겹치지 않는다 → 음수 마진으로 그 높이를 되돌려
+   4행이 최대한 화면 안에 들어오게 한다. 그래도 남으면 Figma 처럼 위아래로 살짝
+   잘리며 중앙 정렬된다(카드는 잘린 상태에서도 클릭 가능). */
+.skill-grid{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,16.08cqw);
+  gap:2.2cqw 1.2cqw;
+  margin-top:calc(-1 * clamp(46px,5.6cqw,88px));
+  height:calc(100% + clamp(46px,5.6cqw,88px));
+  min-height:0;align-content:center;
   justify-items:center;align-items:center;overflow:visible}
 .skill-card{height:100%;width:auto;max-width:100%;aspect-ratio:213/284;
   padding:8% 6% 6%;justify-content:center;gap:5%;overflow:hidden}
@@ -412,10 +420,14 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen.found .skill-mascot{display:none}
 .skillscreen.selected .skillsel-halo,
 .skillscreen.found .skillsel-halo{display:none}          /* Figma B 는 후광 없음 */
+/* Figma B_Skill_selected 실측 :
+   대형 카드 x 48.3~81.2% · y 19.5~79.0% (폭 32.9% / 비율 519:638)
+   헤드라인 "I found your skills!" x 5~29% · y 47.0~56.6% (마스코트 왼쪽)
+   마스코트는 그 오른쪽에서 화면 하단까지 */
 .skillscreen.selected .skillsel-card,
-.skillscreen.found .skillsel-card{position:absolute;left:58%;top:50%;
+.skillscreen.found .skillsel-card{position:absolute;left:64.75%;top:49.25%;
   transform:translate(-50%,-50%);z-index:3;pointer-events:none;
-  width:19%;aspect-ratio:213/284;border-radius:22px;background:#3593FF;
+  width:32.9%;aspect-ratio:519/638;border-radius:26px;background:#3593FF;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 18px 40px rgba(0,0,0,.4)}
 .skillscreen.selected .skillsel-card::after,
@@ -424,8 +436,12 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen.selected .skillsel-card img,
 .skillscreen.found .skillsel-card img{width:62%;height:auto}
 .skillscreen.selected .skillsel-mascot,
-.skillscreen.found .skillsel-mascot{position:absolute;left:24%;bottom:12%;
-  height:62%;width:auto;z-index:4;pointer-events:none;transform:translateX(-50%)}
+.skillscreen.found .skillsel-mascot{position:absolute;left:26%;bottom:1%;
+  height:82%;width:auto;z-index:4;pointer-events:none;transform:none}
+/* 헤드라인은 마스코트 왼쪽에 놓고 위로 올린다 (기존엔 마스코트에 가려 잘렸다) */
+.skillscreen.selected .skill-headline,
+.skillscreen.found .skill-headline{position:absolute;left:5%;top:46.5%;
+  max-width:26%;text-align:left;z-index:6;line-height:1.15}
 
 /* ── game 화면 : Figma B_Game (162:14) 은 풀블리드 일러스트다.
    프로토의 game 화면은 인터랙션이 있어 일러스트를 배경으로 깔고 패널을 위에 둔다. */
@@ -604,3 +620,38 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 @media (prefers-reduced-motion:reduce){
   .introseq .introseq-next:hover,.splash:hover::after{animation:none}
 }
+
+/* ── skill 카드 : 줄별 교차 상하 루프 ──────────────────────────────────
+   1행 위 / 2행 아래 / 3행 위 / 4행 아래 로 번갈아 떠오르게 해서
+   카드가 별자리처럼 천천히 흐르는 느낌을 준다. 같은 행은 위상을 맞춘다.
+   ※ base 의 .skill-card.today{transform:scale(1.06)} 는 animation 이 transform 을
+     잡으면 무효가 되므로 today 전용 키프레임에 scale 을 함께 넣는다. */
+/* 같은 줄의 카드는 delay 없이 같은 키프레임을 쓰므로 줄 전체가 한 덩어리로 움직인다.
+   진폭 1.0cqw · 7s ease-in-out alternate → 줄이 천천히 위/아래로 흐르는 스크롤 느낌.
+   인접 줄이 서로 반대로 가므로 줄 간격(2.2cqw)을 진폭×2(2.0cqw)보다 크게 잡아 겹침을 막았다.
+   ※ 한 방향으로 끝없이 스크롤하려면 줄 내용이 세로로 복제돼 있어야 하는데
+     마크업은 공용 engine.js 소관이라, 여기서는 왕복(alternate) 루프로 구현했다. */
+@keyframes bCardUp   {from{transform:translateY(1cqw)}   to{transform:translateY(-1cqw)}}
+@keyframes bCardDown {from{transform:translateY(-1cqw)}  to{transform:translateY(1cqw)}}
+@keyframes bCardUpToday{from{transform:scale(1.06) translateY(1cqw)}
+                        to  {transform:scale(1.06) translateY(-1cqw)}}
+.skill-card{animation:bCardUp 7s ease-in-out infinite alternate}
+/* 2행 */
+.skill-card[data-skill="3"],
+.skill-card[data-skill="5"]{animation-name:bCardDown}
+/* 3행 */
+.skill-card[data-skill="4"],
+.skill-card[data-skill="6"],
+.skill-card[data-skill="7"]{animation-name:bCardUp}
+/* 4행 */
+.skill-card[data-skill="8"],
+.skill-card[data-skill="9"]{animation-name:bCardDown}
+/* 오늘 스킬(Main Ideas) 은 확대 상태를 유지하며 함께 움직인다 */
+.skill-card.today{animation-name:bCardUpToday}
+@media (prefers-reduced-motion:reduce){ .skill-card{animation:none} }
+
+/* 선택 상태(B_Skill_selected) : 뒤 카드는 흐려지고 움직임도 멈춘다 */
+.skillscreen.selected .skill-card{animation:none}
+.skillscreen.selected .skill-grid.dim{opacity:.45;filter:blur(7px);pointer-events:none;
+  transition:opacity .45s,filter .45s}
+.skillfound-overlay{position:absolute;inset:0;z-index:5;pointer-events:none}

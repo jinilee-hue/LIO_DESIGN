@@ -767,6 +767,10 @@
     // A 스킬 룰렛 : 카드가 돌다 오늘 스킬에서 멈춤 → 선택완료 화면으로 자동 전환
     if (THEME === 'A' && scr.layout === 'skill' && !scr.skillSelected && !scr.skillPick) runSkillRoulette();
 
+    // B 스킬 선택 : 카드를 직접 탭하면 Figma B_Skill_selected 상태로 전환
+    // (A 는 룰렛으로 자동 진행하므로 이 분기에 들어오지 않는다 — THEME 가드로 완전 분리)
+    if (THEME === 'B' && scr.layout === 'skill' && !scr.skillSelected && !scr.skillPick) bindSkillPickB();
+
     // Word Check : 우측 chip은 처음엔 숨기고, 왼쪽 단어가 날아가 박힐 때 나타남
     if (scr.focusWord) {
       const chip0 = stage.querySelector('.wordchip');
@@ -1658,6 +1662,37 @@
   }
 
   // 스킬 찾음 : 화면 전환(페이드) 없이 제자리에서 리스트를 흐리게 + 찾은 스킬·LIO·후광 등장
+  /* Design B 전용 : 스킬 카드를 탭하면 Figma B_Skill_selected 구성으로 전환한다.
+     - 뒤 카드 그리드는 흐려지고(.dim) 헤드라인이 "I found your skills!" 로 바뀐다
+     - 선택한 스킬의 대형 카드 + 마스코트 오버레이가 올라온다
+     - 잠시 보여준 뒤 다음 화면(Topic)으로 진행
+     A 는 runSkillRoulette 경로를 그대로 쓰고 이 함수는 호출되지 않는다. */
+  function bindSkillPickB() {
+    const stage = document.getElementById('stage');
+    const ss = stage.querySelector('.skillscreen');
+    if (!ss) return;
+    ss.querySelectorAll('.skill-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', () => {
+        if (ss.classList.contains('selected')) return;
+        const i = +card.dataset.skill;
+        const pick = F.SKILLS[i] || F.SKILLS[0];
+        ss.classList.add('selected');
+        const grid = ss.querySelector('.skill-grid'); if (grid) grid.classList.add('dim');
+        const hd = ss.querySelector('.skill-headline');
+        if (hd) hd.textContent = 'I found your skills!';
+        const ov = document.createElement('div');
+        ov.className = 'skillfound-overlay';
+        ov.innerHTML =
+          `<img class="skillsel-mascot" src="${mascot('lio6.png')}" alt="LIO">
+           <div class="skillsel-card"><img src="${skillIcon(pick)}" alt="${pick.name}"></div>`;
+        ss.appendChild(ov);
+        sfxFound();
+        later(() => { if (ss.isConnected) fadeAdvance(); }, 2600);
+      });
+    });
+  }
+
   function showSkillFound() {
     const stage = document.getElementById('stage');
     const ss = stage.querySelector('.skillscreen.a-skill');
