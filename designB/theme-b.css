@@ -261,11 +261,12 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    ※ 실제로 두 슬라이드를 한 페이지로 합치는 것은 engine.js/flow-data(공용) 소관이라
      여기서는 진입 애니메이션으로 연속감만 만든다. */
 .introseq::after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
-  background:url("../IMAGE/b/logo_lockup.png") no-repeat left 2% top 2% / auto 5.2%}
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px)}
 .scr-greeting .introseq::after{animation:bLogoDock .9s cubic-bezier(.35,.05,.2,1) both}
 @keyframes bLogoDock{
   from{background-position:left 79.5% top 42.1%; background-size:auto 25.4%}
-  to  {background-position:left 2% top 2%;       background-size:auto 5.2%}
+  to  {background-position:left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px);
+       background-size:auto clamp(26px,3.54cqw,56px)}
 }
 /* Figma : 말풍선 없이 흰 본문 텍스트. Maya=옐로, 스킬명=시안
    본문 블록은 마스코트 오른쪽 (Figma x=653/1577≈41%)
@@ -339,8 +340,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    좌상단에 BI 로고만 올린다. Figma 좌표 : BI (36,20) 78×55.83 → 높이 55.83/1577≈3.54cqw */
 .layout-skill .hd{display:none}
 .skillscreen::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:url("../IMAGE/b/logo_lockup.png") no-repeat
-    left clamp(12px,2.3cqw,36px) top clamp(10px,1.9cqw,30px) / auto clamp(26px,3.54cqw,56px)}
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px)}
 /* 로고와 콘텐츠가 겹치지 않게 상단 여백 확보 (헤더가 없어진 만큼 높이는 오히려 넉넉해진다) */
 .skillscreen{padding-top:clamp(46px,5.6cqw,88px)}
 .skillscreen::after{content:'';position:absolute;left:0;right:0;bottom:0;height:auto;
