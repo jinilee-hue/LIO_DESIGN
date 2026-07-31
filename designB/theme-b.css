@@ -333,34 +333,36 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    그래서 헤드라인 width:46% 가 133px 밖에 안 되어 4줄로 접혔다.
    → .skill-left 를 static 으로 두어 기준을 .skillscreen(화면 전체)로 올린다. */
 .skillscreen .skill-left{position:static}
-/* 배경 원 파장 : Figma #component > light (247:1828) 원본을 그대로 쓴다.
-   481×481 정사각 전체 원이라 이전 clipped 버전(911×512)보다 형태가 온전하다.
-   export 캔버스 rect 와 배경 rect 만 제거하고 원은 모두 살렸다(IMAGE/b/sonar.svg).
-   어떤 스킬을 찾을지 둘러보듯 카드 사이를 돌아다니며 크기가 커졌다 작아진다. */
-.skillscreen{position:relative;background-color:#02195C;
-  background-image:url("../IMAGE/b/sonar.svg");
-  background-repeat:no-repeat;
+/* 배경 원 파장 : Figma #component > light (247:1828) 원본(481×481 정사각).
+   커질 때 옅어지고 작아질 때 진해지도록 크기와 투명도를 함께 움직여
+   음파가 퍼져 사라지는 느낌을 준다. 카드 사이 5개 지점을 돌아다닌다. */
+.skillscreen{position:relative;background:#02195C}
+.skillscreen::before{content:'';position:absolute;z-index:0;pointer-events:none;
+  width:34cqw;height:34cqw;left:30%;top:14%;transform:translate(-50%,-50%);
+  background:url("../IMAGE/b/sonar.svg") no-repeat center / 100% 100%;
   animation:bSonar 15s ease-in-out infinite}
 @keyframes bSonar{
-  0%   {background-position:30% 14%; background-size:34cqw 34cqw}
-  20%  {background-position:64% 22%; background-size:44cqw 44cqw}
-  40%  {background-position:86% 56%; background-size:34cqw 34cqw}
-  60%  {background-position:56% 76%; background-size:44cqw 44cqw}
-  80%  {background-position:38% 44%; background-size:34cqw 34cqw}
-  100% {background-position:30% 14%; background-size:44cqw 44cqw}
+  0%   {left:30%; top:14%; width:30cqw; height:30cqw; opacity:.95}
+  20%  {left:64%; top:22%; width:46cqw; height:46cqw; opacity:.35}
+  40%  {left:86%; top:56%; width:30cqw; height:30cqw; opacity:.95}
+  60%  {left:56%; top:76%; width:46cqw; height:46cqw; opacity:.35}
+  80%  {left:38%; top:44%; width:30cqw; height:30cqw; opacity:.95}
+  100% {left:30%; top:14%; width:46cqw; height:46cqw; opacity:.35}
 }
-@media (prefers-reduced-motion:reduce){ .skillscreen{animation:none} }
+@media (prefers-reduced-motion:reduce){ .skillscreen::before{animation:none} }
 /* Figma B_Skill_list 에는 헤더 바가 없다 (114:1066 은 light/skill_list/lio/wav/BI 만
    가지고 있고 AppBar 노드가 없음). 헤더를 숨기고 네이비 배경을 화면 위까지 이어지게 한 뒤
    좌상단에 BI 로고만 올린다. Figma 좌표 : BI (36,20) 78×55.83 → 높이 55.83/1577≈3.54cqw */
 .layout-skill .hd{display:none}
-.skillscreen::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px)}
+/* 로고는 아래 ::after 에 물결과 함께 얹고, ::before 는 파장 전용으로 쓴다
+   (배경 레이어는 개별 opacity 를 줄 수 없어, 투명도까지 애니메이션하려면
+    전용 요소가 필요하다). */
 /* 로고와 콘텐츠가 겹치지 않게 상단 여백 확보 (헤더가 없어진 만큼 높이는 오히려 넉넉해진다) */
 .skillscreen{padding-top:clamp(46px,5.6cqw,88px)}
-.skillscreen::after{content:'';position:absolute;left:0;right:0;bottom:0;height:auto;
-  aspect-ratio:1577/51.547;pointer-events:none;z-index:0;
-  background:url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 100%}
+.skillscreen::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:
+    url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px),
+    url("../IMAGE/b/wave_skill.svg") no-repeat left bottom / 100% 4.8%}
 /* 헤드라인 : Figma 실측 (542,424) 373×104 → x 34.4~58.0% · y 39.6~49.3%.
    마스코트 오른쪽·카드 영역에 겹쳐 놓이는 구성이라 절대 배치하고 위로 올린다. */
 .skill-headline{color:#fff;font-family:var(--font-head);font-weight:800;font-size:var(--fz-headline)}
@@ -474,8 +476,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen.selected .skillsel-card img,
 .skillscreen.found .skillsel-card img{width:62%;height:auto}
 .skillscreen.selected .skillsel-mascot,
-.skillscreen.found .skillsel-mascot{position:absolute;left:26%;bottom:1%;
-  height:82%;width:auto;z-index:4;pointer-events:none;transform:none}
+.skillscreen.found .skillsel-mascot{position:absolute;left:26%;bottom:9%;
+  height:66%;width:auto;z-index:4;pointer-events:none;transform:none}
 /* 헤드라인은 마스코트 왼쪽에 놓고 위로 올린다 (기존엔 마스코트에 가려 잘렸다) */
 .skillscreen.selected .skill-headline,
 .skillscreen.found .skill-headline{position:absolute;left:5%;top:46.5%;
@@ -719,7 +721,14 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    옮겼으므로 화면 기준으로 다시 잡는다. 요청대로 더 위·오른쪽으로. */
 /* slide 6 의 GO 말풍선과 같은 크기로 (자체 렌더 실측 지름 6.81cqw) 사자 오른쪽에 띄운다.
    LIO 는 left 27% + 폭 약 25.5% → 오른쪽 끝 ≈52.5%. 그 바로 밖에 배치. */
+/* ⚠ 말풍선 에셋을 Figma 에서 받아 봤지만(ic_go > icon_hi 209:437, 97×94 투명 PNG)
+   래스터에 "HI!" 글자가 이미 박혀 있어 "?" 를 얹으면 두 글자가 겹친다.
+   Figma B_Skill_list 의 lio 에는 물음표 말풍선 노드가 없어 재사용할 도형이 없다.
+   → 크기·위치만 Figma GO 말풍선 기준(6.15cqw)으로 맞추고 도형은 CSS 원으로 그린다.
+   물음표 전용 말풍선을 Figma 에 추가해 주시면 에셋으로 교체하겠다. */
 .skillscreen:not(.selected) .think-bubble{position:absolute;top:23%;left:51%;right:auto;
-  width:clamp(46px,6.81cqw,96px);height:clamp(46px,6.81cqw,96px);
-  font-size:var(--fz-headline);z-index:6;
-  box-shadow:0 6px 18px rgba(2,25,92,.35)}
+  width:clamp(44px,6.15cqw,92px);height:clamp(44px,6.15cqw,92px);
+  border-radius:50%;background:#fff;
+  box-shadow:0 6px 18px rgba(2,25,92,.35);
+  font-size:var(--fz-headline);color:#e2673b;z-index:6;
+  display:flex;align-items:center;justify-content:center}
