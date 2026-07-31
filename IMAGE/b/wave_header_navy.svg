@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1577" height="24" viewBox="0 0 1577 24" fill="none" preserveAspectRatio="none">
-<!-- wave_header.svg 의 네이비 버전. skill 화면(배경 #02195C)에서 쓴다.
-     경로는 Figma 114:1149 원본, 곡선 아래쪽을 본문색으로 채운다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1577" height="30" viewBox="0 0 1577 30" fill="none" preserveAspectRatio="none">
+<!-- Figma Platform_B / wav > Icon > Vector (114:1149) 경로 원본. 채움색 = #02195C (네이비 본문(skill 화면)).
+     원본 viewBox 는 0 0 1577 51.547, 파형 기준선 y=11.547, 곡선 최심부 y≈23.1.
+     viewBox 를 30 까지 잡아 최심부 아래로 약 7 단위(=본문색 단색 구간)를 남긴다.
+     이 여유가 없으면 띠의 마지막 서브픽셀 행에서 아래 레이어의 파란색이 비쳐
+     헤더 밑에 얇은 라인이 생긴다. -->
 <path d="M0 11.547C350.444 51.547 459.958 -28.453 788.5 11.547C1117.04 51.547 1226.56 -28.453 1577 11.547V51.547H0V11.547Z" fill="#02195C"/>
 </svg>
