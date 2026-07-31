@@ -75,12 +75,12 @@ const SKILLS = [
 
 // 6개 토픽 (선택: 2개)
 const TOPICS = [
-  { name:'Trips and Visits',   img:'topic1.png', color:'#6BB6F8' },
-  { name:'Animals and Nature', img:'topic2.png', color:'#38C46A' },
-  { name:'Special Days',       img:'topic3.png', color:'#F86BA6' },
-  { name:'Growing Things',     img:'topic4.png', color:'#38C46A' },
-  { name:'Friends and Family', img:'topic5.png', color:'#FF9A3D' },
-  { name:'Games and Play',     img:'topic6.png', color:'#6BB6F8' },
+  { name:'Trips and Visits',   img:'topic1.png', color:'#6BB6F8', from:'#8EC5FF', to:'#51A2FF' },
+  { name:'Animals and Nature', img:'topic2.png', color:'#38C46A', from:'#7BF1A8', to:'#05DF72' },
+  { name:'Special Days',       img:'topic3.png', color:'#F86BA6', from:'#FDA5D5', to:'#FB64B6' },
+  { name:'Growing Things',     img:'topic4.png', color:'#38C46A', from:'#7BF1A8', to:'#05DF72' },
+  { name:'Friends and Family', img:'topic5.png', color:'#FF9A3D', from:'#FFB86A', to:'#FF8904' },
+  { name:'Games and Play',     img:'topic6.png', color:'#6BB6F8', from:'#8EC5FF', to:'#51A2FF' },
 ];
 
 // 핵심 단어 (Word Peek / Find & Flip)
@@ -126,7 +126,7 @@ const SCREENS = [
   // Design B(센터 카드)용 메시지
   message:[
     'Hi <b>Maya</b>! Welcome to Skill Core!',
-    "I'm LIO, and I'll be your reading buddy today.",
+    "I'm <b>LIO</b>, and I'll be your reading buddy today.",
     'We will practice a skill called "<b class="hl">Determining Main Ideas</b>" together!',
     "Ready? Let's go!",
   ],
@@ -139,7 +139,7 @@ const SCREENS = [
     autoNext:true,   // 마지막 말풍선 후 자동으로 cut3로 페이드 전환
     bubbles:[  // Figma A_Intro_cut2 원문 그대로
       { side:'left',  text:'Hi <b class="nm">Maya</b>! Welcome to Skill<br>Core!' /* , audio:'../IMAGE/tts/cut2_1.mp3' */ },
-      { side:'right', text:"I'm LIO, and I'll be your<br>reading buddy today." },
+      { side:'right', text:"I'm <b class=\"lio-nm\">LIO</b>, and I'll be your<br>reading buddy today." },
     ],
   },
   spec:['Step 명칭 / Skill 명칭 / 화면 활동명','A_Intro_cut1 영상 종료 → 페이드아웃 → A_Intro_cut2 이미지 페이드인','LIO 왼쪽 말풍선 등장 + TTS → 사라짐 → 오른쪽 말풍선 등장 + TTS','마지막 말풍선 후 자동으로 A_Intro_cut3로 전환','TTS: 아기사자 LIO(7세 남아 톤) · 성우 오디오로 교체 가능'],
@@ -170,7 +170,9 @@ const SCREENS = [
 /* 8 ─ Topic Selection */
 {
   id:'topic', slide:8, section:'Topic Selection', title:'Topic_Selection', layout:'topic',
-  lioLine:'Before practicing, let\'s pick two topics, <b class="nm">Maya</b>!<br>Which ones sound fun?',
+  mascot:'lio_face.png', // Figma B_Topic_list lio_face 1 (thinking)
+  // Figma: line1 Nunito Medium 36 / line2 Nunito ExtraBold 60
+  lioLine:'<span class="tl-sub">Before practicing, let\'s pick two topics, <b class="nm">Maya</b>!</span><span class="tl-main">Which ones sound fun?</span>',
   spec:['카드 구성: 아이콘 + 주제 / 6개 중 2개 선택 → 선택 카드 색상 변화','2개 카드 선택 이후 3번째 선택 시 처음 카드 해제','"Continue" : 2개 선택 시 버튼 활성화 → 다음 단계'],
 },
 
@@ -200,6 +202,7 @@ const SCREENS = [
 {
   id:'game', slide:10, section:'Game', title:'Game+FP1_Intro_화면전환', layout:'game',
   gameImage:'launcher/thumbnails/09_main_ideas.png',  // Design A : Main Ideas 게임 풀 일러스트
+  gameImageB:'b/game_bg.jpg',                         // Design B : 게임 썸네일 풀블리드
   gameCta:"Let's go! ▶", gameCtaImg:'ui/btn_letsgo.png',   // Figma 버튼 원본
   gameTitle:'Puzzle Builder', gameRound:'Round 1 of 3',
   transition:[
@@ -207,7 +210,7 @@ const SCREENS = [
     'Now let\'s put your <b class="hl">Main Idea</b> skills to work — with a story about <b class="hl">Trips and Visits</b>!',
     "Let's go! 📖",
   ],
-  spec:['Game 시작 화면 + FP1_Intro 화면 전환','LIO 대화(TTS) 완료 후 게임 시작 가능','게임 완료 후 FP1_Intro 화면 전환 → Skill name 언급 → "Let\'s go!"'],
+  spec:['B: 게임 썸네일 풀블리드 · 헤더/오버레이 없음 (탭→다음)','A: Game 시작 화면 + FP1_Intro 화면 전환'],
 },
 
 /* 11 ─ FP1 Main Question */
@@ -235,7 +238,7 @@ const SCREENS = [
   blocks:[
     { t:'lio', html:'Read the passage and answer the question.', tts:true, kr:true },
     { t:'q', html:MAIN_Q, kr:true },
-    { t:'choices', kr:true, items:[
+    { t:'choices', kr:true, instantGrade:true, items:[
       { k:'A', html:CHOICES[0].html, state:'correct' },
       { k:'B', html:CHOICES[1].html },
       { k:'C', html:CHOICES[2].html },
@@ -244,8 +247,7 @@ const SCREENS = [
     { t:'lio', html:"You did great! You found the main idea about the girl's discovery at the tide pools. Let's move on to the next step!", tts:true, kr:true },
     { t:'lio', html:"Nice work! Choose what you'd like to do next.", tts:true, kr:true },
   ],
-  confetti:true,
-  spec:['M06: Main Question 제시','M07: Main question 정답 → 🎉 confetti + correct reaction + brief praise'],
+  spec:['M06: Main Question 제시','M07: Main question 정답(A) 탭 → 🎉 전체 confetti + correct reaction + brief praise'],
 },
 
 /* 13 ─ FP1 Evidence Tap */
@@ -269,8 +271,7 @@ const SCREENS = [
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time.", tts:true, kr:true },
     { t:'strategy' },
   ],
-  confetti:true,
-  spec:['ET(Evidence Tap) 정답','M07b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','🎉 confetti + correct reaction + brief praise','strategy cue 제공'],
+  spec:['ET(Evidence Tap) 정답','M07b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','strategy cue 제공'],
 },
 
 /* 15 ─ FP1 ET 1차 오답 */
@@ -305,7 +306,6 @@ const SCREENS = [
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time.", tts:true, kr:true },
     { t:'strategy' },
   ],
-  confetti:true,
   spec:['ET(Evidence Tap) 정답 (Retry 이후)','M07b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','strategy cue 제공'],
 },
 
@@ -376,7 +376,6 @@ const SCREENS = [
     { t:'lio', html:"Great! 'Amazed' means very surprised, just like in the passage 'A Day at the Tide Pools'.", tts:true, kr:true, hidden:true },
     { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary' }] },
   ],
-  confetti:true,
   spec:['옵션 선택 후 Word Check(단어 테스트) 필수 진입','문제 제시 동시에 지문 영역 내 해당 단어 하이라이트','테스트 문항 2가지(key words 중 랜덤 2개)','두 문제 모두 정답 → reaction 🎉 confetti → Teach(Word Peek) 진행'],
 },
 
@@ -621,7 +620,7 @@ const SCREENS = [
     { t:'lio', html:"Yes! That's one of the evidence sentences! It directly supports the main idea — Maya's discovery of tide pools.", tts:true, kr:true },
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
     { t:'lio', html:'Here are the evidence sentences highlighted in green! Each one shows what Maya discovered or learned.', tts:true, kr:true },
-    { t:'buttons', items:[{ html:'Next ▶', style:'orange' }] },
+    { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
   ],
   spec:['S4 — Find the Evidence = ET','학생 답안 선택: ET 직접 탭','정답 선택 시 정답 공개','오답 선택 시 retry 있음, 2회 오답인 경우 reveal','위 두 정오답 경로의 정답 공개 시 근거 문장 하이라이트','"Next" 클릭 → 이해 안되는 문장 질문'],
 },
@@ -684,9 +683,9 @@ const SCREENS = [
   spec:['M11 retry_intro','SA — Retry: Main Question 재출제 (문제 + 4지선다)','정답 → CA M07b(마우리멘트+전략카드) → M13(FP2_Intro)','오답 → Answer Reveal + Skill Tip + 전략 카드 없음 → M13(FP2_Intro)'],
 },
 
-/* 35 ─ FP2 Intro */
+/* 35 ─ FP2 Intro (cut1) — slide 6과 같이 두 컷으로 분할 (버튼 겹침 방지) */
 {
-  id:'fp2_intro', slide:35, section:'Further Practice 2', title:'FP2_Intro', layout:'center',
+  id:'fp2_intro', slide:35, section:'Further Practice 2', title:'FP2_Intro', cut:'cut1', layout:'center',
   mascot:'lio2.png',
   // Design B(센터 카드)용 메시지
   message:[
@@ -695,18 +694,31 @@ const SCREENS = [
     'New story about <b class="hl">Games and Play</b> — let\'s see what happens!',
   ],
   buttons:[{ html:"Let's go! ▶", style:'primary' }],
-  // 침실 공부 LIO 배경 + 순차 말풍선(TTS) → Let's go 버튼 (A/B 공통)
   introSeq:{
     image:'intro_fp2.png',
     fadeIn:true,
+    autoNext:true,   // 앞 2문장 후 cut2로 자동 전환
     bubbles:[
       { side:'left',  text:'Nice work on that story,<br><b class="nm">Maya</b>!' },
       { side:'right', text:'Same skill again: <b class="mi">Main Idea</b>.<br>Remember our strategy?' },
+    ],
+  },
+  spec:['FP1 학습 후 FP2 시작 화면 전환','cut1: 앞 2문장 + TTS → cut2 자동 전환','PIVOT: 파일럿 테스트 시 스킬별 FP3~5까지 추가 지문 학습 가능'],
+},
+
+/* 35b ─ FP2 Intro (cut2) */
+{
+  id:'fp2_intro_cut2', slide:35, section:'Further Practice 2', title:'FP2_Intro', cut:'cut2', layout:'center',
+  message:[],
+  introSeq:{
+    image:'intro_fp2.png',
+    fadeIn:false,
+    bubbles:[
       { side:'left',  text:'New story about <b class="mi">Games and Play</b><br>— let\'s see what happens!' },
     ],
     cta:"Let's go!", ctaImg:'ui/btn_letsgo.png',
   },
-  spec:['FP1 학습 후 FP2 시작 화면 전환','일러스트 배경 페이드인 → LIO 말풍선 3개 순차 등장 + TTS','skill name(Main Idea) 재언급','마지막 말풍선 후 "Let\'s go!" 버튼 → 다음 단계','PIVOT: 파일럿 테스트 시 스킬별 FP3~5까지 추가 지문 학습 가능'],
+  spec:['cut2: 마지막 문장 + TTS',"Let's go! 버튼 → FP2 Main Question"],
 },
 
 /* 36 ─ FP2 Main Question (+ 4 활동 옵션) */
@@ -935,8 +947,8 @@ const SCREENS = [
     { side:'right', html:'Pick whichever<br>feels better.' },
   ],
   cards:[
-    { title:'Just show me the answer', sub:'정답 확인하고 끝낼래', tone:'plain', go:'fp2_et_wrong2' },
-    { title:"Let's find out why!", sub:'왜 틀렸는지 공부해볼래', tone:'primary', go:'fp2_retry' },
+    { title:'Just show me<br>the answer', tone:'plain', go:'fp2_et_wrong2' },
+    { title:"Let's find out<br>why!", tone:'primary', go:'fp2_retry' },
   ],
   spec:['적용 조건: FP2 오답 & FP1도 오답 (이미 scaffolding 1회 받은 학생), M17 직후','말풍선 좌→우 순차 (Slide7과 동일 꼬리)','Quick Exit 1) "정답 바로 확인": M016C Answer Reveal → CA 마무리 멘트 → 전략 카드 → M22','2) "왜 틀렸는지 공부": M18/M19 표준 오답 흐름 진행 … M22 진행 후 학습 종료'],
 },

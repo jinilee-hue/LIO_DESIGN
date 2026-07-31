@@ -86,9 +86,10 @@ body{background:radial-gradient(1100px 600px at 50% 0%,#f5ecd6,#e7d8ba)}
 
 /* ══════════ 인트로/센터 : 일러스트 배경 (A_Intro_cut) ══════════ */
 /* 스킬 선택 전(인트로 cut1~cut3)까지는 헤더 없음 (기획서와 달리 풀블리드) */
-.scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd, .scr-fp2_intro .hd, .scr-game .hd{display:none}
+.scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd, .scr-fp2_intro .hd, .scr-fp2_intro_cut2 .hd, .scr-game .hd{display:none}
 /* 말풍선 강조색 (Figma 원본) */
 .ib-bubble .nm{color:#2fa46f;font-weight:800}      /* Maya = 초록 */
+.ib-bubble .lio-nm{font-weight:800;color:inherit}  /* LIO = 본문색 · 굵게 */
 .ib-bubble .mi{color:#e0479e;font-weight:800}      /* Determining Main Ideas = 핑크 */
 /* 말풍선 폭 + 위치 — 텍스트 줄 길이에 맞춰 폭이 줄어들고 좌우 패딩 동일 */
 .introseq .ib,
@@ -211,7 +212,7 @@ body{background:radial-gradient(1100px 600px at 50% 0%,#f5ecd6,#e7d8ba)}
   overflow:hidden;padding:clamp(8px,1.4cqw,16px) clamp(10px,1.8cqw,22px);box-sizing:border-box;
 }
 .a-skill .skill-card,.a-skill .skill-card.today{background:transparent;border:none;box-shadow:none;padding:0;transform:none;transform-origin:center center;will-change:transform;min-height:0}
-.a-skill .skill-card .sc-icon{width:100%;max-width:clamp(72px,16cqw,200px);margin:0 auto;aspect-ratio:180/240;height:auto;filter:drop-shadow(0 10px 14px rgba(120,70,10,.30))}
+.a-skill .skill-card .sc-icon{width:100%;max-width:clamp(80px,17.5cqw,220px);margin:0 auto;aspect-ratio:180/240;height:auto;filter:drop-shadow(0 10px 14px rgba(120,70,10,.30))}
 .a-skill .skill-card .sc-icon img{width:100%;height:100%;object-fit:contain}
 .a-skill .skill-card .sc-name{display:none}
 .a-skill .skill-mascot{position:absolute;left:clamp(10px,1.8cqw,22px);bottom:clamp(12px,2cqw,24px);width:clamp(80px,13cqw,158px);height:auto;z-index:2;pointer-events:none}
@@ -398,13 +399,15 @@ body{background:radial-gradient(1100px 600px at 50% 0%,#f5ecd6,#e7d8ba)}
 
 /* ===== slide 19 확장 : Teach · Memory · Detective · Explore (Storybook 톤) ===== */
 .layout-memory .screen,.layout-detective .screen{background:#E5EBF2}
+/* Memory Match Hint — Figma/요청 #FFE169 */
+.mem-hint{background:#FFE169;color:#1E2A4A}
 .tcard .tc-w,.gp-btn,.det-card,.det-clue-head,.mem-pairs,.mem-hint,.mem-peek,
 .td-w,.td-extag,.mc-front.word b,.exi .exi-w{font-family:'Inter',sans-serif}
 .gp-btn.active{background:#0f9d6c;border-color:#0f9d6c}
 .det-clue-head{color:#1E2A4A}
 .det-card{color:#3a4560;background:#fffaf0;border-color:#ecddc0}
 .det-card:hover{box-shadow:0 8px 20px rgba(60,70,110,.16)}
-.mc-back{background:#1E2A4A}
+.mc-back{background:#1E2A4A;color:#c5d6f5;font-family:'Fredoka','Baloo 2',sans-serif;font-weight:600}
 /* Teach 단어 카드 : 이모지 보기(emoji-opt)와 동일한 크림/베이지 톤으로 통일 */
 .tcard{background:#fffaf0;border-color:#ecddc0}
 /* Skill Practice CTA : 기획서 딥그린 버튼 */

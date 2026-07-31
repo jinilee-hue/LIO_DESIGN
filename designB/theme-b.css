@@ -43,13 +43,18 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .device{
   --fz-hd-title: clamp(15px,   1.62cqw, 24px);   /* 헤더 우측 화면명 */
   --fz-hd-meta:  clamp(11.5px, 1.15cqw, 16px);   /* STEP · 스킬명 */
-  --fz-intro:    clamp(17px,   2.05cqw, 30px);   /* 토픽 헤드라인 */
+  --fz-intro:    clamp(17px,   2.05cqw, 30px);   /* 레거시 */
+  /* Figma B_Topic_list 114:1488 — Medium 36 / ExtraBold 60 @ 1577 */
+  --fz-topic-sub:  clamp(18px, 2.28cqw, 36px);
+  --fz-topic-main: clamp(28px, 3.80cqw, 60px);
   /* 인트로 본문 : Figma B_Intro_cut2 실측 — 줄 피치 64/1400 = 4.571cqw,
      line-height 1.45 기준 폰트 3.15cqw. 기존 2.05cqw 는 54% 작았다. */
   --fz-introtxt: clamp(20px,   3.15cqw, 46px);   /* 인트로 본문 */
   /* Figma cut1 Button_go 실측 : pill 106px / 캡높이 ≈23px → 폰트 ≈2.3cqw.
      기존 1.85cqw 는 약 24% 작았다. */
   --fz-cta:      clamp(17px,   2.30cqw, 34px);   /* Let's Go 등 CTA */
+  /* CTA 셰브론 원 — 버튼 높이와 분리 (축소 전 120×48% ≈ 58 유지) */
+  --cta-chev:    clamp(40px, 4.8cqw, 58px);
   --fz-headline: clamp(22px,   3.30cqw, 48px);   /* skill 헤드라인 (2줄 · 확대) */
   --fz-title-md: clamp(16px,   1.90cqw, 26px);   /* 게임 제목 · 단어 카드 앞면 */
   /* 카드 라벨은 카드 폭이 곧 상자라서 px 하한을 크게 두면 저해상도에서 넘친다.
@@ -69,7 +74,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .qlabel{font-size:var(--fz-ui-sm)}
 .choice .ckey,.choice .cbullet{font-size:var(--fz-ui-sm)}
 .sysline span,.note,.et-label,.wordchip,.emoji-opt,
-.actcard .ac-title,.actcard .ac-sub{font-size:var(--fz-ui)}
+.actcard .ac-title,.actcard .ac-sub{font-family:var(--font-head);font-size:var(--fz-ui)}
+.actcard .ac-title{font-weight:800}
 .msgcard p{font-size:var(--fz-bubble)}
 .think-bubble,.mi-ic,.eo-ic,.tcard .tc-emoji,.td-ic,
 .ff-front .ff-emo,.msg .avatar.grad{font-size:var(--fz-emoji)}
@@ -152,7 +158,14 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    Figma B 는 전 화면 Nunito 이므로 지문·질문·선택지까지 Nunito 로 덮는다. */
 .reading .passage,
 .reading .activity,
-.ppara,.qtext,.choice,.msg .bubble,.listen-btn{font-family:var(--font-body)}
+.ppara,.qtext,.choice,.msg .bubble,.listen-btn,
+.menu-item,.et-label,.chatinput input,
+.reading .activity .btn,.reading .btn{font-family:var(--font-body)}
+/* Complete 배너 등 — base Inter 하드코딩 덮기 */
+.reading .activity .actcard,
+.reading .activity .actcard .ac-title,
+.reading .activity .actcard .ac-sub{font-family:var(--font-head)}
+.reading .activity .actcard .ac-title{font-weight:800}
 /* 지문 : A 와 동일한 크기·행간 (이전엔 0.94배 축소 + 1.68 이라 A 보다 작았다) */
 .ppara{color:#2b3550;font-size:var(--fz-passage);line-height:1.9}
 .passage .kw{color:#33415e;background:#e7edf7;font-weight:600;
@@ -211,6 +224,11 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .btn.dark{background:linear-gradient(180deg,#2FB471,#26A063)}   /* green 과 같은 계열로 맞춤 */
 .btn.purple{background:linear-gradient(180deg,#9366ff,#7C4DFF)}
 .btn.orange{background:linear-gradient(180deg,#ffab3d,#F08A24)}
+/* 전송(종이비행기) : base 주황 radial → B 파란 톤앤매너 */
+.btn.btn-send,
+.btn.primary.btn-send{
+  background:radial-gradient(circle at 32% 28%,#5B84F5 0%,#3E69E6 48%,#2E58DC 100%);
+  color:#fff}
 /* Figma A_Intro_cut3 버튼 유지 */
 .btn.figma-green{background:#009d54;border:4px solid #00763f;border-radius:50px;box-shadow:none;font-family:'Nunito',sans-serif;font-weight:900}
 .btn.figma-navy{background:#1E2A4A;border:4px solid #18223c;border-radius:50px;box-shadow:none;font-family:'Nunito',sans-serif;font-weight:900}
@@ -236,7 +254,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    말풍선 없이 흰 텍스트가 배경 위에 바로 올라간다.
    .introseq 의 배경 일러스트는 flow-data(공용)의 inline style 이라 손대지 않고
    ::before 오버레이로 덮는다. (마스코트 z-index:3, 말풍선 z-index:2 는 위에 남는다) */
-.scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd, .scr-fp2_intro .hd{display:none}
+.scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd, .scr-fp2_intro .hd, .scr-fp2_intro_cut2 .hd{display:none}
 /* 배경 = 소형 로고(좌상단) + Figma 마스코트(좌측, 물결 위) + 하단 3겹 물결 + 플랫 블루.
    마스코트 크기·위치는 Figma 좌표 기준 : lio 프레임 673/1072 = 높이 62.8%,
    좌측 x=115/1577 ≈ 7.3% (cut2) · x=59/1577 ≈ 3.7% (Game/FP Intro) */
@@ -247,13 +265,29 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
     url("../IMAGE/b/wave_back.svg")  repeat-x left bottom / 100% 31.25%,
     /* 요청 : slide 6 의 lio 를 slide 5(splash)와 같은 크기·위치로 통일 */
     var(--b-intro-lio, none) no-repeat left 9.1% bottom 44% / auto 64%,
+    /* LIO 발 밑 자연스러운 접지 그림자 */
+    radial-gradient(ellipse 20% 5% at 23.5% 56%,
+      rgba(6,18,52,.42) 0%, rgba(6,18,52,.22) 38%, transparent 72%),
     #1C4BD6}
 .scr-greeting  .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_cut2.png")}
 /* cut3 는 Figma B 에 별도 프레임이 없다. 같은 배경·마스코트로 이어지며
    남은 두 문장만 바뀌는 구성이라 cut2 에셋을 그대로 쓴다. */
 .scr-greeting_cut3 .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_cut2.png")}
 .scr-plan      .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_plan.png")}
-.scr-fp2_intro .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_fp2.png")}
+.scr-fp2_intro .introseq{--b-intro-lio:url("../IMAGE/lio7.png")}
+.scr-fp2_intro_cut2 .introseq{--b-intro-lio:url("../IMAGE/lio7.png")}
+/* lio7 : 책을 더 보이게 기본(64%)보다 살짝 축소 */
+.scr-fp2_intro .introseq::before,
+.scr-fp2_intro_cut2 .introseq::before{
+  background-size:
+    106.912% 31.25%,
+    100% 31.25%,
+    100% 31.25%,
+    auto 54%,
+    auto,
+    auto}
+/* cut2는 문장 1줄 + 버튼 → 텍스트를 조금 올려 버튼과 여유 확보 */
+.scr-fp2_intro_cut2 .introseq .ib-layer{top:28%;bottom:22%}
 .introseq .introseq-scrim{display:none}
 /* 좌상단 로고를 배경 스택에서 떼어 별도 레이어로 둔다 (::before 는 배경·물결·마스코트).
    slide 5 는 대형 로고가 우측 중앙에 있고, slide 6 에서 좌상단으로 축소·이동한다.
@@ -289,12 +323,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .introseq .introseq-next{display:inline-flex!important}
 .introseq .ib-bubble{background:transparent;box-shadow:none;color:#fff;padding:0}
 .introseq .ib-bubble::after{display:none}
-.introseq .ib-bubble .nm{color:var(--accent);font-weight:800}
+.introseq .ib-bubble .nm{color:#FFE169;font-weight:800}
+.introseq .ib-bubble .lio-nm{font-weight:800;color:inherit}
 .introseq .ib-bubble .mi{color:#3EE0D0;font-weight:800}
 .introseq .ib-spk{color:#cfe0ff}
-/* Quick Exit 계열은 기존 흰 말풍선 유지 (Figma 인트로 규칙을 적용하지 않는다) */
-.quickexit .ib-bubble .nm{color:#2fa46f;font-weight:800}
-.quickexit .ib-bubble .mi{color:#7C4DFF;font-weight:800}
+/* Quick Exit(slide 46) 도 intro 타입과 동일 블루 씬으로 통일 — 아래 .scr-quick_exit 참고 */
+.quickexit .ib-bubble .nm{color:#FFE169;font-weight:800}
+.quickexit .ib-bubble .mi{color:#3EE0D0;font-weight:800}
 .introseq .ib-bubble,
 .quickexit .ib-bubble{
   font-family:var(--font-body);
@@ -310,11 +345,12 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .introseq .introseq-next.btn,
 .introseq .introseq-next.btn.primary{
   position:absolute;left:60.1%;bottom:21.2%;transform:none;
-  width:21.5%;height:11%;min-height:0;padding:0 clamp(46px,5.4cqw,66px) 0 clamp(18px,2.4cqw,30px);
-  box-sizing:border-box;display:inline-flex;align-items:center;
-  border-radius:999px;font-size:0;color:var(--primary);
+  width:21.5%;height:9.1%;min-height:0;
+  padding:0 calc(var(--cta-chev) + clamp(8px,1cqw,13px)) 0 clamp(8px,1cqw,13px);
+  box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:999px;font-size:0;color:var(--primary);text-align:center;
   background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
-  background-size:auto 48%;
+  background-size:var(--cta-chev) var(--cta-chev);
   box-shadow:0 10px 26px rgba(6,26,84,.24)}
 .introseq .introseq-next::before{content:"Let's Go!";
   font-family:var(--font-head);font-weight:800;font-size:var(--fz-cta);letter-spacing:-.2px}
@@ -323,7 +359,114 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .quickexit .ib-left{left:18%;top:11%}
 .quickexit .ib-right{right:18%;top:24%}
 .quickexit .ib-bubble{max-width:min(34vw,320px)}
-.scr-post_skill_pick .quickexit .ib-right{right:6%;top:22%}
+
+/* ── Quick Exit (slide 46·49) : greeting/plan/fp2 와 동일 intro 블루 씬 ── */
+.scr-quick_exit .hd,
+.scr-post_skill_pick .hd{display:none}
+.scr-quick_exit .quickexit.has-bg,
+.scr-post_skill_pick .quickexit.has-bg{
+  background:#1C4BD6 !important;background-image:none !important}
+.scr-quick_exit .qe-scrim,
+.scr-post_skill_pick .qe-scrim{display:none}
+.scr-quick_exit .quickexit::before,
+.scr-post_skill_pick .quickexit::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    url("../IMAGE/b/wave_front.svg") repeat-x left bottom / 106.912% 31.25%,
+    url("../IMAGE/b/wave_mid.svg")   repeat-x left bottom / 100% 31.25%,
+    url("../IMAGE/b/wave_back.svg")  repeat-x left bottom / 100% 31.25%,
+    var(--b-qe-lio, url("../IMAGE/b/lio_intro_fp2.png")) no-repeat left 9.1% bottom 44% / auto 64%,
+    radial-gradient(ellipse 20% 5% at 23.5% 56%,
+      rgba(6,18,52,.42) 0%, rgba(6,18,52,.22) 38%, transparent 72%),
+    #1C4BD6}
+.scr-post_skill_pick .quickexit{--b-qe-lio:url("../IMAGE/lio5.png")}
+.scr-quick_exit .quickexit::after,
+.scr-post_skill_pick .quickexit::after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px)}
+/* 말풍선 제거 → 우측 흰 본문 (introseq 와 동일) */
+.scr-quick_exit .quickexit .ib-layer,
+.scr-post_skill_pick .quickexit .ib-layer{
+  left:46.9%;right:8.6%;top:28%;bottom:34%;
+  display:flex;flex-direction:column;justify-content:flex-start;gap:.45em;z-index:3}
+.scr-quick_exit .quickexit .ib,
+.scr-post_skill_pick .quickexit .ib{
+  position:static !important;left:auto !important;right:auto !important;
+  top:auto !important;bottom:auto !important;max-width:100%;transform:none}
+.scr-quick_exit .quickexit .ib-bubble,
+.scr-post_skill_pick .quickexit .ib-bubble{
+  background:transparent;box-shadow:none;color:#fff;padding:0;max-width:none}
+.scr-quick_exit .quickexit .ib-bubble::after,
+.scr-post_skill_pick .quickexit .ib-bubble::after{display:none}
+/* slide 46·49 : 우측 텍스트 그리드에 CTA 정렬 (49와 동일 pill 스타일) */
+.scr-quick_exit .qe-cards,
+.scr-post_skill_pick .qe-actions{
+  z-index:5;left:46.9%;right:8.6%;width:auto;max-width:none;
+  transform:none;justify-content:flex-start;
+  display:flex;gap:clamp(10px,1.4cqw,16px);
+  bottom:clamp(72px,14cqw,160px)}
+.scr-quick_exit .quickexit .ib-layer,
+.scr-post_skill_pick .quickexit .ib-layer{bottom:28%}
+/* slide 46 cards → 49 CTA pill (영어 2줄 허용) */
+.scr-quick_exit .qe-card{
+  flex:1 1 0;border:none;border-radius:999px;cursor:pointer;
+  min-height:clamp(64px,8.5cqw,112px);height:auto;
+  padding:clamp(10px,1.2cqw,16px) calc(var(--cta-chev) + clamp(10px,1.2cqw,18px)) clamp(10px,1.2cqw,16px) clamp(12px,1.4cqw,20px);
+  box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+  background-size:var(--cta-chev) var(--cta-chev);
+  box-shadow:0 10px 26px rgba(6,26,84,.24);
+  transition:box-shadow .18s}
+.scr-quick_exit .qe-card .qe-sub{display:none}
+.scr-quick_exit .qe-card .qe-title{
+  font-family:var(--font-head);font-weight:800;font-size:clamp(14px,1.9cqw,28px);
+  letter-spacing:-.2px;line-height:1.2;text-align:center;white-space:normal}
+/* plain(정답 바로 확인) — Finish 톤 남색 */
+.scr-quick_exit .qe-card.plain{
+  color:#fff;
+  background:#02195C url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='white'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='%2302195C' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
+  background-size:var(--cta-chev) var(--cta-chev)}
+.scr-quick_exit .qe-card.plain .qe-title{color:#fff}
+/* primary(왜 틀렸는지) — Let's Go 톤 흰 */
+.scr-quick_exit .qe-card.primary{
+  color:var(--primary);
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
+  background-size:var(--cta-chev) var(--cta-chev);
+  box-shadow:0 10px 26px rgba(6,26,84,.24)}
+.scr-quick_exit .qe-card.primary .qe-title{color:var(--primary)}
+.scr-quick_exit .qe-card:hover{animation:bChevNudge .9s ease-in-out infinite;
+  box-shadow:0 14px 32px rgba(6,26,84,.32);transform:none}
+@media (prefers-reduced-motion:reduce){
+  .scr-quick_exit .qe-card:hover{animation:none}
+}
+/* slide 49 CTA : Another skill = Let's Go(흰 pill+파란 원), Finish = 남색 pill+흰 원 */
+.scr-post_skill_pick .qe-imgbtn img{display:none}
+.scr-post_skill_pick .qe-imgbtn{
+  width:auto;flex:1 1 0;height:clamp(48px,6.3cqw,100px);
+  min-height:0;min-width:0;border:none;cursor:pointer;
+  padding:0 calc(var(--cta-chev) + clamp(8px,1cqw,13px)) 0 clamp(8px,1cqw,13px);
+  box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:999px;font-size:0;line-height:1;text-align:center;
+  background-size:var(--cta-chev) var(--cta-chev);
+  box-shadow:0 10px 26px rgba(6,26,84,.24);
+  transition:box-shadow .18s}
+.scr-post_skill_pick .qe-imgbtn::before{
+  font-family:var(--font-head);font-weight:800;font-size:var(--fz-cta);
+  letter-spacing:-.2px;line-height:1.2;white-space:nowrap}
+/* Another skill — Let's Go 톤 */
+.scr-post_skill_pick .qe-imgbtn:first-child{
+  color:var(--primary);
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
+  background-size:var(--cta-chev) var(--cta-chev)}
+.scr-post_skill_pick .qe-imgbtn:first-child::before{content:"Another skill";color:var(--primary)}
+/* Finish — 짙은 남색 pill + 흰 원 + 남색 셰브론 */
+.scr-post_skill_pick .qe-imgbtn:last-child{
+  color:#fff;
+  background:#02195C url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='white'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='%2302195C' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
+  background-size:var(--cta-chev) var(--cta-chev)}
+.scr-post_skill_pick .qe-imgbtn:last-child::before{content:"Finish";color:#fff}
+.scr-post_skill_pick .qe-imgbtn:hover{animation:bChevNudge .9s ease-in-out infinite;
+  box-shadow:0 14px 32px rgba(6,26,84,.32)}
+@media (prefers-reduced-motion:reduce){
+  .scr-post_skill_pick .qe-imgbtn:hover{animation:none}
+}
 
 /* ── skill 화면 : Figma B_Skill_list (114:1066) · B_Skill_selected (114:1230) ──
    배경 네이비 #02195C + 동심원(#1C4BD6 / #335DDA / #0F2564) + 최하단 물결 #2B5CE6.
@@ -374,16 +517,19 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 헤드라인은 LIO 위(좌상단 로고 아래)에 놓는다 */
 /* 마크업은 "Let's find<br>your skill!" 이라 원래 2줄이다.
    폭이 좁아 4줄로 접혔던 것 → 폭을 넓히고 줄바꿈을 막아 정확히 2줄로 둔다. */
-.skillscreen:not(.selected) .skill-headline{position:absolute;left:3%;top:8%;
-  width:30%;max-width:30%;text-align:left;z-index:6;line-height:1.18;
+.skillscreen:not(.selected) .skill-headline{position:absolute;left:calc(3% + 40px);top:calc(8% + 20px);
+  width:45%;max-width:45%;text-align:left;z-index:6;line-height:1.02;
+  font-size:clamp(24px,3.6cqw,52px);
   text-shadow:0 3px 14px rgba(2,25,92,.65)}
 .skillscreen:not(.selected) .skill-headline br{display:block}
+.skillscreen:not(.selected) .skill-headline-l2{display:inline-block;margin-left:50px}
 /* 카드 : flow-data 의 --sc 는 A 팔레트이므로 B 전용 --scB 로 덮는다 */
-.skill-card{background:var(--scB,#3593FF);border:none;border-radius:20px;position:relative;z-index:1}
+.skill-card{background:var(--scB,#3593FF);border:none;border-radius:20px;position:relative;z-index:1;cursor:pointer}
 .skill-card::after{content:'';position:absolute;inset:7px;pointer-events:none;
   border:2px dashed rgba(255,255,255,.92);border-radius:13px}
 .skill-card .sc-name{color:#fff;font-family:var(--font-head);font-weight:800;
-  font-size:var(--fz-cardname);line-height:1.15;overflow:hidden}
+  font-size:clamp(12px,1.72cqw,26px);line-height:1.12;overflow:hidden;
+  text-align:center;padding:0 6%}
 .skill-card.today,
 .skill-card.pickable.on,
 .skill-card.pickable.today{background:var(--scB,#3593FF);border-color:transparent;
@@ -422,7 +568,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* LIO 폭은 높이에 비례(높이 64%일 때 약 24.7%)한다. 화면 왼쪽 끝에 두면서 카드와
    겹치려면 폭이 51% 이상이어야 해 불가능하므로, 카드 첫 열에 살짝 걸치는 위치로 둔다.
    (74%/left25% 는 첫·둘째 열을 다 덮어 카드가 가려졌다) */
-.skillscreen .skill-mascot{position:absolute;left:27%;bottom:9%;
+/* 카드 첫 열(Main Ideas 등)에 몸만 살짝 걸치도록. left 음수는 왼쪽이 잘림 */
+.skillscreen .skill-mascot{position:absolute;left:10%;bottom:9%;
   height:66%;width:auto;max-width:none;max-height:none;z-index:5;pointer-events:none}
 .skill-card[data-skill="0"]{grid-area:1/1}   /* Main Ideas */
 .skill-card[data-skill="1"]{grid-area:1/3}   /* Recalling Facts 1 */
@@ -454,6 +601,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
      그래도 렌더될 경우 Figma 대로 보이도록 a-skill 없는 선택자로 스타일만 준비해 둔다. */
 .skillscreen.selected,
 .skillscreen.found{background:#02195C}
+/* 선택 시 배경 소나 원·뒤 카드 점선이 큰 카드 가장자리에서 하얀 원처럼 보임 → 숨김 */
+.skillscreen.selected::before,
+.skillscreen.found::before{content:none !important;display:none !important;animation:none !important;background:none !important}
+.skillscreen.selected .think-bubble,
+.skillscreen.found .think-bubble{display:none !important}
+.skillscreen.selected .skill-grid .skill-card::after,
+.skillscreen.found .skill-grid .skill-card::after{display:none !important}
 .skillscreen.selected .skill-grid.dim,
 .skillscreen.found .skill-grid.dim{opacity:.5;filter:blur(7px);pointer-events:none}
 .skillscreen.selected .skill-mascot,
@@ -465,33 +619,65 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    헤드라인 "I found your skills!" x 5~29% · y 47.0~56.6% (마스코트 왼쪽)
    마스코트는 그 오른쪽에서 화면 하단까지 */
 .skillscreen.selected .skillsel-card,
-.skillscreen.found .skillsel-card{position:absolute;left:64.75%;top:49.25%;
+.skillscreen.found .skillsel-card{position:absolute;left:calc(64.75% + 60px);top:49.25%;
   transform:translate(-50%,-50%);z-index:3;pointer-events:none;
-  width:32.9%;aspect-ratio:519/638;border-radius:26px;background:#3593FF;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 18px 40px rgba(0,0,0,.4)}
+  width:32.9%;aspect-ratio:519/638;border-radius:26px;background:var(--scB,#3593FF);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2%;
+  box-shadow:0 18px 40px rgba(0,0,0,.4);overflow:hidden}
 .skillscreen.selected .skillsel-card::after,
 .skillscreen.found .skillsel-card::after{content:'';position:absolute;inset:10px;
-  border:2px dashed rgba(255,255,255,.92);border-radius:14px}
+  border:2px dashed rgba(255,255,255,.92);border-radius:14px;pointer-events:none}
 .skillscreen.selected .skillsel-card img,
-.skillscreen.found .skillsel-card img{width:62%;height:auto}
+.skillscreen.found .skillsel-card img{width:62%;height:auto;position:relative;z-index:1}
+.skillscreen.selected .skillsel-card .sc-name,
+.skillscreen.found .skillsel-card .sc-name{position:relative;z-index:1;color:#fff;
+  font-family:var(--font-head);font-weight:800;font-size:clamp(28px,3.6cqw,56px);
+  text-align:center;padding:0 6%;line-height:1.1}
 .skillscreen.selected .skillsel-mascot,
-.skillscreen.found .skillsel-mascot{position:absolute;left:26%;bottom:9%;
-  height:66%;width:auto;z-index:4;pointer-events:none;transform:none}
+.skillscreen.found .skillsel-mascot{position:absolute;left:calc(26% - 30px);top:49.25%;bottom:auto;
+  height:66%;width:auto;z-index:4;pointer-events:none;transform:translateY(-50%)}
 /* 헤드라인은 마스코트 왼쪽에 놓고 위로 올린다 (기존엔 마스코트에 가려 잘렸다) */
+/* Figma 114:1305 "I found\n  your skills!" — 2줄, 둘째 줄 들여쓰기 */
 .skillscreen.selected .skill-headline,
 .skillscreen.found .skill-headline{position:absolute;left:5%;top:46.5%;
   max-width:26%;text-align:left;z-index:6;line-height:1.15}
+.skillscreen.selected .skill-headline-l2,
+.skillscreen.found .skill-headline-l2{display:inline-block;margin-left:1.2em}
 
-/* ── game 화면 : Figma B_Game (162:14) 은 풀블리드 일러스트다.
-   프로토의 game 화면은 인터랙션이 있어 일러스트를 배경으로 깔고 패널을 위에 둔다. */
+/* Let's Go : Figma Button_go (258:1860) — 흰 pill + 파란 셰브론.
+   프레임 대비 x109 y726 / 340×120 → left 6.9% · bottom 21.1% · w 21.6% · h 11.2% */
+.skillfound-overlay{position:absolute;inset:0;z-index:5;pointer-events:none}
+.skillscreen.selected .skillsel-go,
+.skillscreen.found .skillsel-go{
+  position:absolute;left:6.9%;bottom:21.1%;z-index:7;pointer-events:auto;cursor:pointer;
+  width:21.6%;height:9.3%;min-height:0;
+  padding:0 calc(var(--cta-chev) + clamp(8px,1cqw,13px)) 0 clamp(8px,1cqw,13px);
+  box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;border:none;
+  border-radius:999px;font-size:0;color:var(--primary);text-align:center;
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
+  background-size:var(--cta-chev) var(--cta-chev);
+  box-shadow:0 10px 26px rgba(6,26,84,.24);
+  transition:box-shadow .18s}
+.skillscreen.selected .skillsel-go::before,
+.skillscreen.found .skillsel-go::before{content:"Let's Go!";
+  font-family:var(--font-head);font-weight:800;font-size:var(--fz-cta);letter-spacing:-.2px}
+
+/* ── game 화면 : Figma B_Game — 썸네일 풀블리드, 헤더·오버레이 없음 ── */
+.scr-game .hd{display:none}
+.gamescreen.b-game{
+  position:absolute;inset:0;display:block;overflow:hidden;cursor:pointer;
+  background:#0a3d6e;margin:0;padding:0;border:none;width:100%;height:100%}
+.gamescreen.b-game::before{display:none}
+.gamescreen.b-game .game-illust{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;pointer-events:none;display:block}
+
+/* (레거시 스plit 레이아웃용 — B 풀블리드에서는 미사용) */
 .gamescreen{background:url("../IMAGE/b/game_bg.jpg") no-repeat center center / cover;
   position:relative}
 .gamescreen::before{content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(2,25,92,.30),rgba(2,25,92,.55));pointer-events:none}
 .gamescreen > *{position:relative;z-index:1}
-/* 일러스트 위에 반투명 흰 패널을 얹으면 글자가 뭉개진다 → 좌측은 네이비 글래스,
-   우측 전환 카드는 불투명 흰색으로 대비를 확보한다. */
 .gamescreen .game-board{background:rgba(2,25,92,.80);border-radius:18px;margin:2.2%;
   padding:3% 3.4%;box-shadow:0 14px 34px rgba(0,0,0,.32)}
 .gamescreen .game-board .game-title{color:#fff}
@@ -504,10 +690,18 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 
 /* ── topic 화면 : Figma B_Topic_list ──
    마스코트가 상단 중앙 → 헤드라인 → 카드 1×6 → 카드 밖 라벨 + 넓은 체크 pill */
-.topic-lio{flex-direction:column;gap:6px;text-align:center;max-width:900px}
-/* px 하한을 크게 두면 저해상도에서 세로가 넘쳐 Continue 가 잘린다 → 하한을 낮춘다 */
-.topic-lio img{width:auto;height:clamp(34px,6.4cqw,86px);aspect-ratio:1}
-.topic-line{font-size:var(--fz-intro);color:var(--b-text);line-height:1.4}
+.topic-lio{flex-direction:column;gap:clamp(4px,.6cqw,8px);text-align:center;max-width:min(96%,1200px)}
+/* Figma lio_face 1: 120×132 — 원형 크롭/1:1 강제 해제 */
+.topic-lio img{
+  width:auto;height:clamp(48px,8.37cqw,132px);
+  aspect-ratio:auto;border-radius:0;object-fit:contain;background:transparent}
+/* Figma 114:1488 — sub Medium 36 / main ExtraBold 60, leading 60, #1e2939 */
+.topic-line{color:#1e2939;line-height:1;font-family:var(--font-head)}
+.topic-line .tl-sub{
+  display:block;font-size:var(--fz-topic-sub);font-weight:500;line-height:1.67}
+.topic-line .tl-main{
+  display:block;font-size:var(--fz-topic-main);font-weight:800;line-height:1}
+.topic-line .nm{font-weight:inherit;color:inherit}
 /* 카드가 고정 비율이므로 그리드가 남은 높이를 먹지 않게 flex:0 0 auto 로 되돌린다
    (base.css 는 flex:1 1 auto — 그대로 두면 위아래로 여백이 벌어진다) */
 .topic-grid{grid-template-columns:repeat(6,1fr);grid-template-rows:auto;
@@ -516,18 +710,61 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 카드 배경·보더를 없애 이미지만 라운드로 떠 보이게 (Figma 는 라벨이 카드 밖) */
 .topic-card{background:transparent;border-color:transparent;border-radius:20px;gap:6px;
   padding-bottom:0;height:auto}
-/* Figma 카드 이미지 213×290 = 0.735 비율 유지 (안 잡으면 그리드 높이만큼 늘어남) */
+/* Figma 카드 이미지 213×290 — 일러스트 + 세로 그라데이션 (B_Topic_list)
+   1·6 #8EC5FF→#51A2FF / 2·4 #7BF1A8→#05DF72 / 3 #FDA5D5→#FB64B6 / 5 #FFB86A→#FF8904 */
 .topic-card .tc-img{
   border-radius:20px;flex:0 0 auto;aspect-ratio:213/290;width:100%;
-  background-size:cover;background-position:center;background-repeat:no-repeat;
-}
-.topic-card .tc-name{font-size:var(--fz-cardname);color:var(--b-text);
-  padding:2px 2px 0;line-height:1.15;overflow:hidden}
-.topic-card .tc-check{width:clamp(28px,4cqw,52px);height:clamp(16px,2.2cqw,28px);
-  border-radius:999px;background:#d3d8e2;font-size:var(--fz-ui);margin-bottom:2px}
+  background-color:var(--tc);
+  background-image:var(--tc-img),linear-gradient(180deg,var(--tc-from),var(--tc-to));
+  background-size:70%,auto;background-position:center,0 0;background-repeat:no-repeat;
+  box-shadow:0 20px 25px -5px rgba(0,0,0,.10),0 8px 10px -6px rgba(0,0,0,.10)}
+/* 카드별 광학 균형 — 기본 70%, 여백 많은 장은 키움 */
+.topic-card:nth-child(2) .tc-img,
+.topic-card:nth-child(3) .tc-img,
+.topic-card:nth-child(4) .tc-img{background-size:80%,auto}
+.topic-card:nth-child(1) .tc-img,
+.topic-card:nth-child(6) .tc-img{background-size:88%,auto}
+.topic-card:nth-child(5) .tc-img{background-size:98%,auto;background-position:58% center,0 0}
+/* Figma 114:1496 — Nunito Black 24 / leading 32 / #1e2939 */
+.topic-card .tc-name{
+  font-family:var(--font-head);font-weight:900;
+  font-size:clamp(14px,1.52cqw,24px);line-height:1.33;
+  color:#1e2939;padding:clamp(4px,.8cqw,10px) 2px 0;overflow:visible;
+  white-space:nowrap}
+/* Figma Button 114:1497 — 73.5×44.6, off #D5D5D5+흰✓ / on #3262F0+노란✓ */
+.topic-card .tc-check{
+  width:clamp(44px,4.66cqw,74px);height:clamp(26px,2.83cqw,45px);
+  border-radius:0;margin-bottom:clamp(2px,.4cqw,6px);
+  background:url("../IMAGE/b/topic_check_off.svg") center / contain no-repeat;
+  color:transparent;font-size:0;opacity:1}
 .topic-card.on{border-color:transparent;box-shadow:none}
 .topic-card.on .tc-img{box-shadow:0 8px 20px rgba(30,81,214,.28)}
-.topic-card.on .tc-check{background:var(--primary);color:var(--accent)}
+.topic-card.on .tc-check{
+  background:url("../IMAGE/b/topic_check_on.svg") center / contain no-repeat;
+  color:transparent}
+
+/* Continue : Let's Go 와 동일 구조, 색만 반전 (파란 pill + 흰 원 + 파란 셰브론)
+   Figma Button_Continue 227:1814 — 340×120 / #155DFC */
+.topicscreen .continue-btn,
+.topicscreen .continue-btn.btn,
+.topicscreen .continue-btn.btn.primary{
+  width:clamp(180px,21.6cqw,340px);height:clamp(48px,6.3cqw,100px);
+  min-height:0;margin-top:clamp(4px,1cqw,12px);
+  padding:0 calc(var(--cta-chev) + clamp(8px,1cqw,13px)) 0 clamp(8px,1cqw,13px);
+  box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
+  border:none;border-radius:999px;font-size:0;line-height:1;color:#fff;cursor:pointer;text-align:center;
+  background:#155DFC url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='white'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='%23155DFC' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
+  background-size:var(--cta-chev) var(--cta-chev);
+  box-shadow:0 10px 26px rgba(6,26,84,.24);
+  transition:box-shadow .18s, opacity .18s}
+.topicscreen .continue-btn::before{content:"Continue";
+  font-family:var(--font-head);font-weight:800;font-size:var(--fz-cta);letter-spacing:-.2px;color:#fff}
+.topicscreen .continue-btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.topicscreen .continue-btn:not(:disabled):hover{animation:bChevNudge .9s ease-in-out infinite;
+  box-shadow:0 14px 32px rgba(6,26,84,.32)}
+@media (prefers-reduced-motion:reduce){
+  .topicscreen .continue-btn:not(:disabled):hover{animation:none}
+}
 
 /* ── word peek ── */
 .wp-line{color:#22315e}
@@ -539,7 +776,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .mc-front.word{background:#f2f5ff}
 .mc-front{border-color:#d7e0fa;color:var(--b-text)}
 .mc-front.word b{color:var(--b-text)}
-.mc-back{background:var(--primary);color:#cfdcff}
+.mc-back{background:var(--primary);color:#cfdcff;font-family:'Baloo 2','Nunito',sans-serif}
 .det-card{background:#f2f5ff;border-color:#d7e0fa;color:var(--b-text)}
 .det-clue-head{color:var(--b-navy)}
 /* Detective 보드 판 : A는 크림 + 노란 점선 */
@@ -592,18 +829,22 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
     url("../IMAGE/b/wave_front.svg") repeat-x left bottom / 106.912% 31.25%,
     url("../IMAGE/b/wave_mid.svg")   repeat-x left bottom / 100% 31.25%,
     url("../IMAGE/b/wave_back.svg")  repeat-x left bottom / 100% 31.25%,
-    url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 9.1% bottom 44% / auto 64%}
+    url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 9.1% bottom 44% / auto 64%,
+    /* LIO 발 밑 자연스러운 접지 그림자 */
+    radial-gradient(ellipse 20% 5% at 23.5% 56%,
+      rgba(6,18,52,.42) 0%, rgba(6,18,52,.22) 38%, transparent 72%)}
 /* Let's Go! pill : 장식용(탭 타깃은 .splash 전체) — 라벨을 Figma 문구로 표시 */
 .splash::after{content:"Let's Go!";position:absolute;z-index:2;pointer-events:none;
-  left:60.1%;top:67.8%;width:21.5%;height:11%;
-  display:flex;align-items:center;
-  box-sizing:border-box;padding:0 clamp(46px,5.4cqw,66px) 0 clamp(18px,2.4cqw,30px);
+  left:60.1%;top:67.8%;width:21.5%;height:9.1%;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  box-sizing:border-box;
+  padding:0 calc(var(--cta-chev) + clamp(8px,1cqw,13px)) 0 clamp(8px,1cqw,13px);
   font-family:var(--font-head);font-weight:800;color:var(--primary);
   font-size:var(--fz-cta);letter-spacing:-.2px;
   border-radius:999px;
   background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat;
   background-position:right clamp(8px,1cqw,13px) center;
-  background-size:auto 48%;
+  background-size:var(--cta-chev) var(--cta-chev);
   box-shadow:0 10px 26px rgba(6,26,84,.24)}
 
 /* ── bottom nav : 요청에 따라 미사용 ──
@@ -624,25 +865,35 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 @keyframes bWaveSplash{
   from{background-position:
     left 79.5% top 42.1%,          /* 로고 (고정) */
-    0 bottom, 0 bottom, 0 bottom,
-    left 9.1% bottom 44%}          /* 마스코트 (고정) */
+    0 bottom, 0 bottom, 0 bottom,  /* 물결 */
+    left 9.1% bottom 44%,          /* 마스코트 (고정) */
+    23.5% 56%}                     /* 그림자 (고정) */
   to  {background-position:
     left 79.5% top 42.1%,
     106.912cqw bottom, -200cqw bottom, 300cqw bottom,
-    left 9.1% bottom 44%}
+    left 9.1% bottom 44%,
+    23.5% 56%}
 }
-.introseq::before{animation:bWaveIntro 26s linear infinite}
+.introseq::before,
+.scr-quick_exit .quickexit::before,
+.scr-post_skill_pick .quickexit::before{animation:bWaveIntro 26s linear infinite}
 @keyframes bWaveIntro{
   from{background-position:
-    0 bottom, 0 bottom, 0 bottom,
-    left 9.1% bottom 44%}
+    0 bottom, 0 bottom, 0 bottom,  /* 물결 */
+    left 9.1% bottom 44%,          /* 마스코트 */
+    23.5% 56%,                     /* 그림자 */
+    0 0}                           /* 블루 필 */
   to  {background-position:
     106.912cqw bottom, -200cqw bottom, 300cqw bottom,
-    left 9.1% bottom 44%}
+    left 9.1% bottom 44%,
+    23.5% 56%,
+    0 0}
 }
 /* 모션 최소화를 원하는 사용자는 정지 */
 @media (prefers-reduced-motion:reduce){
-  .splash::before,.introseq::before{animation:none}
+  .splash::before,.introseq::before,
+  .scr-quick_exit .quickexit::before,
+  .scr-post_skill_pick .quickexit::before{animation:none}
 }
 
 /* ── Let's Go 버튼 hover 인터랙션 ────────────────────────────────────────
@@ -654,11 +905,16 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   50%    {background-position:right clamp(0px,0.1cqw,3px)  center}
 }
 .introseq .introseq-next:hover,
+.skillscreen.selected .skillsel-go:hover,
+.skillscreen.found .skillsel-go:hover,
 .splash:hover::after{animation:bChevNudge .9s ease-in-out infinite;
   box-shadow:0 14px 32px rgba(6,26,84,.32)}
 .introseq .introseq-next{transition:box-shadow .18s}
 @media (prefers-reduced-motion:reduce){
-  .introseq .introseq-next:hover,.splash:hover::after{animation:none}
+  .introseq .introseq-next:hover,
+  .skillscreen.selected .skillsel-go:hover,
+  .skillscreen.found .skillsel-go:hover,
+  .splash:hover::after{animation:none}
 }
 
 /* ── skill 카드 : 세로 컬럼 무한 스크롤 ────────────────────────────────
@@ -684,12 +940,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   margin-bottom:calc(-1 * clamp(8px,1.2cqw,12px));
   height:auto}
 .b-lane{position:relative;width:100%;height:68cqw;min-height:0;overflow:hidden}
-.b-lane-inner{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column}
+.b-lane-inner{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column;
+  will-change:transform;backface-visibility:hidden;transform:translateZ(0)}
 .b-lane-set{display:flex;flex-direction:column;gap:2.2cqw;flex:0 0 auto;
   padding-bottom:2.2cqw}                      /* 세트 사이 간격도 카드 간격과 같게 */
 /* .skill-card 가 height:100% 라서 셀에 확정 높이가 없으면 0 이 된다 → 카드 높이 명시 */
-.b-cell{height:18cqw;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
-.b-cell .skill-card{animation:none}           /* 카드는 흔들지 않는다 — 트랙이 움직인다 */
+.b-cell{height:19.8cqw;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.b-cell .skill-card{animation:none;height:100%;width:auto;max-height:100%}
 /* base 의 .skill-card.today{transform:scale(1.06)} 때문에 Main Ideas 만 6% 커 보였다.
    트랙에서는 모든 카드 크기를 같게 맞춘다. */
 .b-cell .skill-card.today{transform:none}
@@ -698,15 +955,15 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 같은 세트 2벌을 쌓고 한 세트 높이만큼만 이동한다 → 되돌아오는 순간 두 번째 벌이
    첫 벌 자리를 정확히 메워 이음매가 보이지 않고, 트랙이 비는 구간도 없다.
    1·3열은 위로(아래에서 올라옴), 2·4열은 아래로(위에서 내려옴). */
-@keyframes bLaneUp  {from{transform:translateY(0)}
-                     to  {transform:translateY(calc(-1 * var(--set)))}}
-@keyframes bLaneDown{from{transform:translateY(calc(-1 * var(--set)))}
-                     to  {transform:translateY(0)}}
+@keyframes bLaneUp  {from{transform:translate3d(0,0,0)}
+                     to  {transform:translate3d(0,calc(-1 * var(--set)),0)}}
+@keyframes bLaneDown{from{transform:translate3d(0,calc(-1 * var(--set)),0)}
+                     to  {transform:translate3d(0,0,0)}}
 /* 이동 거리(laneH + setH)가 컬럼마다 달라 체감 속도가 같도록 duration 을 맞춘다 */
-.skill-grid.b-laned .b-lane:nth-child(1) .b-lane-inner{--dur:17s}   /* 카드 3장 · 위로 */
-.skill-grid.b-laned .b-lane:nth-child(2) .b-lane-inner{--dur:12s}   /* 카드 1장 · 아래로 */
-.skill-grid.b-laned .b-lane:nth-child(3) .b-lane-inner{--dur:15s}   /* 카드 2장 · 위로 */
-.skill-grid.b-laned .b-lane:nth-child(4) .b-lane-inner{--dur:20s}   /* 카드 4장 · 아래로 */
+.skill-grid.b-laned .b-lane:nth-child(1) .b-lane-inner{--dur:12s}   /* 카드 3장 · 위로 */
+.skill-grid.b-laned .b-lane:nth-child(2) .b-lane-inner{--dur:9s}    /* 카드 1장 · 아래로 */
+.skill-grid.b-laned .b-lane:nth-child(3) .b-lane-inner{--dur:11s}   /* 카드 2장 · 위로 */
+.skill-grid.b-laned .b-lane:nth-child(4) .b-lane-inner{--dur:14s}   /* 카드 4장 · 아래로 */
 /* 선택 상태에서는 흐름을 멈춘다 */
 .skillscreen.selected .b-lane-inner{animation-play-state:paused}
 @media (prefers-reduced-motion:reduce){ .b-lane-inner{animation:none} }
@@ -715,23 +972,15 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen.selected .skill-card{animation:none}
 .skillscreen.selected .skill-grid.dim{opacity:.45;filter:blur(7px);pointer-events:none;
   transition:opacity .45s,filter .45s}
-.skillfound-overlay{position:absolute;inset:0;z-index:5;pointer-events:none}
 
 /* 물음표 말풍선 : base 는 .skill-left 기준 top30%/right16% 인데 마스코트를 절대배치로
    옮겼으므로 화면 기준으로 다시 잡는다. 요청대로 더 위·오른쪽으로. */
 /* slide 6 의 GO 말풍선과 같은 크기로 (자체 렌더 실측 지름 6.81cqw) 사자 오른쪽에 띄운다.
    LIO 는 left 27% + 폭 약 25.5% → 오른쪽 끝 ≈52.5%. 그 바로 밖에 배치. */
-/* 말풍선 : Figma #component 의 ic_question / ic_go / icon_hi (250:1834/1843/1837) 기준.
-   세 컴포넌트가 같은 말풍선 래스터를 공유하고 글자만 다른데, rawImage 에 "HI!" 가
-   박혀 있어 그대로는 물음표에 못 쓴다 → 실측 지오메트리(원 71×71 = r35.5, 프레임 97×94,
-   크림 #FEEBCD, 글자 #A35910)로 IMAGE/b/bubble.svg 에 동일 형태를 벡터로 재현했다.
-   크기는 Figma 기준 97/1577 = 6.15cqw. */
-.skillscreen:not(.selected) .think-bubble{position:absolute;top:23%;left:51%;right:auto;
+/* 말풍선 : Figma #component > ic_question (250:1834) PNG@4x → IMAGE/b/ic_question.png
+   (프레임 97×94, 크기는 Figma 기준 97/1577 = 6.15cqw) */
+.skillscreen:not(.selected) .think-bubble{position:absolute;top:23%;left:38%;right:auto;
   width:clamp(44px,6.15cqw,92px);height:auto;aspect-ratio:97/94;
-  background:url("../IMAGE/b/bubble.svg") no-repeat center / 100% 100%;
-  border-radius:0;box-shadow:none;
-  font-size:var(--fz-headline);font-weight:800;color:#A35910;z-index:6;
-  /* ⚠ 절대배치 요소의 퍼센트 padding 은 자기 크기가 아니라 컨테이너 폭(990px) 기준으로
-     계산된다 → 15% 가 148.5px 이 되어 박스가 194px 로 부풀고 글자가 밖으로 밀렸다.
-     원 중심이 프레임 세로 40/94 지점이므로 em 단위로 올린다. */
-  display:flex;align-items:center;justify-content:center;padding-bottom:.30em}
+  background:url("../IMAGE/b/ic_question.png") no-repeat center / contain;
+  border-radius:0;box-shadow:none;font-size:0;color:transparent;z-index:6;
+  display:block;padding:0}

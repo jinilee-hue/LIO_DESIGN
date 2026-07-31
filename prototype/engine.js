@@ -34,6 +34,19 @@
   const btnLong = (html) => (stripEmoji(html).replace(/▶/g, '').trim().split(/\s+/).filter(Boolean).length > 1 ? ' btn-long' : '');
   const skillIcon = (s) => IMG + (THEME === 'A' ? 'a_skill/' + s.aImg : 'b_skill/' + s.bImg);
   const mascot = (name) => IMG + (name || 'lio_face2.png');
+  // Figma B_Skill_list 라벨은 2줄. 표시용 HTML (평문 s.name 은 alt/로직에 유지)
+  const skillNameHtml = (s) => ({
+    'Main Ideas': 'Main<br>Ideas',
+    'Recalling Facts 1': 'Recalling<br>Facts 1',
+    'Recalling Facts 2': 'Recalling<br>Facts 2',
+    'Recalling Facts 3': 'Recalling<br>Facts 3',
+    'Drawing Conclusions': 'Drawing<br>Conclusions',
+    'Making Inferences': 'Making<br>Inferences',
+    'Cause & Effect': 'Cause &amp;<br>Effect',
+    'Analyzing Characters': 'Analyzing<br>Characters',
+    "Author's Purpose": "Author's<br>Purpose",
+    'Literary Genres': 'Literary<br>Genres'
+  })[s.name] || String(s.name).replace(' ', '<br>');
 
   const KR = '<span class="kr" role="button" tabindex="0" aria-label="한국어 번역">KR</span>';
   const TTS = '<img class="tts-ic" src="' + IMG + 'ui/spk_bubble.svg" alt="listen">';   // Figma 스피커 아이콘
@@ -196,16 +209,17 @@
       case 'choices': {
         const variant = b.variant ? ' ' + b.variant : '';
         const grade = b.grade ? ' grade' : '';
+        const instant = b.instantGrade ? ' instant-grade' : '';
         const items = b.items.map(it => {
-          // 채점 모드: 정오답은 data-state에만 저장(Check 전까지 숨김). 일반 모드: 기존처럼 즉시 표시.
-          const st = (!b.grade && it.state) ? ' ' + it.state : '';
+          // 채점/즉시채점 모드: 정오답은 data-state에만 저장(클릭·Check 전까지 숨김)
+          const st = (!b.grade && !b.instantGrade && it.state) ? ' ' + it.state : '';
           const ds = it.state ? ` data-state="${it.state}"` : '';
           const badge = b.variant === 'reason' || b.variant === 'multi'
             ? `<span class="cbullet">${it.k}</span>`
             : `<span class="ckey">${it.k}</span>`;
           return `<button class="choice${st}${variant}"${ds}>${badge}<span class="ctext">${txBlock(it.html, { kr: b.kr, krHtml: it.krHtml || it.kr })}</span></button>`;
         }).join('');
-        return `<div class="choices${variant}${grade}${b.hidden ? ' reveal-hidden' : ''}">${items}</div>`;
+        return `<div class="choices${variant}${grade}${instant}${b.hidden ? ' reveal-hidden' : ''}">${items}</div>`;
       }
       case 'menu': {
         const items = b.items.map(it => {
@@ -284,13 +298,16 @@
     const bubbles = s.bubbles.map((b, i) =>
       `<div class="ib ib-${b.side}" data-i="${i}"><div class="ib-bubble"><span class="ib-tx">${stripEmoji(kw(b.text))}</span></div></div>`
     ).join('');
+    const cta = s.ctaImg
+      ? `<button class="introseq-next imgbtn" data-advance style="display:none"><img src="${IMG + s.ctaImg}" alt="${s.cta || ''}"></button>`
+      : (s.cta
+        ? `<button class="btn primary introseq-next" data-advance style="display:none">${s.cta}</button>`
+        : '');
     return `<div class="introseq ${s.fadeIn ? 'fadein' : ''}" style="background-image:url('${IMG + s.image}')">
         <div class="introseq-scrim"></div>
         ${s.mascot ? `<img class="introseq-lio" src="${IMG + s.mascot}" alt="LIO">` : ''}
         <div class="ib-layer">${bubbles}</div>
-        ${s.ctaImg
-          ? `<button class="introseq-next imgbtn" data-advance style="display:none"><img src="${IMG + s.ctaImg}" alt="${s.cta || ''}"></button>`
-          : `<button class="btn primary introseq-next" data-advance style="display:none">${s.cta || "Let's go! ▶"}</button>`}
+        ${cta}
       </div>`;
   }
 
@@ -309,7 +326,7 @@
     const cards = F.SKILLS.map((s, i) =>
       `<div class="skill-card ${s.today && !pick ? 'today' : ''}${pick ? ' pickable' : ''}" data-skill="${i}" style="--sc:${s.color}">
          <div class="sc-icon"><img src="${skillIcon(s)}" alt=""></div>
-         <div class="sc-name">${s.name}</div>
+         <div class="sc-name">${skillNameHtml(s)}</div>
        </div>`).join('');
     const guide = pick
       ? `<div class="skill-pick-guide msg lio">
@@ -334,8 +351,8 @@
         ${guide}
         <div class="skill-left">
           <img class="skill-mascot" src="${mascot('lio2.png')}" alt="LIO">
-          <div class="think-bubble">?</div>
-          <div class="skill-headline">Let's find<br>your skill!</div>
+          <div class="think-bubble" aria-hidden="true"></div>
+          <div class="skill-headline">Let's find<br><span class="skill-headline-l2">your skill!</span></div>
         </div>
         <div class="skill-grid">${cards}</div>
         ${finish}
@@ -358,15 +375,15 @@
 
   function layoutTopic(scr) {
     const cards = F.TOPICS.map((t, i) =>
-      `<div class="topic-card" data-topic="${i}" style="--tc:${t.color}">
-         <div class="tc-img" style="background-image:url('${IMG + t.img}')"></div>
+      `<div class="topic-card" data-topic="${i}" style="--tc:${t.color};--tc-from:${t.from || t.color};--tc-to:${t.to || t.color}">
+         <div class="tc-img" style="--tc-img:url('${IMG + t.img}')"></div>
          <div class="tc-name">${t.name}</div>
          <div class="tc-check">✓</div>
        </div>`).join('');
     return `<div class="topicscreen">
-        <div class="topic-lio"><img src="${mascot('lio_face2.png')}" alt="LIO"><div class="topic-line">${kw(scr.lioLine)}</div></div>
+        <div class="topic-lio"><img src="${mascot(scr.mascot || 'lio_face.png')}" alt="LIO"><div class="topic-line">${kw(scr.lioLine)}</div></div>
         <div class="topic-grid">${cards}</div>
-        <button class="btn primary continue-btn" disabled data-advance>Continue ▶</button>
+        <button class="btn primary continue-btn" disabled data-advance aria-label="Continue">Continue</button>
       </div>`;
   }
 
@@ -378,6 +395,13 @@
           <div class="game-cta">${scr.gameCtaImg
             ? `<button class="imgbtn" data-advance><img src="${IMG + scr.gameCtaImg}" alt=""></button>`
             : `<button class="btn primary" data-advance>${scr.gameCta || "Let's go! ▶"}</button>`}</div>
+        </div>`;
+    }
+    // Design B : 게임 썸네일 풀블리드만 (헤더·UI 없음, 탭하면 다음)
+    if (THEME === 'B') {
+      const src = IMG + (scr.gameImageB || 'b/game_bg.jpg');
+      return `<div class="gamescreen b-game" data-advance role="button" tabindex="0" aria-label="Continue">
+          <img class="game-illust" src="${src}" alt="Game">
         </div>`;
     }
     const trans = scr.transition.map(m => `<p>${stripEmoji(kw(m))}</p>`).join('');
@@ -570,9 +594,9 @@
       bottom = `<div class="qe-actions${waitSeq ? ' qe-bottom-hidden' : ''}">${btns}</div>`;
     } else if (scr.cards && scr.cards.length) {
       const cards = scr.cards.map(c =>
-        `<div class="qe-card ${c.tone}" ${c.go ? `data-go="${c.go}"` : 'data-advance'}>
+        `<div class="qe-card ${c.tone || ''}" ${c.go ? `data-go="${c.go}"` : 'data-advance'}>
            <div class="qe-title">${c.title}</div>
-           <div class="qe-sub">${c.sub}</div>
+           ${c.sub ? `<div class="qe-sub">${c.sub}</div>` : ''}
          </div>`).join('');
       bottom = `<div class="qe-cards${waitSeq ? ' qe-bottom-hidden' : ''}">${cards}</div>`;
     }
@@ -609,6 +633,8 @@
   /* ---------------- header ---------------- */
   function headerHTML(scr) {
     if (scr.layout === 'splash') return '';
+    // Design B 게임 화면은 썸네일 풀블리드 — 헤더 없음
+    if (THEME === 'B' && scr.layout === 'game') return '';
     return `<header class="hd">
         <div class="hd-brand">
           <img class="hd-logo-img" src="${IMG}intro_logo.png" alt="LIO Skill Core">
@@ -782,10 +808,24 @@
     }
 
     // choices : 채점 전 선택 토글 (multi=복수, 그 외=단일선택). 이미 채점(correct/wrong)된 건 잠금.
+    // instant-grade : 클릭 즉시 채점 + 정답 시 전체 confetti
     stage.querySelectorAll('.choice').forEach(c => {
       c.addEventListener('click', () => {
         if (c.classList.contains('correct') || c.classList.contains('wrong')) return;
         const grp = c.closest('.choices');
+        if (grp && grp.classList.contains('instant-grade')) {
+          if (grp.dataset.graded) return;
+          grp.dataset.graded = '1';
+          const isCorrect = c.dataset.state === 'correct';
+          grp.querySelectorAll('.choice').forEach(o => {
+            o.classList.remove('sel');
+            if (o.dataset.state === 'correct') o.classList.add('correct');
+            else if (o === c) o.classList.add('wrong');
+          });
+          if (isCorrect) { sfxFound(); spawnConfetti(); }
+          else sfxWrong();
+          return;
+        }
         const multi = grp && (grp.classList.contains('multi') || grp.classList.contains('reason'));
         if (grp && !multi) grp.querySelectorAll('.choice.sel').forEach(o => { if (o !== c) o.classList.remove('sel'); });
         c.classList.toggle('sel');
@@ -1290,7 +1330,7 @@
     gridEl.innerHTML = cards.map((c, i) =>
       `<button class="mcard" data-i="${i}" data-pair="${c.pair}" data-kind="${c.kind}">
          <span class="mc-inner">
-           <span class="mc-face mc-back">?</span>
+           <span class="mc-face mc-back" aria-hidden="true"><svg class="mc-q" viewBox="0 0 48 64" width="1em" height="1.33em" focusable="false"><path fill="currentColor" d="M24 4c-9.4 0-16 6.2-16 15.2 0 2.6 2.1 4.6 4.7 4.6s4.7-2 4.7-4.6c0-4.3 2.8-6.8 6.6-6.8 3.7 0 6.4 2.4 6.4 6.1 0 2.5-1 4.4-3.2 6.7l-4.6 4.7c-3 3.1-4.5 5.9-4.5 10.2v1.2c0 2.6 2.1 4.6 4.7 4.6s4.7-2 4.7-4.6v-.6c0-2.1.7-3.7 2.9-5.9l4.5-4.6C35.4 25.4 38 21.8 38 16.4 38 8.4 31.8 4 24 4zm0 44.5c-3 0-5.3 2.3-5.3 5.2S21 59 24 59s5.3-2.3 5.3-5.3-2.3-5.2-5.3-5.2z"/></svg></span>
            <span class="mc-face mc-front ${c.kind}">${c.kind === 'word' ? `<b>${c.label}</b>` : c.label}${c.emoji && c.kind === 'word' ? `<em class="mc-emo">${c.emoji}</em>` : ''}</span>
          </span>
        </button>`).join('');
@@ -1351,8 +1391,7 @@
         `<div class="btnrow"><button class="btn primary" data-advance>Next ${PLAY}</button></div>`;
       bindKr(doneEl);
       const adv = doneEl.querySelector('[data-advance]'); if (adv) adv.addEventListener('click', goNext);
-      const dev = document.querySelector('#stage .device');
-      if (dev) { const c = document.createElement('div'); c.className = 'confetti'; dev.appendChild(c); later(() => c.remove(), 1700); }
+      spawnConfetti();
       doneEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
     }
   }
@@ -1678,27 +1717,39 @@
      컬럼마다 이동 거리(--set)가 달라 keyframes 에서 var() 로 받는다.
      홀수 컬럼은 위로, 짝수 컬럼은 아래로 (교차). A 는 호출되지 않는다(THEME 가드). */
   const B_SKILL_COLS = [[0, 4, 8], [6], [1, 3], [2, 5, 7, 9]];   // 컬럼별 data-skill (Figma 배치)
-  const B_CARD_PITCH = 20.2;                                     // 카드 18cqw + 간격 2.2cqw
+  const B_CARD_H = 19.8;                                             // .b-cell 높이(cqw) — theme-b.css 와 동기
+  const B_CARD_GAP = 2.2;                                            // .b-lane-set gap / padding-bottom
+  const B_CARD_PITCH = B_CARD_H + B_CARD_GAP;                        // 22.0
+  const B_LANE_H = 68;                                               // .b-lane 높이(cqw) — theme-b.css 와 동기
   function buildSkillLanesB() {
     const stage = document.getElementById('stage');
     const grid = stage.querySelector('.skillscreen .skill-grid');
     if (!grid || grid.classList.contains('b-laned')) return;
     const byIdx = {};
     grid.querySelectorAll('.skill-card').forEach(c => { byIdx[c.dataset.skill] = c.outerHTML; });
-    // 컬럼에는 원래 카드만 넣는다(패딩용 추가 카드 없음). 다만 끊김 없는 루프에는
-    // 이어붙일 한 벌이 필요하므로 같은 세트를 정확히 2벌만 쌓고, 이동 거리를 한 세트
-    // 높이로 두어 되돌아오는 순간 두 번째 벌이 첫 벌 자리를 정확히 메우게 한다.
+    // 끊김 없는 루프용으로 세트를 2벌 쌓는다. 다만 세트 높이가 트랙(68cqw)보다
+    // 짧으면 한 화면에 같은 스킬이 두 번 보인다 → 빈 b-cell 로 세트 높이를
+    // 트랙 이상 채운 뒤 2벌 복제한다(스크롤 애니/방향/duration 은 그대로).
+    const minCells = Math.ceil(B_LANE_H / B_CARD_PITCH);
     const lanes = B_SKILL_COLS.map((col, ci) => {
-      const setH = col.length * B_CARD_PITCH;
+      const cells = col.map(i => `<div class="b-cell">${byIdx[i] || ''}</div>`);
+      while (cells.length < minCells) cells.push('<div class="b-cell b-cell-empty" aria-hidden="true"></div>');
+      const setH = cells.length * B_CARD_PITCH;
       const dir  = (ci % 2 === 0) ? 'up' : 'down';   // 1·3열 위로 / 2·4열 아래로
-      const set = `<div class="b-lane-set">` +
-        col.map(i => `<div class="b-cell">${byIdx[i] || ''}</div>`).join('') + `</div>`;
+      const set = `<div class="b-lane-set">${cells.join('')}</div>`;
       return `<div class="b-lane b-lane-${dir}">
                 <div class="b-lane-inner" style="--set:${setH}cqw">${set}${set}</div>
               </div>`;
     }).join('');
     grid.classList.add('b-laned');
     grid.innerHTML = lanes;
+    // 렌더 후 실제 세트 높이로 --set 보정 → 루프 이음매/끊김 방지
+    grid.querySelectorAll('.b-lane-inner').forEach(inner => {
+      const setEl = inner.querySelector('.b-lane-set');
+      if (!setEl) return;
+      const h = setEl.getBoundingClientRect().height;
+      if (h > 0) inner.style.setProperty('--set', h + 'px');
+    });
   }
 
   /* Design B 전용 : 스킬 카드를 탭하면 Figma B_Skill_selected 구성으로 전환한다.
@@ -1710,24 +1761,42 @@
     const stage = document.getElementById('stage');
     const ss = stage.querySelector('.skillscreen');
     if (!ss) return;
-    ss.querySelectorAll('.skill-card').forEach(card => {
-      card.style.cursor = 'pointer';
-      card.addEventListener('click', () => {
-        if (ss.classList.contains('selected')) return;
-        const i = +card.dataset.skill;
-        const pick = F.SKILLS[i] || F.SKILLS[0];
-        ss.classList.add('selected');
-        const grid = ss.querySelector('.skill-grid'); if (grid) grid.classList.add('dim');
-        const hd = ss.querySelector('.skill-headline');
-        if (hd) hd.textContent = 'I found your skills!';
-        const ov = document.createElement('div');
-        ov.className = 'skillfound-overlay';
-        ov.innerHTML =
-          `<img class="skillsel-mascot" src="${mascot('lio6.png')}" alt="LIO">
-           <div class="skillsel-card"><img src="${skillIcon(pick)}" alt="${pick.name}"></div>`;
-        ss.appendChild(ov);
-        sfxFound();
-        later(() => { if (ss.isConnected) fadeAdvance(); }, 2600);
+    const grid = ss.querySelector('.skill-grid');
+    if (!grid || grid.dataset.pickBound) return;
+    grid.dataset.pickBound = '1';
+    // 카드가 레인으로 복제되므로 위임 클릭으로 처리 (누른 카드의 data-skill·아이콘·색 사용)
+    const scB = {
+      0:'#3593FF', 1:'#00BE5F', 2:'#FF9C7E', 3:'#FFC72F', 4:'#F46169',
+      5:'#B078FF', 6:'#748CFF', 7:'#FF974C', 8:'#FF7CCF', 9:'#4FC73F'
+    };
+    grid.addEventListener('click', (e) => {
+      const card = e.target.closest('.skill-card');
+      if (!card || !grid.contains(card) || ss.classList.contains('selected')) return;
+      const i = Number(card.getAttribute('data-skill'));
+      if (!Number.isFinite(i) || i < 0 || i >= F.SKILLS.length) return;
+      const pick = F.SKILLS[i];
+      const iconSrc = (card.querySelector('.sc-icon img') || {}).getAttribute?.('src') || skillIcon(pick);
+      ss.classList.add('selected');
+      grid.classList.add('dim');
+      // Figma B_Skill_selected (114:1305) : "I found\n  your skills!"
+      const hd = ss.querySelector('.skill-headline');
+      if (hd) hd.innerHTML = 'I found<br><span class="skill-headline-l2">your skills!</span>';
+      ss.querySelectorAll('.skillfound-overlay').forEach(n => n.remove());
+      const ov = document.createElement('div');
+      ov.className = 'skillfound-overlay';
+      ov.innerHTML =
+        `<img class="skillsel-mascot" src="${mascot('lio6.png')}" alt="LIO">
+         <div class="skillsel-card" style="--scB:${scB[i]};background:${scB[i]}">
+           <img src="${iconSrc}" alt="${pick.name}">
+           <div class="sc-name">${skillNameHtml(pick)}</div>
+         </div>
+         <button type="button" class="skillsel-go" data-advance aria-label="Let's Go!">Let's Go!</button>`;
+      ss.appendChild(ov);
+      sfxFound();
+      // Figma 는 Let's Go 버튼으로 진행 (자동 전환 없음)
+      ov.querySelector('.skillsel-go').addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (ss.isConnected) fadeAdvance();
       });
     });
   }
@@ -1795,6 +1864,16 @@
     }
     document.body.appendChild(layer);
     later(() => layer.remove(), 1300);
+  }
+
+  // 전체 화면 confetti (정답 축하)
+  function spawnConfetti() {
+    const dev = document.querySelector('#stage .device');
+    if (!dev) return;
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    dev.appendChild(c);
+    later(() => { if (c.isConnected) c.remove(); }, 1700);
   }
 
   // Word Check: 지문의 포커스 단어가 커지며 우측 chip으로 날아가 박히는 연출
