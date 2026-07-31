@@ -57,7 +57,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .hd-logo-text{display:none}
 .hd-brand{align-items:center;position:relative;z-index:7}
 .hd-brand::before{content:'';display:block;
-  height:clamp(30px,3.4cqw,42px);aspect-ratio:303/231;
+  height:clamp(30px,3.4cqw,42px);aspect-ratio:312/215;
   background:url("../IMAGE/b/logo_lockup.png") no-repeat left center;
   background-size:contain}
 .hd-pill{color:#eaf0ff;font-weight:800}
@@ -370,10 +370,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
      아래 값은 목표 좌표에서 역산한 것 — 눈대중으로 고치면 다시 어긋난다.
      목표(cut1 실측, 카드 대비 비율)
        마스코트 주황 영역 x0=0.066 y1=0.734 높이 0.600
-       로고 Lio 자획      x0=0.596 y0=0.312 폭  0.226 */
+       로고 BI 인스턴스   x0=0.596 y0=0.314 폭 0.241 높이 0.254 (219:1338 · 380×272) */
 .splash::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    url("../IMAGE/b/logo_lockup_lg.png") no-repeat left 77.5% top 40.5% / auto 28.3%,
+    url("../IMAGE/b/logo_lockup.png") no-repeat left 79.5% top 42.1% / auto 25.4%,
     url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 9.1% bottom 62.8% / auto 64%,
     url("../IMAGE/b/bottom_wave.svg") no-repeat left bottom / 100% 31.25%}
 /* Let's Go! pill : 장식용(탭 타깃은 .splash 전체) — 라벨을 Figma 문구로 표시 */
