@@ -328,13 +328,31 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* ── skill 화면 : Figma B_Skill_list (114:1066) · B_Skill_selected (114:1230) ──
    배경 네이비 #02195C + 동심원(#1C4BD6 / #335DDA / #0F2564) + 최하단 물결 #2B5CE6.
    카드는 스킬별 solid 컬러 + 흰 점선 인셋 보더 + 흰 볼드 라벨. */
-.skillscreen{position:relative;
-  background:
-    radial-gradient(circle at 40% 1%, #1C4BD6 0 15%, transparent 15.3%),
-    radial-gradient(circle at 40% 1%, transparent 0 20.6%, #335DDA 20.6% 21.1%, transparent 21.4%),
-    radial-gradient(circle at 40% 1%, transparent 0 29%, #0F2564 29% 30.1%, transparent 30.4%),
-    radial-gradient(circle at 40% 1%, transparent 0 38%, #0F2564 38% 38.9%, transparent 39.2%),
-    #02195C}
+/* 배경 원 파장 : Figma light(114:1070)는 흰색 반투명 원(투명도 0.05~0.2)이라
+   기존의 진한 링보다 부드럽다. 크기를 줄이고, 어떤 스킬을 찾을지 둘러보듯
+   카드 사이를 돌아다니며 음파를 퍼뜨리는 애니메이션을 준다. */
+.skillscreen{position:relative;background-color:#02195C;
+  background-image:
+    radial-gradient(circle closest-side, rgba(255,255,255,.17) 0 34%, transparent 36%),
+    radial-gradient(circle closest-side, transparent 0 46%, rgba(255,255,255,.11) 46% 51%, transparent 53%),
+    radial-gradient(circle closest-side, transparent 0 66%, rgba(255,255,255,.06) 66% 70%, transparent 72%);
+  background-repeat:no-repeat;
+  animation:bSonar 15s ease-in-out infinite}
+@keyframes bSonar{
+  0%   {background-position:36% 16%, 36% 16%, 36% 16%;
+        background-size:17cqw 17cqw, 26cqw 26cqw, 35cqw 35cqw}
+  20%  {background-position:68% 24%, 68% 24%, 68% 24%;
+        background-size:21cqw 21cqw, 32cqw 32cqw, 43cqw 43cqw}
+  40%  {background-position:86% 56%, 86% 56%, 86% 56%;
+        background-size:17cqw 17cqw, 26cqw 26cqw, 35cqw 35cqw}
+  60%  {background-position:58% 74%, 58% 74%, 58% 74%;
+        background-size:21cqw 21cqw, 32cqw 32cqw, 43cqw 43cqw}
+  80%  {background-position:42% 44%, 42% 44%, 42% 44%;
+        background-size:17cqw 17cqw, 26cqw 26cqw, 35cqw 35cqw}
+  100% {background-position:36% 16%, 36% 16%, 36% 16%;
+        background-size:21cqw 21cqw, 32cqw 32cqw, 43cqw 43cqw}
+}
+@media (prefers-reduced-motion:reduce){ .skillscreen{animation:none} }
 /* Figma B_Skill_list 에는 헤더 바가 없다 (114:1066 은 light/skill_list/lio/wav/BI 만
    가지고 있고 AppBar 노드가 없음). 헤더를 숨기고 네이비 배경을 화면 위까지 이어지게 한 뒤
    좌상단에 BI 로고만 올린다. Figma 좌표 : BI (36,20) 78×55.83 → 높이 55.83/1577≈3.54cqw */
@@ -354,8 +372,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    더 나오므로, 그대로 두면 얼굴 위에 글자가 얹힌다.
    → 마스코트 오른쪽 경계 밖으로 내보내고 세로 위치는 Figma 대로 둔다.
    말풍선(마스코트 이미지에 포함)도 가리지 않는다. */
-.skillscreen:not(.selected) .skill-headline{position:absolute;left:2.5%;bottom:6%;
-  width:30%;text-align:left;z-index:6;line-height:1.15;
+/* 헤드라인은 LIO 위(좌상단 로고 아래)에 놓는다 */
+.skillscreen:not(.selected) .skill-headline{position:absolute;left:3%;top:9%;
+  width:34%;text-align:left;z-index:6;line-height:1.15;
   text-shadow:0 3px 14px rgba(2,25,92,.65)}
 /* 카드 : flow-data 의 --sc 는 A 팔레트이므로 B 전용 --scB 로 덮는다 */
 .skill-card{background:var(--scB,#3593FF);border:none;border-radius:20px;position:relative;z-index:1}
@@ -395,7 +414,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 마스코트 : slide 5·6 과 같은 크기(높이 64%)로 키운다. Figma skill_list 의 lio 는
    (-23,259) 633×673 → 좌측 -1.5% / 아래 13.1% / 높이 62.8% 위치다.
    카드 위에 겹쳐도 무방하다는 요청에 따라 z-index 를 카드보다 위로 둔다. */
-.skillscreen .skill-mascot{position:absolute;left:-1.5%;bottom:13.1%;
+.skillscreen .skill-mascot{position:absolute;left:9%;bottom:11%;
   height:64%;width:auto;max-width:none;max-height:none;z-index:5;pointer-events:none}
 .skill-card[data-skill="0"]{grid-area:1/1}   /* Main Ideas */
 .skill-card[data-skill="1"]{grid-area:1/3}   /* Recalling Facts 1 */
@@ -689,3 +708,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen.selected .skill-grid.dim{opacity:.45;filter:blur(7px);pointer-events:none;
   transition:opacity .45s,filter .45s}
 .skillfound-overlay{position:absolute;inset:0;z-index:5;pointer-events:none}
+
+/* 물음표 말풍선 : base 는 .skill-left 기준 top30%/right16% 인데 마스코트를 절대배치로
+   옮겼으므로 화면 기준으로 다시 잡는다. 요청대로 더 위·오른쪽으로. */
+.skillscreen:not(.selected) .think-bubble{position:absolute;top:20%;left:32%;right:auto;
+  width:clamp(30px,3.6cqw,54px);height:clamp(30px,3.6cqw,54px);
+  font-size:var(--fz-title-md);z-index:6}
