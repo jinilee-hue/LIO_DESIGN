@@ -821,7 +821,37 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   #1C4BD6}
 /* 기본 마크업의 작은 마스코트 + CSS 텍스트 로고 + "Tap to start" 는 감춘다
    (마크업·문구는 공용 engine.js 소관이라 손대지 않고 CSS 로만 대체) */
-.splash .splash-inner{display:none}
+/* slide 5 LIO — 제자리 인사 스프라이트.
+   .splash-inner 를 스프라이트 호스트로 쓰고 자식(작은 마스코트·텍스트 로고)은 감춘다.
+   IMAGE/b/lio_wave.png — 원본 lio_sprite.png(6×6, 472×560) 중 3-1 → 1-1 → 6-2.
+     앞발만 가슴→중간→위로 올라가고 몸·갈기·표정이 일정한 조합이다.
+     세 프레임 공통 크롭(455×553)으로 잘라 발밑 정합을 유지, 214×260 로 축소.
+   크기·위치는 기존 정지 LIO(lio_intro_cut1.png, 높이 64%·bottom 44%) 에서 역산 :
+     머리-발 평균 529px 를 화면 높이 64%(491.5px) 로 맞추면 요소 폭 37.39%,
+     에셋 하단 0.8416 에 발밑을 맞추면 bottom 15.72%, 가로 중심 276.6px 정렬 → left 4.48%.
+   z-index:0 — .splash::before(물결·로고, z1) 아래로 깔아야 발이 물결에 조금 가려진다. */
+.splash .splash-inner{display:block;position:absolute;z-index:0;pointer-events:none;
+  left:4.48%;bottom:15.72%;width:37.39%;aspect-ratio:455/553;
+  background:url("../IMAGE/b/lio_wave.png") no-repeat 0% 0 / 300% 100%;   /* 3프레임 */
+  /* steps(3) 은 0/33/67% 만 내보내 마지막 프레임을 건너뛰고 경계에 걸친다.
+     jump-none 이 0/50/100% = 3프레임을 정확히 짚는다. alternate 로 손이 오르내린다. */
+  animation:bLioWave .62s steps(3,jump-none) infinite alternate}
+.splash .splash-inner > *{display:none}
+/* HI! 말풍선 — 원래 lio_intro_cut1.png 안에 합쳐져 있던 것을 잘라낸 에셋(IMAGE/b/bubble_hi.png).
+   정지 LIO 를 스프라이트로 바꾸며 함께 사라졌으므로 되살렸다.
+   .splash::before 배경 목록에 레이어로 끼우면 .splash 레이아웃이 깨져서(높이 폭주)
+   스프라이트 요소의 ::after 로 붙였다. 사자에 붙어 있으니 위치 계산도 한 곳에서 끝난다.
+   크기 : 커밋본과 같은 화면 폭 6.32% = 요소 폭의 16.92%. */
+.splash .splash-inner::after{content:'';position:absolute;left:100%;top:18%;
+  width:16.92%;aspect-ratio:146/142;
+  background:url("../IMAGE/b/bubble_hi.png") no-repeat center/contain}
+@keyframes bLioWave{
+  from{background-position:0% 0}
+  to  {background-position:100% 0}
+}
+@media (prefers-reduced-motion:reduce){
+  .splash .splash-inner{animation:none}
+}
 .splash .splash-tap{display:none}
 /* 마스코트 · 대형 로고 · 하단 물결 = Figma 에셋
    ⚠ background-position 의 퍼센트는 컨테이너 기준이 아니라 (컨테이너 − 이미지) 기준
@@ -836,10 +866,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
     url("../IMAGE/b/wave_front.svg") repeat-x left bottom / 106.912% 31.25%,
     url("../IMAGE/b/wave_mid.svg")   repeat-x left bottom / 100% 31.25%,
     url("../IMAGE/b/wave_back.svg")  repeat-x left bottom / 100% 31.25%,
-    url("../IMAGE/b/lio_intro_cut1.png") no-repeat left 9.1% bottom 44% / auto 64%,
-    /* LIO 발 밑 자연스러운 접지 그림자 */
-    radial-gradient(ellipse 20% 5% at 23.5% 56%,
-      rgba(6,18,52,.42) 0%, rgba(6,18,52,.22) 38%, transparent 72%)}
+    /* LIO 는 아래 .splash-inner 스프라이트가 담당한다.
+       바닥 그림자는 뺐다 — 스프라이트 발밑(y83.4%)이 물결(y68.75%~) 뒤로 들어가
+       물결 자체가 접지 역할을 하고, 예전 좌표(56%)의 그림자는 공중에 떠 보였다. */
+    linear-gradient(transparent,transparent)}
 /* Let's Go! pill : 장식용(탭 타깃은 .splash 전체) — 라벨을 Figma 문구로 표시 */
 .splash::after{content:"Let's Go!";position:absolute;z-index:2;pointer-events:none;
   left:60.1%;top:67.8%;width:21.5%;height:9.1%;
