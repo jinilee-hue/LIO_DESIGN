@@ -130,6 +130,76 @@
     return en.find(v=>/en-US/i.test(v.lang)) || en[0] || null;
   }
 
+  /* ---------------- 인트로 BGM (잔잔 · 루프) ----------------
+     기본: IMAGE/bgm/intro.wav (항상 존재). intro.mp3 가 있으면 그걸로 교체.
+     인트로 구간(slide 5~9) · 첫 클릭 후 재생. */
+  const INTRO_BGM_IDS = new Set(['entry','greeting','greeting_cut3','skill','topic','plan']);
+  const INTRO_BGM_VOL = 0.38;   // bright cheerful underscore
+  let _bgm = null;
+  let _bgmUnlocked = false;
+  let _bgmFadeTimer = null;
+
+  function bgmUrl(){
+    // designB/index.html 기준 상대경로 — Live Server(5500)에서 검증됨
+    return IMG + 'bgm/intro.wav';
+  }
+
+  function ensureBgm(){
+    if (_bgm) {
+      if (document.body && !_bgm.isConnected) { try { document.body.appendChild(_bgm); } catch (e) {} }
+      return _bgm;
+    }
+    _bgm = new Audio(bgmUrl());
+    _bgm.loop = true;
+    _bgm.preload = 'auto';
+    _bgm.volume = INTRO_BGM_VOL;
+    _bgm.setAttribute('playsinline', '');
+    _bgm.style.display = 'none';
+    try { if (document.body) document.body.appendChild(_bgm); } catch (e) {}
+    return _bgm;
+  }
+
+  function unlockBgm(){
+    _bgmUnlocked = true;
+    try { const c = actx(); if (c && c.resume) c.resume(); } catch (e) {}
+    syncIntroBgm(SCREENS[idx]);
+  }
+
+  function isIntroBgmScreen(scr){
+    if (!scr) return false;
+    if (scr.introBgm === false) return false;
+    if (scr.introBgm === true) return true;
+    return INTRO_BGM_IDS.has(scr.id);
+  }
+
+  function syncIntroBgm(scr){
+    const a = ensureBgm();
+    if (_bgmFadeTimer) { clearInterval(_bgmFadeTimer); _bgmFadeTimer = null; }
+    if (isIntroBgmScreen(scr)) {
+      a.muted = false;
+      a.volume = INTRO_BGM_VOL;
+      if (_bgmUnlocked) {
+        const p = a.play();
+        if (p && p.catch) p.catch(() => {
+          // 제스처 직후 재시도
+          later(() => { a.play().catch(() => {}); }, 80);
+        });
+      }
+    } else if (!a.paused) {
+      const start = a.volume;
+      let i = 0;
+      const steps = 10;
+      _bgmFadeTimer = setInterval(() => {
+        i++;
+        a.volume = Math.max(0, start * (1 - i / steps));
+        if (i >= steps) {
+          clearInterval(_bgmFadeTimer); _bgmFadeTimer = null;
+          a.pause(); a.currentTime = 0; a.volume = INTRO_BGM_VOL;
+        }
+      }, 50);
+    }
+  }
+
   /* ---------------- 효과음 (Web Audio · 에셋 불필요) ---------------- */
   let _actx = null;
   function actx(){ try{ if(!_actx) _actx = new (window.AudioContext||window.webkitAudioContext)(); if(_actx.state==='suspended') _actx.resume(); }catch(e){ _actx=null; } return _actx; }
@@ -683,6 +753,7 @@
 
     wire(scr);
     updateChrome(scr);
+    syncIntroBgm(scr);
     // 정답 축하 파티클: 연출 후 DOM에서 제거 (상시 배경처럼 남지 않도록)
     if (scr.confetti) {
       const conf = stage.querySelector('.confetti');
@@ -767,6 +838,7 @@
         const playBtn = stage.querySelector('.splash-play');
         let started = false;
         const startVid = () => {
+          unlockBgm();
           if (started) { fadeAdvance(); return; }   // 이미 재생 중이면 스킵
           started = true;
           if (playBtn) playBtn.style.display = 'none';
@@ -777,7 +849,7 @@
         v.addEventListener('ended', () => fadeAdvance());
         sp.addEventListener('click', startVid);
       } else {
-        sp.addEventListener('click', goNext);
+        sp.addEventListener('click', () => { unlockBgm(); goNext(); });
       }
     }
 
@@ -1940,8 +2012,14 @@
 
   /* ---------------- boot ---------------- */
   function boot() {
-    document.getElementById('btn-prev').addEventListener('click', goPrev);
-    document.getElementById('btn-next').addEventListener('click', goNext);
+    // 브라우저 자동재생 정책: 첫 클릭/키 이후 BGM 허용
+    document.addEventListener('pointerdown', unlockBgm, { capture:true });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft' || e.key === 'Enter' || e.key === ' ') unlockBgm();
+    }, { capture:true });
+
+    document.getElementById('btn-prev').addEventListener('click', () => { unlockBgm(); goPrev(); });
+    document.getElementById('btn-next').addEventListener('click', () => { unlockBgm(); goNext(); });
     // 페이지 번호 입력 → 해당 슬라이드로 바로 이동
     const pjInput = document.getElementById('pj-input');
     const pjGo = document.getElementById('pj-go');
