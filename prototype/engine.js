@@ -141,7 +141,8 @@
 
   function bgmUrl(){
     // designB/index.html 기준 상대경로 — Live Server(5500)에서 검증됨
-    return IMG + 'bgm/intro.wav';
+    // mp3(422KB) 를 우선 쓰고, 없거나 디코딩 실패면 wav(3.03MB) 로 폴백한다.
+    return IMG + 'bgm/intro.mp3';
   }
 
   function ensureBgm(){
@@ -150,6 +151,14 @@
       return _bgm;
     }
     _bgm = new Audio(bgmUrl());
+    // mp3 로드 실패 시 한 번만 wav 로 되돌린다
+    _bgm.addEventListener('error', function onErr(){
+      if (_bgm && !_bgm.dataset.fellBack) {
+        _bgm.dataset.fellBack = '1';
+        _bgm.src = IMG + 'bgm/intro.wav';
+        if (_bgmUnlocked) { _bgm.play().catch(function(){}); }
+      }
+    });
     _bgm.loop = true;
     _bgm.preload = 'auto';
     _bgm.volume = INTRO_BGM_VOL;
