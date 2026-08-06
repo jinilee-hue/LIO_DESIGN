@@ -209,6 +209,22 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 
 /* ── 말풍선 / 아바타 ── */
 .msg .avatar{border:2px solid #fff;box-shadow:0 3px 8px rgba(30,81,214,.18)}
+/* 대화창 LIO 아바타를 애니메이션으로 : IMAGE/b/lio_chat_face.webp
+   — lio_sprite1(4×4, 524×502) 16프레임 전부. 윙크·미소·웃음이 이어진다.
+   얼굴 폭 485~494(1.8%) 로 크기는 고정인데 bbox 중심이 x 30px · y 27px 흔들려
+   프레임마다 중심을 맞췄다(정렬 후 인접 차이 평균 10.8).
+   박스는 얼굴 높이 평균(=원 지름)으로 정사각 크롭 — base 의 object-fit:cover 와 같은
+   느낌이 되도록. 정사각이라 background-size 1600% 100% 로 프레임이 원에 정확히 맞는다.
+   마크업이 공용 engine.js 의 <img src=lio_face2.png> 라 CSS 로 src 를 못 바꾼다 →
+   content 로 1×1 투명 GIF 를 넣어 원본 비트맵만 지우고 배경에 시트를 깐다. */
+.msg.lio .avatar{
+  content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  background:url("../IMAGE/b/lio_chat_face.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioChat 1.9s steps(16,jump-none) infinite alternate}
+@keyframes bLioChat{from{background-position:0% 0} to{background-position:100% 0}}
+@media (prefers-reduced-motion:reduce){
+  .msg.lio .avatar{animation:none}
+}
 .msg .bubble{border-radius:18px}
 .msg.lio .bubble{background:#eef2f8;border:none;color:#0a0a0a}
 
