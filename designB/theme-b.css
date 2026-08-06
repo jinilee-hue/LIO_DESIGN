@@ -327,7 +327,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 @media (prefers-reduced-motion:reduce){
   .scr-plan .introseq .introseq-scrim{animation:none}
 }
-.scr-plan      .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_plan.png")}
+/* plan 은 스프라이트(.introseq-scrim)로 바뀌어 배경 레이어를 쓰지 않는다.
+   ⚠ 여기서 --b-intro-lio 를 다시 지정하면 위(.scr-plan .introseq{--b-intro-lio:none})와
+     특이도가 같아 뒤가 이기고, 정지 이미지 + 스프라이트가 겹쳐 사자가 둘로 보인다. */
 .scr-fp2_intro .introseq{--b-intro-lio:url("../IMAGE/lio7.png")}
 .scr-fp2_intro_cut2 .introseq{--b-intro-lio:url("../IMAGE/lio7.png")}
 /* lio7 : 책을 더 보이게 기본(64%)보다 살짝 축소 */
