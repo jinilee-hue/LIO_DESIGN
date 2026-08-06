@@ -741,11 +741,11 @@ body.game-c{--b-game-w:39.35%;--b-game-left:1.78%;--b-game-bottom:14.68%}
   font-family:var(--font-head);font-weight:800;font-size:clamp(28px,3.6cqw,56px);
   text-align:center;padding:0 6%;line-height:1.1}
 /* 선택 완료 LIO — 검지를 들고 "찾았다" 하는 스프라이트.
-   IMAGE/b/skill_found.webp — skill_sprite2(4×4, 468×562) 3-3 ~ 4-4 의 6프레임.
-   이 시트는 오른쪽(선택된 카드)을 가리키는 동작이고, 앞쪽 프레임은 머리를 크게 돌려
-   코 x 가 149~188 로 39px 움직인다 — 루프로 돌리면 고개가 흔들린다. 뒤쪽 6프레임은
-   갈기 좌단 57~58 · 머리폭 231~232 · 코 x 166.9~169.8 로 고정이고 프레임 차이가
-   1.7~5.3(입만 움직임)이라 이 구간만 쓴다. alternate 로 왕복.
+   IMAGE/b/skill_found.webp — skill_sprite2(4×4, 468×562) 2-2 ~ 4-4 의 11프레임.
+   오른쪽(선택된 카드)을 가리키는 동작이다. 16프레임 전부를 쓰면 2-1→2-2 에서 코 x 가
+   한 번에 23.9px 튀어(183.0→159.1) 고개가 딸꾹질한다 — 그 앞만 잘라내면 2-2 부터는
+   코 x 가 159.1→149.1→149.3→153.6→164.4→…→169.8 로 프레임당 최대 10.8px 씩
+   매끄럽게 이어진다. 몸높이도 523~535(2.3%) 로 안정. alternate 로 왕복.
    사자 머리-발이 534/562 라 height 69.07% 로 올려 기존 lio6.png 와 같은 504px 로 맞춘다.
    src 교체가 안 되는 것은 .skill-mascot 과 같은 사정 — content 로 비트맵을 지운다. */
 .skillscreen.selected .skillsel-mascot,
@@ -754,8 +754,8 @@ body.game-c{--b-game-w:39.35%;--b-game-left:1.78%;--b-game-bottom:14.68%}
   height:74.48%;width:auto;aspect-ratio:468/562;z-index:4;pointer-events:none;
   transform:translateY(-50%);
   content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
-  background:url("../IMAGE/b/skill_found.webp") no-repeat 0% 0 / 600% 100%;
-  animation:bSkillFound .60s steps(6,jump-none) infinite alternate}
+  background:url("../IMAGE/b/skill_found.webp") no-repeat 0% 0 / 1100% 100%;
+  animation:bSkillFound 1.10s steps(11,jump-none) infinite alternate}
 @keyframes bSkillFound{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .skillscreen .skill-mascot,
