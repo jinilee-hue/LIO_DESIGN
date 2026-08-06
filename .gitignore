@@ -35,6 +35,8 @@ IMAGE/game_sprite*.png
 IMAGE/fp_sprite*.png
 #   end_sprite1 → (slide 49)
 IMAGE/end_sprite*.png
+#   lio_sprite1/2 → IMAGE/b/lio_chat_face.webp · lio_think_face.webp (10MB)
+IMAGE/lio_sprite*.png
 #   교체 전 백업본
 IMAGE/*_bak.png
 
