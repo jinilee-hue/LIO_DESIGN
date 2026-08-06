@@ -814,45 +814,129 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    좌표는 cut1 렌더에서 실측한 화면 비율 : 마스코트 x6.6~41.9% y13.4~73.4%,
    로고 x59.6~82.2% y29.2~57.1%, 버튼 x60.1~81.6% y67.8~78.8%. */
 .layout-splash .device{background:#1C4BD6}
-.splash{background:
-  radial-gradient(circle at 24% 44%, rgba(255,255,255,.055) 0 21%, transparent 21.2%),
-  radial-gradient(circle at 24% 44%, rgba(255,255,255,.045) 0 31%, transparent 31.2%),
-  radial-gradient(circle at 24% 44%, rgba(255,255,255,.035) 0 41%, transparent 41.2%),
-  #1C4BD6}
+/* 원형 파장은 아래 .splash-tap(링 호스트)으로 옮겼다 — 배경 그라디언트를 애니메이션하면
+   매 프레임 화면 전체를 리페인트하지만 요소 + transform:scale 은 합성만으로 끝난다. */
+.splash{background:#1C4BD6}
 /* 기본 마크업의 작은 마스코트 + CSS 텍스트 로고 + "Tap to start" 는 감춘다
    (마크업·문구는 공용 engine.js 소관이라 손대지 않고 CSS 로만 대체) */
-/* slide 5 LIO — 제자리 인사 스프라이트.
+/* slide 5 LIO — 걸어들어와 정면을 보고 손을 흔드는 인트로 스프라이트.
    .splash-inner 를 스프라이트 호스트로 쓰고 자식(작은 마스코트·텍스트 로고)은 감춘다.
-   IMAGE/b/lio_wave.png — 원본 lio_sprite.png(6×6, 472×560) 중 3-1 → 1-1 → 6-2.
-     앞발만 가슴→중간→위로 올라가고 몸·갈기·표정이 일정한 조합이다.
-     세 프레임 공통 크롭(455×553)으로 잘라 발밑 정합을 유지, 214×260 로 축소.
-   크기·위치는 기존 정지 LIO(lio_intro_cut1.png, 높이 64%·bottom 44%) 에서 역산 :
-     머리-발 평균 529px 를 화면 높이 64%(491.5px) 로 맞추면 요소 폭 37.39%,
-     에셋 하단 0.8416 에 발밑을 맞추면 bottom 15.72%, 가로 중심 276.6px 정렬 → left 4.48%.
+
+   시트 두 장. 프레임 박스는 420×497 로 공통, 교체 시 튀지 않는다.
+   · IMAGE/b/lio_intro_walk.webp — 22프레임, 1회성
+       0 ~ 3   걷기   intro_sprite1 1행 (완전 측면 · 다리 교차) → 2바퀴 루프
+       4 ~ 15  전환   intro_sprite1 2~4행 (걸으면서 측면 → 정면으로 돌아섬)
+       16~21   팔올림 intro_sprite2 4행 (팔이 아래에서 위로)
+   · IMAGE/b/lio_intro_wave.webp — 12프레임, 무한 루프
+       intro_sprite2 5~6행. 앞발이 좌우로 40px 왕복하고 12프레임이 한 바퀴라
+       alternate 없이 infinite 로 돌면 그대로 이어진다.
+
+   두 원본 시트는 프레임 크기(406×594 / 426×562)도 사자 크기도 달라(is2 는 1행→5행에서
+   11% 축소) 정규화가 필요한데, 프레임마다 따로 정렬하면 안 된다 — 기준점이 흔드는 앞발에
+   끌려 몸이 좌우로 밀린다. 시트 안에서 이미 서로 정합된 프레임을 그룹으로 묶고(걷기·전환
+   16장 = is1 전체 / 팔올림·인사 18장 = is2 4~6행) 그룹마다 대표 프레임 하나로 배율·발밑·
+   발중심을 정해 그룹 전체에 똑같이 적용했다. 두 그룹의 대표는 이음새 프레임(is1 4-4 ↔
+   is2 4-1)으로 잡아 시트가 바뀌는 순간에도 튀지 않는다. 덕분에 원본의 걷기 반동은 남고
+   인사 중 발 위치는 원본대로 고정된다(편차 0px).
+   485px 는 화면에 뜨는 크기(화면 높이 64% = 491px)와 같은 값이다. 더 줄이면 확대되면서
+   흐려지므로 줄이지 않는다 — 렌더 배율 1.013배, 사실상 1:1.
+
+   크기·위치는 기존 LIO 와 동일 : 몸높이 = 화면 높이 64%, 발밑 = 0.8416,
+   몸통 중심 285.6px → width 37.76% · left 5.64% · bottom 15.11%.
    z-index:0 — .splash::before(물결·로고, z1) 아래로 깔아야 발이 물결에 조금 가려진다. */
 .splash .splash-inner{display:block;position:absolute;z-index:0;pointer-events:none;
-  left:4.48%;bottom:15.72%;width:37.39%;aspect-ratio:455/553;
-  background:url("../IMAGE/b/lio_wave.png") no-repeat 0% 0 / 300% 100%;   /* 3프레임 */
-  /* steps(3) 은 0/33/67% 만 내보내 마지막 프레임을 건너뛰고 경계에 걸친다.
-     jump-none 이 0/50/100% = 3프레임을 정확히 짚는다. alternate 로 손이 오르내린다. */
-  animation:bLioWave .62s steps(3,jump-none) infinite alternate}
+  left:5.64%;bottom:15.11%;width:37.76%;aspect-ratio:421/505;
+  background:url("../IMAGE/b/lio_intro_walk.webp") no-repeat 0% 0 / 2200% 100%;
+  /* 구간별로 애니메이션을 나눠 걸고 delay 로 이어받는다. 뒤 구간은 fill:forwards 만 줘서
+     (backwards 금지) 자기 delay 전에는 앞 구간을 덮지 않는다.
+     steps(k) 는 마지막 프레임을 건너뛰고 프레임 경계에 걸치므로 전부 jump-none. */
+  animation:
+    bLioWalkIn 2.10s cubic-bezier(.16,.62,.36,1)      both,      /* 화면 밖 → 제자리 */
+    bLioWalk   0.60s steps(4,jump-none)         0s  2 both,      /* 0~1.20s   걷기 ×2 */
+    bLioTurn   0.90s steps(12,jump-none)    1.20s forwards,      /* 1.20~2.10s 돌아섬 */
+    bLioRaise  0.42s steps(6,jump-none)     2.10s forwards,      /* 2.10~2.52s 팔올림 */
+    bLioSheet  2.52s                            0s forwards,     /* 2.52s 에 시트 교체 */
+    bLioWave   0.90s steps(12,jump-none)    2.52s infinite}      /* 2.52s~    인사 루프 */
 .splash .splash-inner > *{display:none}
+/* 인사 시트는 keyframe 안에서만 참조되므로 교체되는 2.52s 에야 요청된다 → 첫 실행 때
+   사자가 한 프레임 사라진다. content:url 로 미리 받아둔다(0 크기 · 투명이라 안 보인다). */
+.splash .splash-inner::before{content:url("../IMAGE/b/lio_intro_wave.webp");
+  position:absolute;width:0;height:0;overflow:hidden;opacity:0}
+@keyframes bLioWalkIn{from{transform:translateX(-118%)} to{transform:translateX(0)}}
+@keyframes bLioWalk {from{background-position:0% 0}        to{background-position:14.2857% 0}}
+@keyframes bLioTurn {from{background-position:19.0476% 0}  to{background-position:71.4286% 0}}
+@keyframes bLioRaise{from{background-position:76.1905% 0}  to{background-position:100% 0}}
+/* 마지막 순간에 인사 시트로 바꾸고 프레임 수(12장)에 맞게 size 도 함께 */
+@keyframes bLioSheet{
+  0%,99.9%{background-image:url("../IMAGE/b/lio_intro_walk.webp");background-size:2200% 100%}
+  100%    {background-image:url("../IMAGE/b/lio_intro_wave.webp");background-size:1200% 100%}
+}
+@keyframes bLioWave {from{background-position:0% 0} to{background-position:100% 0}}
 /* HI! 말풍선 — 원래 lio_intro_cut1.png 안에 합쳐져 있던 것을 잘라낸 에셋(IMAGE/b/bubble_hi.png).
-   정지 LIO 를 스프라이트로 바꾸며 함께 사라졌으므로 되살렸다.
-   .splash::before 배경 목록에 레이어로 끼우면 .splash 레이아웃이 깨져서(높이 폭주)
-   스프라이트 요소의 ::after 로 붙였다. 사자에 붙어 있으니 위치 계산도 한 곳에서 끝난다.
-   크기 : 커밋본과 같은 화면 폭 6.32% = 요소 폭의 16.92%. */
-.splash .splash-inner::after{content:'';position:absolute;left:100%;top:18%;
-  width:16.92%;aspect-ratio:146/142;
-  background:url("../IMAGE/b/bubble_hi.png") no-repeat center/contain}
-@keyframes bLioWave{
-  from{background-position:0% 0}
-  to  {background-position:100% 0}
+   .splash::before 배경 목록에 레이어로 끼우면 .splash 높이가 폭주해 레이아웃이 깨져서
+   스프라이트 요소의 ::after 로 붙였다 — 사자와 함께 들어오고 위치 계산도 한 곳에서 끝난다.
+   걷는 동안엔 숨기고 손을 들어 인사를 시작할 때 통 튀며 뜬 다음, 이어서 계속 둥둥 뜬다.
+   위치는 사자 쪽으로 붙였다 — 든 앞발(박스 x376~408 · y77~) 위쪽 옆이라 살짝 겹치는데
+   ::after 라 앞발 위로 그려져 말풍선이 앞에 있는 것처럼 보인다.
+   폭은 커밋본과 같은 화면 폭 6.32%. */
+.splash .splash-inner::after{content:'';position:absolute;left:88%;top:6%;
+  width:16.74%;aspect-ratio:146/142;opacity:0;
+  background:url("../IMAGE/b/bubble_hi.png") no-repeat center/contain;
+  animation:bBubbleIn    .28s cubic-bezier(.2,1.4,.4,1) 2.46s forwards,
+            bBubbleFloat 2.4s ease-in-out                2.74s infinite}
+@keyframes bBubbleIn{from{opacity:0;transform:translateY(18%) scale(.7)}
+                     to  {opacity:1;transform:none}}
+/* 둥둥 — bBubbleIn 뒤에 이어받아 transform 을 계속 잡는다 (opacity 는 bBubbleIn 의 forwards 가 유지) */
+@keyframes bBubbleFloat{
+  0%,100%{transform:translateY(0)}
+  50%    {transform:translateY(-13%)}
 }
 @media (prefers-reduced-motion:reduce){
-  .splash .splash-inner{animation:none}
+  /* 움직임을 줄이면 걷기·전환을 생략하고 인사 시트 첫 프레임에서 시작한다 */
+  .splash .splash-inner{animation:none;
+    background-image:url("../IMAGE/b/lio_intro_wave.webp");background-size:1200% 100%}
+  .splash .splash-inner::after{animation:none;opacity:1}
 }
-.splash .splash-tap{display:none}
+/* LIO 뒤 원형 파장 — 원래 .splash 배경의 3겹 원을 실제 요소로 옮긴 것.
+   B 에서 쓰지 않는 "Tap to start ▶" 요소(.splash-tap · 공용 마크업)를 링 호스트로
+   재사용한다. 문구는 font-size:0 으로 지운다. (A 는 theme-b.css 를 읽지 않아 영향 없음)
+
+   원래 그라디언트는 circle at 24% 44% 의 반지름이 farthest-corner 거리(1130×768 에서
+   960.4px)의 21 / 31 / 41% → 지름 403 / 595 / 788px = .splash 폭의 35.7 / 52.7 / 69.7%.
+   cqw 는 #stage 기준이라 여기 쓰면 14% 커진다 — 컨테이닝 블록 % 로 잡아야 맞는다.
+   호스트를 가장 바깥 링(69.7%)으로 두고 안쪽 두 링은 호스트 대비 %(35.7/69.7 = 51.22,
+   52.7/69.7 = 75.61)로 잡는다. 호스트에는 translate 만 걸고 scale 은 걸지 않는다 —
+   호스트를 키우면 자식 링까지 같이 커져서 스태거가 사라진다. 바깥 링만 background-size
+   로 키우고 안쪽 둘은 transform:scale(합성) 로 돌린다.
+   delay 로 안쪽 → 바깥쪽 순서로 부풀려 파장이 LIO 에서 퍼져나가듯 보이게 했다. */
+.splash .splash-tap{display:block;position:absolute;left:24%;top:44%;bottom:auto;
+  width:69.7%;aspect-ratio:1;font-size:0;color:transparent;z-index:0;pointer-events:none;
+  transform:translate(-50%,-50%);
+  /* closest-side 필수 — 기본값 farthest-corner 면 광선 길이가 박스 절반의 √2 배라
+     반지름이 278px 로 줄어든다. closest-side 는 광선 = 박스 절반(393.8px). */
+  background:radial-gradient(circle closest-side,
+             rgba(255,255,255,.035) 0 100%,transparent 100%) no-repeat center / 100% 100%;
+  animation:bRingOut 5.4s ease-in-out 1.1s infinite}
+.splash .splash-tap::before,
+.splash .splash-tap::after{content:'';position:absolute;left:50%;top:50%;
+  aspect-ratio:1;border-radius:50%;
+  transform:translate(-50%,-50%);
+  animation:bRingIn 5.4s ease-in-out infinite}
+.splash .splash-tap::before{width:51.22%;background:rgba(255,255,255,.055);animation-delay:0s}
+.splash .splash-tap::after {width:75.61%;background:rgba(255,255,255,.045);animation-delay:.55s}
+@keyframes bRingIn{
+  0%,100%{transform:translate(-50%,-50%) scale(1);    opacity:1}
+  50%    {transform:translate(-50%,-50%) scale(1.14); opacity:.5}
+}
+@keyframes bRingOut{
+  0%,100%{background-size:100% 100%; opacity:1}
+  50%    {background-size:114% 114%; opacity:.55}
+}
+@media (prefers-reduced-motion:reduce){
+  .splash .splash-tap,
+  .splash .splash-tap::before,
+  .splash .splash-tap::after{animation:none}
+}
 /* 마스코트 · 대형 로고 · 하단 물결 = Figma 에셋
    ⚠ background-position 의 퍼센트는 컨테이너 기준이 아니라 (컨테이너 − 이미지) 기준
      오프셋이다. 즉 `left 59.1%` 는 "왼쪽에서 59.1% 지점"이 아니다.

@@ -25,6 +25,8 @@ desktop.ini
 # ── 스프라이트 원본 시트 (총 25MB · 작업용 소스, 배포에 불필요) ──
 #   IMAGE/b/lio_wave.png 로 필요한 프레임만 잘라 커밋한다.
 IMAGE/b/lio_sprite*.png
+#   IMAGE/b/lio_intro_walk.webp · lio_intro_wave.webp 로 잘라 커밋한다. (12MB)
+IMAGE/intro_sprite*.png
 
 # ── 에디터 설정 ──
 .vscode/
