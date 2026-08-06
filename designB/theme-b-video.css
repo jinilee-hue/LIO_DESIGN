@@ -1,0 +1,31 @@
+/* ── slide 5 영상 인트로 (비교용) ─────────────────────────────────────────
+   designB/index-video.html 에서만 로드한다. theme-b.css 위에 얹어 .splash.video 만
+   손대므로 스프라이트 버전(designB/index.html)에는 아무 영향이 없다.
+
+   IMAGE/intro_b.mp4 (1744×1184 · 5.04초 · 4.97MB) 는 CSS 로 만든 것과 같은 연출을
+   통째로 렌더한 영상이다 — 파란 배경 · 원형 파장 · 하단 물결 · LIO 걷기→전환→인사 ·
+   HI! 말풍선까지 포함. 영상에 없는 것은 LIO SKILL CORE 로고와 Let's Go pill 뿐이다.
+   따라서 CSS 쪽 물결·파장은 끄고 로고·pill 만 위에 남긴다.
+   영상 비율 1744/1184 = 1.4730, 디바이스 1577/1072 = 1.4711 로 사실상 같아
+   object-fit:cover 로 꽉 채워도 잘리는 양이 0.1% 수준이다. */
+.splash.video{background:#1C4BD6;overflow:hidden}
+.splash.video .splash-video{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;z-index:0}
+/* ::before 에서 물결 3겹·접지 그림자를 빼고 로고만 남긴다 (영상에 이미 들어있다).
+   theme-b 의 물결 스크롤 애니메이션도 레이어 수가 안 맞으므로 끈다. */
+.splash.video::before{
+  background:url("../IMAGE/b/logo_lockup.png") no-repeat left 79.5% top 42.1% / auto 25.4%;
+  animation:none}
+/* ▶ 버튼 : 영상은 소리와 함께 재생하므로 브라우저 자동재생 정책상 탭이 필요하다.
+   base.css 의 어두운 원을 B 톤(흰 원 + 파란 삼각형)으로 바꾼다. */
+.splash.video .splash-play{z-index:5;left:50%;top:88%;
+  /* 사자·로고·pill 을 피해 하단 물결 위 빈 곳에 둔다 (탭 타깃은 .splash 전체) */
+  /* base.css 가 width/height 를 100px 로 고정해 aspect-ratio 가 안 먹으므로 height:auto */
+  width:8.6%;height:auto;aspect-ratio:1;padding:0;
+  background:#fff;color:var(--primary);font-size:0;
+  box-shadow:0 10px 26px rgba(6,18,52,.28)}
+.splash.video .splash-play::after{content:'';display:block;margin:0 auto;
+  width:0;height:0;border-style:solid;border-width:1.05em 0 1.05em 1.7em;
+  border-color:transparent transparent transparent currentColor;
+  font-size:clamp(9px,1.15cqw,17px);transform:translateX(12%)}
+.splash.video .splash-play:hover{background:#fff;transform:translate(-50%,-50%) scale(1.06)}

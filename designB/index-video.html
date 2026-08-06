@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>LIO Skill Core — Design B · slide 5 영상 인트로 (비교용)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../prototype/base.css?v=20260803e">
+<link rel="stylesheet" href="theme-b.css?v=20260803e">
+<link rel="stylesheet" href="theme-b-video.css?v=20260806a">
+</head>
+<body>
+
+  <!-- 상단 유틸바 -->
+  <div class="topbar">
+    <span class="brandtag">LIO <b>Skill Core</b></span>
+    <span class="designtag">DESIGN B · 영상 인트로</span>
+    <span class="spacer"></span>
+    <span class="hint">← → 방향키로 이동 · Index에서 화면 점프 · ⓘ 화면정의</span>
+  </div>
+
+  <!-- 캔버스 -->
+  <div id="stage"></div>
+
+  <!-- 하단 컨트롤 -->
+  <div class="controls">
+    <button class="navbtn ghost" id="btn-prev">◀ 이전</button>
+    <button class="navbtn" id="btn-next">다음 ▶</button>
+    <div class="cinfo">
+      <span class="cs" id="nav-slide">Slide</span>
+      <span class="ct" id="nav-title">—</span>
+    </div>
+    <div class="pagejump">
+      <span class="pj-label">페이지</span>
+      <input type="number" id="pj-input" min="3" inputmode="numeric" placeholder="#">
+      <button class="navbtn" id="pj-go">이동</button>
+    </div>
+    <span class="spacer"></span>
+    <button class="navbtn ghost" id="btn-jump">☰ Index</button>
+    <button class="navbtn ghost" id="btn-spec">ⓘ 화면정의</button>
+  </div>
+
+  <!-- Index (jump) -->
+  <div class="overlay hidden" id="jump-overlay">
+    <div class="jump-box">
+      <div class="jump-head"><h3>화면 Index — 전체 Flow (PPTX v1.1 · Slide 5~49)</h3><button class="x" id="jump-close">✕</button></div>
+      <div id="jump-list"></div>
+    </div>
+  </div>
+
+  <!-- 화면정의 패널 -->
+  <aside class="spec-panel hidden" id="spec-panel">
+    <button class="close-s" id="btn-spec-close" onclick="document.getElementById('spec-panel').classList.add('hidden')">✕</button>
+    <h3 id="spec-slide">화면 정의</h3>
+    <div class="ssub">화면정의서 Description</div>
+    <ul id="spec-list"></ul>
+  </aside>
+
+  <script>
+    window.LIO_THEME = 'B';
+    // slide 5 를 스프라이트 대신 영상으로 : engine.js 의 layoutSplash 가 이 전역을 보면
+    // <video class="splash-video"> 를 그린다(공용 엔진에 이미 있는 훅 — 코드 수정 없음).
+    window.LIO_SPLASH_VIDEO = '../IMAGE/intro_b.mp4';
+    // 재생 전 정지 화면. 영상 첫 프레임은 사자가 화면 밖이라 텅 비어 보이므로
+    // 마지막 인사 장면(4.95s)을 뽑아 포스터로 쓴다 — 탭하지 않아도 스프라이트 버전과
+    // 같은 모습이 보인다.
+    window.LIO_SPLASH_POSTER = '../IMAGE/b/intro_b_poster.jpg';
+  </script>
+  <script src="../prototype/flow-data.js?v=20260803e"></script>
+  <script src="../prototype/kr-map.js?v=20260803e"></script>
+  <script src="../prototype/engine.js?v=20260803e"></script>
+</body>
+</html>
