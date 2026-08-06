@@ -906,10 +906,34 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* ── topic 화면 : Figma B_Topic_list ──
    마스코트가 상단 중앙 → 헤드라인 → 카드 1×6 → 카드 밖 라벨 + 넓은 체크 pill */
 .topic-lio{flex-direction:column;gap:clamp(4px,.6cqw,8px);text-align:center;max-width:min(96%,1200px)}
-/* Figma lio_face 1: 120×132 — 원형 크롭/1:1 강제 해제 */
+/* Figma lio_face 1: 120×132 — 원형 크롭/1:1 강제 해제.
+   턱 괸 얼굴을 애니메이션으로 : IMAGE/b/lio_think_face.webp
+   — lio_sprite2(4×4, 510×518) 16프레임 전부. 눈이 좌우로 움직이고 눈을 깜빡인다.
+   폭 436~445(2.0%) · 높이 494~503(1.8%) 로 크기는 고정인데 bbox 중심 x 가 24px 흔들려
+   프레임마다 중심을 맞춰 457×515 박스로 재배치했다(중심 정렬 후 인접 차이 평균 11.9).
+   마크업이 공용 engine.js 의 <img src=lio_face.png> 라 CSS 로 src 를 못 바꾼다 →
+   content 로 1×1 투명 GIF 를 넣어 원본 비트맵만 지우고 배경에 시트를 깐다.
+   (content 를 바꾸면 고유 비율이 1:1 이 되므로 aspect-ratio 를 직접 준다)
+   얼굴이 박스에서 차지하는 비율이 기존 에셋(0.995)보다 작으므로(0.969) 높이를 1.027배
+   올려 화면상 얼굴 크기를 그대로 유지한다. */
 .topic-lio img{
-  width:auto;height:clamp(48px,8.37cqw,132px);
-  aspect-ratio:auto;border-radius:0;object-fit:contain;background:transparent}
+  width:auto;height:clamp(49px,8.60cqw,136px);
+  aspect-ratio:457/515;border-radius:0;object-fit:contain;background:transparent;
+  content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  background:url("../IMAGE/b/lio_think_face.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioThink 1.9s steps(16,jump-none) infinite alternate}
+@keyframes bLioThink{from{background-position:0% 0} to{background-position:100% 0}}
+/* 자유대화 화면의 떠다니는 LIO 도 같은 에셋(lio_face.png)이라 함께 애니메이션.
+   위치는 engine.js 가 left/top 으로 움직이므로 크기만 맞춘다(88px → 90px, 위와 같은 1.027배). */
+.reading.freechat .floating-lio{
+  width:auto;height:90px;aspect-ratio:457/515;object-fit:contain;
+  content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  background:url("../IMAGE/b/lio_think_face.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioThink 1.9s steps(16,jump-none) infinite alternate}
+@media (prefers-reduced-motion:reduce){
+  .topic-lio img,
+  .reading.freechat .floating-lio{animation:none}
+}
 /* Figma 114:1488 — sub Medium 36 / main ExtraBold 60, leading 60, #1e2939 */
 .topic-line{color:#1e2939;line-height:1;font-family:var(--font-head)}
 .topic-line .tl-sub{
