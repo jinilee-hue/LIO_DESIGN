@@ -467,8 +467,23 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   left:6.42%;bottom:15.11%;width:38.13%;aspect-ratio:426/492;
   z-index:0;pointer-events:none;
   background:url("../IMAGE/b/lio_fp_cheer.webp") no-repeat 0% 0 / 500% 100%;
-  animation:bLioCheer 1.0s steps(5,jump-none) infinite alternate}
+  /* 프레임을 정규화해 발밑을 고정했으므로 뛰는 느낌은 프레임만으로는 안 난다 →
+     상하 이동을 transform 으로 따로 준다. 착지 때 살짝 눌리게 scaleY 를 쓰고,
+     transform-origin 을 바닥에 둬서 눌릴 때 발이 뜨지 않게 한다.
+     프레임 왕복 한 바퀴(2.0s) 에 폴짝 4번(0.5s) 이 들어간다. */
+  transform-origin:50% 100%;
+  animation:bLioCheer 1.0s steps(5,jump-none) infinite alternate,
+            bLioHop   0.5s ease-in-out infinite}
 @keyframes bLioCheer{from{background-position:0% 0} to{background-position:100% 0}}
+@keyframes bLioHop{
+  0%   {transform:translateY(0)          scaleY(1)}
+  26%  {transform:translateY(-5.2%)      scaleY(1.015)}   /* 상승 */
+  42%  {transform:translateY(-6%)        scaleY(1)}       /* 정점 */
+  68%  {transform:translateY(0)          scaleY(1)}       /* 착지 */
+  78%  {transform:translateY(0)          scaleY(.985)}    /* 눌림 — .965 는 머리가 기준선보다
+                                                              18px 내려가 과했다 */
+  100% {transform:translateY(0)          scaleY(1)}
+}
 /* 하트 말풍선 — 원래 lio_intro_fp2.png 안에 합쳐져 있던 것을 잘라낸 에셋
    (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격). 위치는 에셋 안 좌표(x704 y30)를
    화면 좌표로 환산한 뒤 호스트 기준으로 다시 환산한 값이라 원래 자리와 같다.
