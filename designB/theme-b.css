@@ -451,21 +451,37 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-post_skill_pick .quickexit.has-bg{
   background:#1C4BD6 !important;background-image:none !important}
 .scr-post_skill_pick .qe-scrim{display:none}
-/* 하트 말풍선 — 원래 lio_intro_fp2.png 안에 합쳐져 있던 것을 잘라낸 에셋
-   (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격).
-   B 에서 안 쓰는 .qe-scrim(배경 스크림)을 호스트로 재사용한다.
-   위치는 에셋 안에서의 좌표(x704 y30)를 화면 좌표로 환산한 값이라 원래 자리와 같다.
-   slide 5 HI! · slide 6 GO · slide 7 ? 와 같은 키프레임으로 둥둥 뜨고, 에셋에 그림자가
-   구워져 있지 않으므로 알파 모양을 따르는 drop-shadow 를 준다.
-   ⚠ .scr-post_skill_pick 은 같은 ::before 규칙을 쓰지만 말풍선이 없으므로 제외. */
+/* slide 46 LIO — 두 팔 들고 환호하는 스프라이트.
+   IMAGE/b/lio_fp_cheer.webp — fp_sprite2(4×4, 436×618) 의 1-4 · 2-1 · 3-2 · 4-3 · 3-1.
+   이 시트는 정합된 애니메이션이 아니라 포즈 16장 모음이다 — 발밑이 519~615(96px),
+   발중심이 139~230(91px) 로 프레임마다 사자가 움직이고 머리 비율도 0.447~0.566 로 흔들린다.
+   그래서 ① 머리폭/머리-발이 뭉친 프레임만 남기고 ② 프레임마다 몸높이를 480px 로
+   정규화하며 발밑선·발중심을 맞춘 뒤 ③ 정규화 후 서로 가장 닮은 순서로 재배열했다.
+   10장까지 넣어보면 아무리 순서를 최적화해도 47.6·26.1 의 큰 점프가 남고 박스가 넓어져
+   left 가 음수(왼쪽 잘림)가 되므로, 차이 6.0~7.9 로 붙어 있는 5장만 쓴다.
+   크기 기준은 slide 5 : 사자 머리-발 485.5px. 발밑·발중심은 기존 에셋 자리 그대로.
+
+   B 에서 안 쓰는 .qe-scrim(배경 스크림)을 호스트로 재사용하고, 하트 말풍선은 그 ::after 로
+   붙여 사자를 따라다니게 했다. */
 .scr-quick_exit .qe-scrim{display:block;inset:auto;
-  left:36.14%;top:22.06%;width:6.30%;aspect-ratio:146/141;
+  left:6.42%;bottom:15.11%;width:38.13%;aspect-ratio:426/492;
+  z-index:0;pointer-events:none;
+  background:url("../IMAGE/b/lio_fp_cheer.webp") no-repeat 0% 0 / 500% 100%;
+  animation:bLioCheer 1.0s steps(5,jump-none) infinite alternate}
+@keyframes bLioCheer{from{background-position:0% 0} to{background-position:100% 0}}
+/* 하트 말풍선 — 원래 lio_intro_fp2.png 안에 합쳐져 있던 것을 잘라낸 에셋
+   (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격). 위치는 에셋 안 좌표(x704 y30)를
+   화면 좌표로 환산한 뒤 호스트 기준으로 다시 환산한 값이라 원래 자리와 같다.
+   slide 5 HI! · slide 6 GO · slide 7 ? 와 같은 키프레임으로 둥둥, 에셋에 그림자가 없어
+   알파 모양을 따르는 drop-shadow 를 준다. */
+.scr-quick_exit .qe-scrim::after{content:'';position:absolute;
+  left:77.95%;top:3.03%;width:16.52%;aspect-ratio:146/141;
   background:url("../IMAGE/b/bubble_heart.png") no-repeat center/contain;
-  z-index:5;pointer-events:none;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   animation:bBubbleFloat 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){
-  .scr-quick_exit .qe-scrim{animation:none}
+  .scr-quick_exit .qe-scrim,
+  .scr-quick_exit .qe-scrim::after{animation:none}
 }
 .scr-quick_exit .quickexit::before,
 .scr-post_skill_pick .quickexit::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -476,10 +492,16 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
     /* 하트 말풍선은 이 에셋 안에 합쳐져 있던 것을 떼어냈다(아래 .qe-scrim) — 여기서는
        말풍선을 지운 판을 쓴다. 말풍선만 따로 띄워야 그림자·둥둥을 줄 수 있다. */
     var(--b-qe-lio, url("../IMAGE/b/lio_intro_fp2_nobubble.png")) no-repeat left 9.1% bottom 44% / auto 64%,
-    radial-gradient(ellipse 20% 5% at 23.5% 56%,
-      rgba(6,18,52,.42) 0%, rgba(6,18,52,.22) 38%, transparent 72%),
-    #1C4BD6}
+    var(--b-qe-shadow, radial-gradient(ellipse 20% 5% at 23.5% 56%,
+      rgba(6,18,52,.42) 0%, rgba(6,18,52,.22) 38%, transparent 72%)),
+    var(--b-qe-bg,#1C4BD6)}
 .scr-post_skill_pick .quickexit{--b-qe-lio:url("../IMAGE/lio5.png")}
+/* slide 46 : LIO 를 환호 스프라이트로. 발이 물결에 조금 가려지는 구성을 유지하려면
+   사자가 "파란 배경 위 · 물결 아래" 여야 하는데 둘 다 ::before 안에 있으므로
+   파란 배경만 .quickexit 로 내리고 ::before 는 물결만 남긴다 (slide 6·9·35 와 동일).
+   그림자도 끈다 — 사자가 요소로 빠지면 ::before 가 위로 와서 몸통에 얼룩으로 보인다. */
+.scr-quick_exit .quickexit{--b-qe-lio:none;--b-qe-shadow:none;--b-qe-bg:transparent;
+  background-color:#1C4BD6}
 .scr-quick_exit .quickexit::after,
 .scr-post_skill_pick .quickexit::after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
   background:url("../IMAGE/b/logo_lockup.png") no-repeat left clamp(10px,2.283cqw,36px) top clamp(7px,1.268cqw,20px) / auto clamp(26px,3.54cqw,56px)}

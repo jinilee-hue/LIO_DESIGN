@@ -33,6 +33,10 @@ IMAGE/skill_sprite*.png
 IMAGE/game_sprite*.png
 #   fp_sprite1 → IMAGE/b/lio_fp_read.webp (5.2MB)
 IMAGE/fp_sprite*.png
+#   end_sprite1 → (slide 49)
+IMAGE/end_sprite*.png
+#   교체 전 백업본
+IMAGE/*_bak.png
 
 # ── 에디터 설정 ──
 .vscode/
