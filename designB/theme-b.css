@@ -301,6 +301,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-greeting_cut3 .introseq .introseq-scrim::after{content:'';position:absolute;
   left:85.87%;top:13.81%;width:16.54%;aspect-ratio:146/142;
   background:url("../IMAGE/b/bubble_go.png") no-repeat center/contain;
+  filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   animation:bBubbleFloat 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){
   .scr-greeting .introseq .introseq-scrim,
@@ -611,8 +612,24 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    겹치려면 폭이 51% 이상이어야 해 불가능하므로, 카드 첫 열에 살짝 걸치는 위치로 둔다.
    (74%/left25% 는 첫·둘째 열을 다 덮어 카드가 가려졌다) */
 /* 카드 첫 열(Main Ideas 등)에 몸만 살짝 걸치도록. left 음수는 왼쪽이 잘림 */
+/* slide 7 LIO — 스킬을 찾는 동안 턱을 짚고 눈을 굴리는 스프라이트.
+   IMAGE/b/skill_think.webp — skill_sprite1(4×4, 390×596) 16프레임 전부, 리샘플 없음.
+   16프레임이 발밑 592 · 발중심 232 로 완전히 같고 머리 편차도 2%(머리폭 272~278 ·
+   코 x 134~139) 라 그대로 쓸 수 있다. 루프 이음새(16→1)만 머리 차이 17.4 로 튀므로
+   alternate 로 왕복시켜 되돌아오는 지점을 없앤다.
+   프레임 390×596 은 원래 쓰던 lio2.png(387×598)와 사실상 같은 프레이밍이라 위치·크기가
+   그대로 맞는다 — 사자 머리-발이 589/596 이라 높이만 66% → 66.45% 로 보정하면
+   기존과 같은 504.3px 이 된다.
+   마크업이 공용 engine.js 의 <img src=lio2.png> 라 CSS 로는 src 를 못 바꾼다.
+   content 로 1×1 투명 GIF 를 넣어 원본 비트맵만 지우고 배경에 시트를 깐다.
+   (content 를 바꾸면 고유 비율이 1:1 이 되므로 aspect-ratio 를 직접 줘야 한다) */
 .skillscreen .skill-mascot{position:absolute;left:10%;bottom:9%;
-  height:66%;width:auto;max-width:none;max-height:none;z-index:5;pointer-events:none}
+  height:66.45%;width:auto;aspect-ratio:390/596;max-width:none;max-height:none;
+  z-index:5;pointer-events:none;
+  content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  background:url("../IMAGE/b/skill_think.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bSkillThink 2.4s steps(16,jump-none) infinite alternate}
+@keyframes bSkillThink{from{background-position:0% 0} to{background-position:100% 0}}
 .skill-card[data-skill="0"]{grid-area:1/1}   /* Main Ideas */
 .skill-card[data-skill="1"]{grid-area:1/3}   /* Recalling Facts 1 */
 .skill-card[data-skill="2"]{grid-area:1/4}   /* Recalling Facts 2 */
@@ -675,9 +692,27 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen.found .skillsel-card .sc-name{position:relative;z-index:1;color:#fff;
   font-family:var(--font-head);font-weight:800;font-size:clamp(28px,3.6cqw,56px);
   text-align:center;padding:0 6%;line-height:1.1}
+/* 선택 완료 LIO — 검지를 들고 "찾았다" 하는 스프라이트.
+   IMAGE/b/skill_found.webp — skill_sprite2(4×4, 456×552) 3행 1~3 프레임만.
+   이 시트는 행마다 머리 크기가 11.7% 나 달라(머리폭 230~257) 섞으면 튄다. 3행은
+   머리폭 255~257 · 코 x 157.3~158.6 으로 일정하고 검지를 든 포즈라 이 화면에 맞다.
+   3프레임이라 alternate 로 왕복(입만 움직이는 짧은 루프).
+   사자 머리-발이 537/552 라 height 66% 면 493px 로 작아지므로 67.46% 로 올려
+   기존 lio6.png 와 같은 504px 로 맞춘다.
+   src 교체가 안 되는 것은 .skill-mascot 과 같은 사정 — content 로 비트맵을 지운다. */
 .skillscreen.selected .skillsel-mascot,
 .skillscreen.found .skillsel-mascot{position:absolute;left:calc(26% - 30px);top:49.25%;bottom:auto;
-  height:66%;width:auto;z-index:4;pointer-events:none;transform:translateY(-50%)}
+  height:67.46%;width:auto;aspect-ratio:456/552;z-index:4;pointer-events:none;
+  transform:translateY(-50%);
+  content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  background:url("../IMAGE/b/skill_found.webp") no-repeat 0% 0 / 300% 100%;
+  animation:bSkillFound .36s steps(3,jump-none) infinite alternate}
+@keyframes bSkillFound{from{background-position:0% 0} to{background-position:100% 0}}
+@media (prefers-reduced-motion:reduce){
+  .skillscreen .skill-mascot,
+  .skillscreen.selected .skillsel-mascot,
+  .skillscreen.found .skillsel-mascot{animation:none}
+}
 /* 헤드라인은 마스코트 왼쪽에 놓고 위로 올린다 (기존엔 마스코트에 가려 잘렸다) */
 /* Figma 114:1305 "I found\n  your skills!" — 2줄, 둘째 줄 들여쓰기 */
 .skillscreen.selected .skill-headline,
@@ -922,6 +957,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .splash .splash-inner::after{content:'';position:absolute;left:88%;top:6%;
   width:16.74%;aspect-ratio:146/142;opacity:0;
   background:url("../IMAGE/b/bubble_hi.png") no-repeat center/contain;
+  /* 에셋에 그림자가 구워져 있지 않다(반투명 픽셀 0) — 떠 있는 느낌이 안 나므로 넣는다.
+     box-shadow 는 사각 박스를 따라가므로 알파 모양을 따르는 drop-shadow 를 쓴다. */
+  filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   animation:bBubbleIn    .28s cubic-bezier(.2,1.4,.4,1) 2.46s forwards,
             bBubbleFloat 2.4s ease-in-out                2.74s infinite}
 @keyframes bBubbleIn{from{opacity:0;transform:translateY(18%) scale(.7)}
@@ -1145,4 +1183,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   width:clamp(44px,6.15cqw,92px);height:auto;aspect-ratio:97/94;
   background:url("../IMAGE/b/ic_question.png") no-repeat center / contain;
   border-radius:0;box-shadow:none;font-size:0;color:transparent;z-index:6;
-  display:block;padding:0}
+  filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
+  display:block;padding:0;
+  /* slide 5 의 HI! · slide 6 의 GO 말풍선과 같이 둥둥 뜨게 (같은 키프레임 재사용) */
+  animation:bBubbleFloat 2.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){
+  .skillscreen:not(.selected) .think-bubble{animation:none}
+}
