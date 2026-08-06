@@ -27,6 +27,10 @@ desktop.ini
 IMAGE/b/lio_sprite*.png
 #   IMAGE/b/lio_intro_walk.webp · lio_intro_wave.webp 로 잘라 커밋한다. (12MB)
 IMAGE/intro_sprite*.png
+#   skill_sprite1/2 → IMAGE/b/skill_think.webp · skill_found.webp (13MB)
+IMAGE/skill_sprite*.png
+#   game_sprite1 → IMAGE/b/lio_game_idle.webp (4.6MB)
+IMAGE/game_sprite*.png
 
 # ── 에디터 설정 ──
 .vscode/

@@ -278,7 +278,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    그림자도 끈다 — 원래는 배경 목록에서 사자 아래에 깔려 안 보였는데, 사자가 요소로
    빠지면 ::before 가 사자 위로 와서 몸통에 검은 얼룩으로 보인다. */
 .scr-greeting .introseq,
-.scr-greeting_cut3 .introseq{--b-intro-lio:none;--b-intro-shadow:none;--b-intro-bg:transparent;
+.scr-greeting_cut3 .introseq,
+.scr-plan .introseq{--b-intro-lio:none;--b-intro-shadow:none;--b-intro-bg:transparent;
   background-image:none !important;background-color:#1C4BD6}
 
 /* IMAGE/b/lio_talk.webp — intro_sprite3(4×4, 456×550) 3행 4프레임.
@@ -308,6 +309,23 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   .scr-greeting_cut3 .introseq .introseq-scrim,
   .scr-greeting .introseq .introseq-scrim::after,
   .scr-greeting_cut3 .introseq .introseq-scrim::after{animation:none}
+}
+
+/* slide 9 (Game_Intro) : LIO 를 주먹 쥐고 준비하는 스프라이트로.
+   IMAGE/b/lio_game_idle.webp — game_sprite1(4×4, 414×566) 의 1-3 · 1-4 · 2-1 · 2-2.
+   이 시트는 4포즈 × 4프레임 구조라(그룹 사이 프레임차 20~30, 그룹 안 2~9) 그룹을 섞으면
+   고개 각도가 튄다. 이 4프레임은 갈기 좌단 60 · 머리폭 212 고정 · 코 x 165.9~170.4 로
+   거의 붙어 있어 잔잔한 대기 동작이 된다. alternate 로 왕복.
+   크기·위치는 기존 lio_intro_plan.png 렌더에서 역산 :
+     머리-발 487.9px · 발밑 y644.5 · 발중심 x263.9 → width 32.26% · left 5.63% · bottom 14.93%.
+   구조(파란 배경을 .introseq 로 내리고 ::before 는 물결만, 그림자 끄기)는 slide 6 과 동일. */
+.scr-plan .introseq .introseq-scrim{display:block;inset:auto;
+  left:5.63%;bottom:14.93%;width:32.26%;aspect-ratio:414/566;z-index:0;pointer-events:none;
+  background:url("../IMAGE/b/lio_game_idle.webp") no-repeat 0% 0 / 400% 100%;
+  animation:bLioGameIdle 1.0s steps(4,jump-none) infinite alternate}
+@keyframes bLioGameIdle{from{background-position:0% 0} to{background-position:100% 0}}
+@media (prefers-reduced-motion:reduce){
+  .scr-plan .introseq .introseq-scrim{animation:none}
 }
 .scr-plan      .introseq{--b-intro-lio:url("../IMAGE/b/lio_intro_plan.png")}
 .scr-fp2_intro .introseq{--b-intro-lio:url("../IMAGE/lio7.png")}
@@ -693,20 +711,20 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   font-family:var(--font-head);font-weight:800;font-size:clamp(28px,3.6cqw,56px);
   text-align:center;padding:0 6%;line-height:1.1}
 /* 선택 완료 LIO — 검지를 들고 "찾았다" 하는 스프라이트.
-   IMAGE/b/skill_found.webp — skill_sprite2(4×4, 456×552) 3행 1~3 프레임만.
-   이 시트는 행마다 머리 크기가 11.7% 나 달라(머리폭 230~257) 섞으면 튄다. 3행은
-   머리폭 255~257 · 코 x 157.3~158.6 으로 일정하고 검지를 든 포즈라 이 화면에 맞다.
-   3프레임이라 alternate 로 왕복(입만 움직이는 짧은 루프).
-   사자 머리-발이 537/552 라 height 66% 면 493px 로 작아지므로 67.46% 로 올려
-   기존 lio6.png 와 같은 504px 로 맞춘다.
+   IMAGE/b/skill_found.webp — skill_sprite2(4×4, 468×562) 3-3 ~ 4-4 의 6프레임.
+   이 시트는 오른쪽(선택된 카드)을 가리키는 동작이고, 앞쪽 프레임은 머리를 크게 돌려
+   코 x 가 149~188 로 39px 움직인다 — 루프로 돌리면 고개가 흔들린다. 뒤쪽 6프레임은
+   갈기 좌단 57~58 · 머리폭 231~232 · 코 x 166.9~169.8 로 고정이고 프레임 차이가
+   1.7~5.3(입만 움직임)이라 이 구간만 쓴다. alternate 로 왕복.
+   사자 머리-발이 534/562 라 height 69.07% 로 올려 기존 lio6.png 와 같은 504px 로 맞춘다.
    src 교체가 안 되는 것은 .skill-mascot 과 같은 사정 — content 로 비트맵을 지운다. */
 .skillscreen.selected .skillsel-mascot,
 .skillscreen.found .skillsel-mascot{position:absolute;left:calc(26% - 30px);top:49.25%;bottom:auto;
-  height:67.46%;width:auto;aspect-ratio:456/552;z-index:4;pointer-events:none;
+  height:69.07%;width:auto;aspect-ratio:468/562;z-index:4;pointer-events:none;
   transform:translateY(-50%);
   content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
-  background:url("../IMAGE/b/skill_found.webp") no-repeat 0% 0 / 300% 100%;
-  animation:bSkillFound .36s steps(3,jump-none) infinite alternate}
+  background:url("../IMAGE/b/skill_found.webp") no-repeat 0% 0 / 600% 100%;
+  animation:bSkillFound .60s steps(6,jump-none) infinite alternate}
 @keyframes bSkillFound{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .skillscreen .skill-mascot,
