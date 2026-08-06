@@ -35,7 +35,19 @@
   const skillIcon = (s) => IMG + (THEME === 'A' ? 'a_skill/' + s.aImg : 'b_skill/' + s.bImg);
   const mascot = (name) => IMG + (name || 'lio_face2.png');
   // Figma B_Skill_list 라벨은 2줄. 표시용 HTML (평문 s.name 은 alt/로직에 유지)
-  const skillNameHtml = (s) => ({
+  /* Design B 는 스킬명이 다르다(flow-data 의 bName). name 을 바꾸면 아래 A 용 2줄 매핑이
+     깨져 A 카드 라벨이 1줄이 되므로, B 이름은 여기서만 따로 처리한다. */
+  const B_SKILL_NAME_HTML = {
+    'Facts: WH Question':        'Facts:<br>WH Question',
+    'Facts: True or Not True':   'Facts: True<br>or Not True',
+    'Facts: Sentence Completion':'Facts: Sentence<br>Completion',
+    'Conclusions':               'Conclusions',
+    'Inferences':                'Inferences',
+    'Characters':                'Characters'
+  };
+  const skillNameHtml = (s) => (THEME === 'B' && s.bName)
+    ? (B_SKILL_NAME_HTML[s.bName] || s.bName)
+    : ({
     'Main Ideas': 'Main<br>Ideas',
     'Recalling Facts 1': 'Recalling<br>Facts 1',
     'Recalling Facts 2': 'Recalling<br>Facts 2',

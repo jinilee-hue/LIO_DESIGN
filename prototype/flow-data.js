@@ -60,17 +60,21 @@ const STRATEGY = {
 // 10개 학습 스킬 (오늘 = Main Ideas / Determining Main Idea)
 // aImg : a_skill 폴더(일러스트 북커버), bImg : b_skill 폴더(3D 아이콘), color : Design B 카드색
 // Figma A_Skill_list_AI(114:595) 표시 순서 + 정확한 a_skill 파일 매핑
+/* 스킬 10개 (Design B 는 이름이 다르다 — bName)
+   ⚠ name 은 그대로 둬야 한다 : engine.js 의 skillNameHtml 이 name 을 키로 2줄 분리 매핑을
+     하고 있어서 name 을 바꾸면 Design A 의 카드 라벨이 1줄이 되며 레이아웃이 밀린다.
+     B 에서 쓸 새 이름은 bName 에 두고 THEME==='B' 일 때만 쓴다. */
 const SKILLS = [
-  { name:'Main Ideas',           today:true,  aImg:'skill1.png',  bImg:'skill_main_ideas.png',         color:'#F2B01E' }, // 노랑
-  { name:'Recalling Facts 1',    aImg:'skill2.png',  bImg:'skill_recalling_facts_1.png',  color:'#3E9BE0' }, // 파랑
-  { name:'Recalling Facts 2',    aImg:'skill3.png',  bImg:'skill_recalling_facts_2.png',  color:'#3E9BE0' }, // 파랑
-  { name:'Recalling Facts 3',    aImg:'skill10.png', bImg:'skill_recalling_facts_3.png',  color:'#25438A' }, // 네이비
-  { name:'Drawing Conclusions',  aImg:'skill4.png',  bImg:'skill_drawing_conclusions.png',color:'#7DBD3E' }, // 초록
-  { name:'Making Inferences',    aImg:'skill5.png',  bImg:'skill_making_inferences.png',  color:'#A66BF8' }, // 보라
-  { name:'Cause & Effect',       aImg:'skill6.png',  bImg:'skill_cause_effect.png',       color:'#EF8A2A' }, // 주황
-  { name:'Analyzing Characters', aImg:'skill7.png',  bImg:'skill_analyzing_characters.png',color:'#C1502E' }, // 빨강
-  { name:"Author's Purpose",     aImg:'skill8.png',  bImg:'skill_authors_purpose.png',    color:'#D99A5B' }, // 탠
-  { name:'Literary Genres',      aImg:'skill9.png',  bImg:'skill_literary_genres.png',    color:'#8FCDE8' }, // 하늘
+  { name:'Main Ideas',            today:true, aImg:'skill1.png',  bImg:'skill_main_ideas.png',                 color:'#F2B01E' }, // 노랑
+  { name:'Recalling Facts 1',     bName:'Facts: WH Question', aImg:'skill2.png',  bImg:'skill_recalling_facts_1.png',          color:'#3E9BE0' }, // 파랑
+  { name:'Recalling Facts 2',     bName:'Facts: True or Not True', aImg:'skill3.png',  bImg:'skill_recalling_facts_2.png',          color:'#3E9BE0' }, // 파랑
+  { name:'Recalling Facts 3',     bName:'Facts: Sentence Completion', aImg:'skill10.png', bImg:'skill_recalling_facts_3.png',          color:'#25438A' }, // 네이비
+  { name:'Drawing Conclusions',   bName:'Conclusions', aImg:'skill4.png',  bImg:'skill_drawing_conclusions.png',        color:'#7DBD3E' }, // 초록
+  { name:'Making Inferences',     bName:'Inferences', aImg:'skill5.png',  bImg:'skill_making_inferences.png',          color:'#A66BF8' }, // 보라
+  { name:'Cause & Effect',        aImg:'skill6.png',  bImg:'skill_cause_effect.png',               color:'#EF8A2A' }, // 주황
+  { name:'Analyzing Characters',  bName:'Characters', aImg:'skill7.png',  bImg:'skill_analyzing_characters.png',       color:'#C1502E' }, // 빨강
+  { name:"Author's Purpose",      aImg:'skill8.png',  bImg:'skill_authors_purpose.png',            color:'#D99A5B' }, // 탠
+  { name:'Literary Genres',       aImg:'skill9.png',  bImg:'skill_literary_genres.png',            color:'#8FCDE8' }, // 하늘
 ];
 
 // 6개 토픽 (선택: 2개)

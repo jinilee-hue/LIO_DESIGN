@@ -212,12 +212,16 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 대화창 LIO 아바타를 애니메이션으로 : IMAGE/b/lio_chat_face.webp
    — lio_sprite1(4×4, 524×502) 16프레임 전부. 윙크·미소·웃음이 이어진다.
    얼굴 폭 485~494(1.8%) 로 크기는 고정인데 bbox 중심이 x 30px · y 27px 흔들려
-   프레임마다 중심을 맞췄다(정렬 후 인접 차이 평균 10.8).
-   박스는 얼굴 높이 평균(=원 지름)으로 정사각 크롭 — base 의 object-fit:cover 와 같은
-   느낌이 되도록. 정사각이라 background-size 1600% 100% 로 프레임이 원에 정확히 맞는다.
+   프레임마다 중심을 맞췄다(정렬 후 인접 차이 평균 10.7).
+   흰 원 박스 없이 얼굴만 보여야 하므로 박스는 얼굴이 잘리지 않는 크기(510×510)로 잡고
+   base 의 흰 배경·원형 크롭·그림자와 theme-b 의 흰 테두리를 모두 해제했다.
+   요소 크기는 48 → 54px : 얼굴이 박스의 0.892 만 차지하므로 이렇게 하면 화면상 얼굴
+   크기가 기존 48px 원과 같아진다. flex-basis 도 함께 바꿔야 레이아웃이 밀리지 않는다.
    마크업이 공용 engine.js 의 <img src=lio_face2.png> 라 CSS 로 src 를 못 바꾼다 →
    content 로 1×1 투명 GIF 를 넣어 원본 비트맵만 지우고 배경에 시트를 깐다. */
 .msg.lio .avatar{
+  width:54px;height:54px;flex:0 0 54px;
+  border:0;border-radius:0;box-shadow:none;
   content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
   background:url("../IMAGE/b/lio_chat_face.webp") no-repeat 0% 0 / 1600% 100%;
   animation:bLioChat 1.9s steps(16,jump-none) infinite alternate}
@@ -783,25 +787,25 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   animation:bSkillThink 2.4s steps(16,jump-none) infinite alternate}
 @keyframes bSkillThink{from{background-position:0% 0} to{background-position:100% 0}}
 .skill-card[data-skill="0"]{grid-area:1/1}   /* Main Ideas */
-.skill-card[data-skill="1"]{grid-area:1/3}   /* Recalling Facts 1 */
-.skill-card[data-skill="2"]{grid-area:1/4}   /* Recalling Facts 2 */
-.skill-card[data-skill="3"]{grid-area:2/3}   /* Recalling Facts 3 */
-.skill-card[data-skill="4"]{grid-area:3/1}   /* Drawing Conclusions */
-.skill-card[data-skill="5"]{grid-area:2/4}   /* Making Inferences */
+.skill-card[data-skill="1"]{grid-area:1/3}   /* Facts: WH Question */
+.skill-card[data-skill="2"]{grid-area:1/4}   /* Facts: True or Not True */
+.skill-card[data-skill="3"]{grid-area:2/3}   /* Facts: Sentence Completion */
+.skill-card[data-skill="4"]{grid-area:3/1}   /* Conclusions */
+.skill-card[data-skill="5"]{grid-area:2/4}   /* Inferences */
 .skill-card[data-skill="6"]{grid-area:3/2}   /* Cause & Effect */
-.skill-card[data-skill="7"]{grid-area:3/4}   /* Analyzing Characters */
+.skill-card[data-skill="7"]{grid-area:3/4}   /* Characters */
 .skill-card[data-skill="8"]{grid-area:4/1}   /* Author's Purpose */
 .skill-card[data-skill="9"]{grid-area:4/4}   /* Literary Genres */
 
 /* Figma Skill_list 카드 색 (SKILLS 배열 순서 = data-skill 인덱스) */
 .skill-card[data-skill="0"]{--scB:#3593FF}   /* Main Ideas */
-.skill-card[data-skill="1"]{--scB:#00BE5F}   /* Recalling Facts 1 */
-.skill-card[data-skill="2"]{--scB:#FF9C7E}   /* Recalling Facts 2 */
-.skill-card[data-skill="3"]{--scB:#FFC72F}   /* Recalling Facts 3 */
-.skill-card[data-skill="4"]{--scB:#F46169}   /* Drawing Conclusions */
-.skill-card[data-skill="5"]{--scB:#B078FF}   /* Making Inferences */
+.skill-card[data-skill="1"]{--scB:#00BE5F}   /* Facts: WH Question */
+.skill-card[data-skill="2"]{--scB:#FF9C7E}   /* Facts: True or Not True */
+.skill-card[data-skill="3"]{--scB:#FFC72F}   /* Facts: Sentence Completion */
+.skill-card[data-skill="4"]{--scB:#F46169}   /* Conclusions */
+.skill-card[data-skill="5"]{--scB:#B078FF}   /* Inferences */
 .skill-card[data-skill="6"]{--scB:#748CFF}   /* Cause & Effect */
-.skill-card[data-skill="7"]{--scB:#FF974C}   /* Analyzing Characters */
+.skill-card[data-skill="7"]{--scB:#FF974C}   /* Characters */
 .skill-card[data-skill="8"]{--scB:#FF7CCF}   /* Author's Purpose */
 .skill-card[data-skill="9"]{--scB:#4FC73F}   /* Literary Genres */
 
