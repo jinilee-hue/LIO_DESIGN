@@ -293,9 +293,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    4프레임뿐이라 alternate 로 왕복시켜 되돌아오는 지점을 없앤다. */
 .scr-greeting .introseq .introseq-scrim,
 .scr-greeting_cut3 .introseq .introseq-scrim{display:block;inset:auto;
-  /* 크기는 머리 기준으로 맞춘다 — 새 시트의 사자는 몸이 더 길어(머리폭/머리-발 0.471 vs
-     기존 cut2 0.506) 총 높이를 맞추면 머리가 7% 작아 보인다. ×1.074 보정. */
-  left:1.93%;top:13.64%;width:40.88%;aspect-ratio:430/519;z-index:0;pointer-events:none;
+  /* 크기 기준은 slide 5 : 사자 머리-발 485.5px. slide 5·6 은 머리폭/머리-발 비율이
+     0.501 / 0.503 으로 같아 머리-발을 맞추면 머리 크기도 그대로 맞는다.
+     (기존 정지 에셋 cut2 의 머리에 맞추면 7% 커져 slide 5 와 어긋난다) */
+  left:3.59%;top:19.22%;width:37.62%;aspect-ratio:430/519;z-index:0;pointer-events:none;
   background:url("../IMAGE/b/lio_talk.webp") no-repeat 0% 0 / 400% 100%;
   animation:bLioTalk .34s steps(4,jump-none) infinite alternate}
 @keyframes bLioTalk{from{background-position:0% 0} to{background-position:100% 0}}
@@ -324,13 +325,12 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
      머리-발 487.9px · 발밑 y644.5 · 발중심 x263.9 → width 32.26% · left 5.63% · bottom 14.93%.
    구조(파란 배경을 .introseq 로 내리고 ::before 는 물결만, 그림자 끄기)는 slide 6 과 동일. */
 .scr-plan .introseq .introseq-scrim{display:block;inset:auto;
-  left:var(--b-game-left,3.59%);bottom:var(--b-game-bottom,14.80%);
-  width:var(--b-game-w,36.06%);aspect-ratio:414/566;z-index:0;pointer-events:none;
+  /* 크기 기준은 slide 5 : 사자 머리-발 485.5px.
+     이 시트는 머리폭/머리-발 비율이 0.451 로 slide 5(0.501)보다 작아 머리-발을 맞추면
+     머리가 10% 작게 보이지만, 화면 간 크기 기준을 slide 5 로 통일하는 쪽을 택했다. */
+  left:5.33%;bottom:14.91%;width:32.88%;aspect-ratio:414/566;z-index:0;pointer-events:none;
   background:url("../IMAGE/b/lio_game_idle.webp") no-repeat 0% 0 / 1600% 100%;
   animation:bLioGameIdle 2.4s steps(16,jump-none) infinite alternate}
-/* 크기 비교용 — body 클래스로 A/C 안을 바로 볼 수 있게 (기본 B = 중간) */
-body.game-a{--b-game-w:33.04%;--b-game-left:5.24%;--b-game-bottom:14.90%}
-body.game-c{--b-game-w:39.35%;--b-game-left:1.78%;--b-game-bottom:14.68%}
 @keyframes bLioGameIdle{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .scr-plan .introseq .introseq-scrim{animation:none}
@@ -750,8 +750,9 @@ body.game-c{--b-game-w:39.35%;--b-game-left:1.78%;--b-game-bottom:14.68%}
    src 교체가 안 되는 것은 .skill-mascot 과 같은 사정 — content 로 비트맵을 지운다. */
 .skillscreen.selected .skillsel-mascot,
 .skillscreen.found .skillsel-mascot{position:absolute;left:calc(26% - 30px);top:49.25%;bottom:auto;
-  /* 머리 기준 보정 : 머리폭/머리-발 0.434 vs 기존 lio6 0.468 → ×1.078 */
-  height:74.48%;width:auto;aspect-ratio:468/562;z-index:4;pointer-events:none;
+  /* 사자 머리-발 504px — 같은 slide 7 의 탐색 상태(.skill-mascot)와 같은 크기.
+     기존 정지 에셋의 머리에 맞춰 74.48% 로 키웠던 것을 되돌렸다. */
+  height:69.07%;width:auto;aspect-ratio:468/562;z-index:4;pointer-events:none;
   transform:translateY(-50%);
   content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
   background:url("../IMAGE/b/skill_found.webp") no-repeat 0% 0 / 1100% 100%;
