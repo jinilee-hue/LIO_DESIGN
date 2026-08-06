@@ -31,6 +31,8 @@ IMAGE/intro_sprite*.png
 IMAGE/skill_sprite*.png
 #   game_sprite1 → IMAGE/b/lio_game_idle.webp (4.6MB)
 IMAGE/game_sprite*.png
+#   fp_sprite1 → IMAGE/b/lio_fp_read.webp (5.2MB)
+IMAGE/fp_sprite*.png
 
 # ── 에디터 설정 ──
 .vscode/

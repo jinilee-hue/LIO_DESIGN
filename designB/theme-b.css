@@ -279,7 +279,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    빠지면 ::before 가 사자 위로 와서 몸통에 검은 얼룩으로 보인다. */
 .scr-greeting .introseq,
 .scr-greeting_cut3 .introseq,
-.scr-plan .introseq{--b-intro-lio:none;--b-intro-shadow:none;--b-intro-bg:transparent;
+.scr-plan .introseq,
+.scr-fp2_intro .introseq,
+.scr-fp2_intro_cut2 .introseq{--b-intro-lio:none;--b-intro-shadow:none;--b-intro-bg:transparent;
   background-image:none !important;background-color:#1C4BD6}
 
 /* IMAGE/b/lio_talk.webp — intro_sprite3(4×4, 456×550) 3행 4프레임.
@@ -291,7 +293,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    4프레임뿐이라 alternate 로 왕복시켜 되돌아오는 지점을 없앤다. */
 .scr-greeting .introseq .introseq-scrim,
 .scr-greeting_cut3 .introseq .introseq-scrim{display:block;inset:auto;
-  left:3.40%;top:18.50%;width:38.05%;aspect-ratio:430/519;z-index:0;pointer-events:none;
+  /* 크기는 머리 기준으로 맞춘다 — 새 시트의 사자는 몸이 더 길어(머리폭/머리-발 0.471 vs
+     기존 cut2 0.506) 총 높이를 맞추면 머리가 7% 작아 보인다. ×1.074 보정. */
+  left:1.93%;top:13.64%;width:40.88%;aspect-ratio:430/519;z-index:0;pointer-events:none;
   background:url("../IMAGE/b/lio_talk.webp") no-repeat 0% 0 / 400% 100%;
   animation:bLioTalk .34s steps(4,jump-none) infinite alternate}
 @keyframes bLioTalk{from{background-position:0% 0} to{background-position:100% 0}}
@@ -320,9 +324,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
      머리-발 487.9px · 발밑 y644.5 · 발중심 x263.9 → width 32.26% · left 5.63% · bottom 14.93%.
    구조(파란 배경을 .introseq 로 내리고 ::before 는 물결만, 그림자 끄기)는 slide 6 과 동일. */
 .scr-plan .introseq .introseq-scrim{display:block;inset:auto;
-  left:5.63%;bottom:14.93%;width:32.26%;aspect-ratio:414/566;z-index:0;pointer-events:none;
-  background:url("../IMAGE/b/lio_game_idle.webp") no-repeat 0% 0 / 400% 100%;
-  animation:bLioGameIdle 1.0s steps(4,jump-none) infinite alternate}
+  left:var(--b-game-left,3.59%);bottom:var(--b-game-bottom,14.80%);
+  width:var(--b-game-w,36.06%);aspect-ratio:414/566;z-index:0;pointer-events:none;
+  background:url("../IMAGE/b/lio_game_idle.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioGameIdle 2.4s steps(16,jump-none) infinite alternate}
+/* 크기 비교용 — body 클래스로 A/C 안을 바로 볼 수 있게 (기본 B = 중간) */
+body.game-a{--b-game-w:33.04%;--b-game-left:5.24%;--b-game-bottom:14.90%}
+body.game-c{--b-game-w:39.35%;--b-game-left:1.78%;--b-game-bottom:14.68%}
 @keyframes bLioGameIdle{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .scr-plan .introseq .introseq-scrim{animation:none}
@@ -330,8 +338,28 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* plan 은 스프라이트(.introseq-scrim)로 바뀌어 배경 레이어를 쓰지 않는다.
    ⚠ 여기서 --b-intro-lio 를 다시 지정하면 위(.scr-plan .introseq{--b-intro-lio:none})와
      특이도가 같아 뒤가 이기고, 정지 이미지 + 스프라이트가 겹쳐 사자가 둘로 보인다. */
-.scr-fp2_intro .introseq{--b-intro-lio:url("../IMAGE/lio7.png")}
-.scr-fp2_intro_cut2 .introseq{--b-intro-lio:url("../IMAGE/lio7.png")}
+/* fp2_intro 도 스프라이트(.introseq-scrim)로 바뀌어 배경 레이어를 쓰지 않는다.
+   ⚠ 여기서 --b-intro-lio 를 다시 지정하면 위 규칙과 특이도가 같아 뒤가 이기고
+     정지 이미지 + 스프라이트가 겹쳐 사자가 둘로 보인다 (slide 9 에서 겪음). */
+
+/* slide 35 (FP2_Intro cut1·cut2) : 책 보며 꼬리 흔드는 스프라이트.
+   IMAGE/b/lio_fp_read.webp — fp_sprite1(4×4, 546×502) 16프레임 전부, 리샘플 없음.
+   16프레임이 발밑 495 · 발중심 281~282 로 같고 몸높이 편차 1.6%, 프레임차도 3.7~17.7 로
+   고르게 이어져 한 덩어리 애니메이션이다(좌측 폭 변동은 꼬리). alternate 로 왕복.
+   머리폭/머리-발이 0.606 으로 기존 lio7.png(0.597)와 거의 같아 총 높이 기준으로 맞춰도
+   머리 크기가 어긋나지 않는다.
+   크기·위치는 기존 lio7 렌더(auto 54%)에서 역산 : 머리-발 412.1px · 발밑 y610.8 ·
+   발중심 x273.8 → width 40.80% · left 3.16% · bottom 19.70%. */
+.scr-fp2_intro .introseq .introseq-scrim,
+.scr-fp2_intro_cut2 .introseq .introseq-scrim{display:block;inset:auto;
+  left:3.16%;bottom:19.70%;width:40.80%;aspect-ratio:546/502;z-index:0;pointer-events:none;
+  background:url("../IMAGE/b/lio_fp_read.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioFpRead 2.6s steps(16,jump-none) infinite alternate}
+@keyframes bLioFpRead{from{background-position:0% 0} to{background-position:100% 0}}
+@media (prefers-reduced-motion:reduce){
+  .scr-fp2_intro .introseq .introseq-scrim,
+  .scr-fp2_intro_cut2 .introseq .introseq-scrim{animation:none}
+}
 /* lio7 : 책을 더 보이게 기본(64%)보다 살짝 축소 */
 .scr-fp2_intro .introseq::before,
 .scr-fp2_intro_cut2 .introseq::before{
@@ -722,7 +750,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    src 교체가 안 되는 것은 .skill-mascot 과 같은 사정 — content 로 비트맵을 지운다. */
 .skillscreen.selected .skillsel-mascot,
 .skillscreen.found .skillsel-mascot{position:absolute;left:calc(26% - 30px);top:49.25%;bottom:auto;
-  height:69.07%;width:auto;aspect-ratio:468/562;z-index:4;pointer-events:none;
+  /* 머리 기준 보정 : 머리폭/머리-발 0.434 vs 기존 lio6 0.468 → ×1.078 */
+  height:74.48%;width:auto;aspect-ratio:468/562;z-index:4;pointer-events:none;
   transform:translateY(-50%);
   content:url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
   background:url("../IMAGE/b/skill_found.webp") no-repeat 0% 0 / 600% 100%;
