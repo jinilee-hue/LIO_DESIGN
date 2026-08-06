@@ -403,8 +403,11 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    문장은 TTS 속도에 맞춰 하나씩 등장하고 그대로 남아야 하므로 두 상태 모두 노출한다. */
 .introseq .ib.show,
 .introseq .ib.done{opacity:1;transform:none}
-/* Let's Go 버튼은 시퀀스가 끝나야 inline style 로 표시된다 → Figma 처럼 항상 보이게 */
-.introseq .introseq-next{display:inline-flex!important}
+/* Let's Go 버튼 : engine 이 인라인 style="display:none" 으로 감춰두고 마지막 문장이 끝나면
+   style.display='' 로 지운다. 여기서 display 를 !important 로 주면 감춰둔 것까지 덮어써
+   문장이 나오기 전부터 버튼이 보인다 → 인라인에 display 가 남아 있는 동안은 건드리지 않는다.
+   (감춰진 상태 : style 에 display 가 있음 / 공개 상태 : engine 이 지워 없음) */
+.introseq .introseq-next:not([style*="display"]){display:inline-flex!important}
 .introseq .ib-bubble{background:transparent;box-shadow:none;color:#fff;padding:0}
 .introseq .ib-bubble::after{display:none}
 .introseq .ib-bubble .nm{color:#FFE169;font-weight:800}
