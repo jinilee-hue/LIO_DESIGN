@@ -453,7 +453,6 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-quick_exit .quickexit.has-bg,
 .scr-post_skill_pick .quickexit.has-bg{
   background:#1C4BD6 !important;background-image:none !important}
-.scr-post_skill_pick .qe-scrim{display:none}
 /* slide 46 LIO — 웅크렸다 두 팔 벌리며 폴짝 뛰는 스프라이트.
    IMAGE/b/lio_fp_cheer.webp — fp_sprite2 중 12장 (원본 436×618 리샘플·재배치 없이 그대로) :
      1-2 · 2-3 · 3-4  손을 모아 웅크린 준비 (발밑 615)
@@ -524,7 +523,28 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
     var(--b-qe-shadow, radial-gradient(ellipse 20% 5% at 23.5% 56%,
       rgba(6,18,52,.42) 0%, rgba(6,18,52,.22) 38%, transparent 72%)),
     var(--b-qe-bg,#1C4BD6)}
-.scr-post_skill_pick .quickexit{--b-qe-lio:url("../IMAGE/lio5.png")}
+/* slide 49 (최종 종료 · 추가 학습 선택) : LIO 를 엄지 든 스프라이트로.
+   IMAGE/b/lio_end_thumbs.webp — end_sprite1(4×4, 412×548) 의 1-2 · 1-1 · 2-1 · 1-4 · 1-3 (5프레임).
+   이 시트는 16프레임 전부 발밑 526 고정이고, 이 5장은 갈기 좌단 30~31 · 머리폭 215~216 ·
+   스카프 중심 183.5~184.5 로 완전히 고정이라 정규화 없이 원본 그대로 쓴다.
+   2-2 부터는 머리폭이 198 로 꺾여(고개를 돌린다) 넣으면 튄다.
+   프레임차가 25~47 로 큰 것은 1-1 · 1-2 의 반짝임(✨)과 갈기 디테일 때문이고 기하는
+   고정이므로 떨림이 아니다 — 순서는 전체 조합을 다 계산해 차이 합이 최소인 것으로 잡았다.
+   구조는 slide 46 과 동일 : 파란 배경을 .quickexit 로 내리고 ::before 는 물결만,
+   접지 그림자는 끈다. 호스트는 B 에서 안 쓰는 .qe-scrim.
+   크기 기준은 slide 5 : 사자 머리-발 485.5px. 가로는 스카프 중심을, 세로는 발밑을
+   기존 lio5.png 렌더(발밑 644.7 · 스카프중심 238.5)에 맞췄다. */
+.scr-post_skill_pick .quickexit{--b-qe-lio:none;--b-qe-shadow:none;--b-qe-bg:transparent;
+  background-color:#1C4BD6}
+.scr-post_skill_pick .qe-scrim{display:block;inset:auto;
+  left:5.57%;bottom:13.44%;width:34.82%;aspect-ratio:412/548;
+  z-index:0;pointer-events:none;
+  background:url("../IMAGE/b/lio_end_thumbs.webp") no-repeat 0% 0 / 500% 100%;
+  animation:bLioThumbs .60s steps(5,jump-none) infinite alternate}
+@keyframes bLioThumbs{from{background-position:0% 0} to{background-position:100% 0}}
+@media (prefers-reduced-motion:reduce){
+  .scr-post_skill_pick .qe-scrim{animation:none}
+}
 /* slide 46 : LIO 를 환호 스프라이트로. 발이 물결에 조금 가려지는 구성을 유지하려면
    사자가 "파란 배경 위 · 물결 아래" 여야 하는데 둘 다 ::before 안에 있으므로
    파란 배경만 .quickexit 로 내리고 ::before 는 물결만 남긴다 (slide 6·9·35 와 동일).
