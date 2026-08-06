@@ -21,10 +21,9 @@
 
   // [시각(초), 세기] — 화면에 들어오며 커지고 마지막 착지는 살짝 눌러 준다
   var STEPS = [
-    [0.08, 0.55], [0.33, 0.66], [0.60, 0.76], [0.90, 0.86],
-    [1.24, 0.95], [1.63, 1.00], [2.05, 0.88]
+    [0.18, 0.62], [0.62, 0.74], [1.12, 0.86], [1.66, 0.97], [2.02, 0.82]
   ];
-  var VOL = 0.16;          // BGM(0.38) 아래로 — 발소리가 앞서지 않게
+  var VOL = 0.14;          // BGM(0.38) 아래로 — 발소리가 앞서지 않게
   var ctx = null;
   var unlocked = false;
   var timers = [];
@@ -58,37 +57,43 @@
     return noiseBuf;
   }
 
-  /* 발소리 1회. left 로 좌우 발을 번갈아 — 필터와 피치를 조금 달리해 같은 소리가
-     반복되는 티를 없앤다. */
-  function step(strength, left) {
-    var a = audio();
-    if (!a || a.state !== 'running') return;
-    var t = a.currentTime + 0.005;
+  /* 발소리 1회를 임의의 오디오 컨텍스트에 쌓는다. 라이브 컨텍스트와 OfflineAudioContext
+     둘 다 받으므로, 검증할 때 이 함수를 그대로 오프라인 렌더해 파형을 확인할 수 있다.
+     (파라미터를 따로 베껴 검증하면 실제 코드와 어긋나도 못 잡는다.)
+     left 로 좌우 발을 번갈아 — 필터와 피치를 조금 달리해 같은 소리가 반복되는 티를 없앤다. */
+  function voice(a, dest, t, strength, left) {
     var g = VOL * strength;
 
     // 발바닥 : 저역만 남긴 짧은 노이즈
     var src = a.createBufferSource(); src.buffer = noise(a);
     var lp = a.createBiquadFilter();
     lp.type = 'lowpass';
-    lp.frequency.value = left ? 820 : 960;
-    lp.Q.value = 0.7;
+    lp.frequency.value = left ? 600 : 700;
+    lp.Q.value = 0.6;
     var ng = a.createGain();
     ng.gain.setValueAtTime(0, t);
-    ng.gain.linearRampToValueAtTime(g, t + 0.004);
-    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.075);
-    src.connect(lp); lp.connect(ng); ng.connect(a.destination);
-    src.start(t); src.stop(t + 0.12);
+    ng.gain.linearRampToValueAtTime(g, t + 0.010);   // 어택을 늘려 딸깍거리지 않게
+    ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.13);
+    src.connect(lp); lp.connect(ng); ng.connect(dest);
+    src.start(t); src.stop(t + 0.20);
 
     // 체중 : 낮은 사인이 살짝 떨어지며 사라진다
     var o = a.createOscillator(); o.type = 'sine';
     o.frequency.setValueAtTime(left ? 104 : 92, t);
-    o.frequency.exponentialRampToValueAtTime(left ? 62 : 56, t + 0.09);
+    o.frequency.exponentialRampToValueAtTime(left ? 58 : 52, t + 0.13);
     var og = a.createGain();
     og.gain.setValueAtTime(0, t);
-    og.gain.linearRampToValueAtTime(g * 0.9, t + 0.006);
-    og.gain.exponentialRampToValueAtTime(0.0001, t + 0.10);
-    o.connect(og); og.connect(a.destination);
-    o.start(t); o.stop(t + 0.14);
+    og.gain.linearRampToValueAtTime(g * 0.95, t + 0.012);
+    og.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+    o.connect(og); og.connect(dest);
+    o.start(t); o.stop(t + 0.20);
+  }
+
+  // 라이브 재생용 래퍼
+  function step(strength, left) {
+    var a = audio();
+    if (!a || a.state !== 'running') return;
+    voice(a, a.destination, a.currentTime + 0.005, strength, left);
   }
 
   function schedule() {
@@ -98,6 +103,10 @@
       timers.push(setTimeout(function () { step(s[1], i % 2 === 0); }, s[0] * 1000));
     });
   }
+
+  /* 검증용 — voice()/STEPS 를 그대로 OfflineAudioContext 에 렌더해 파형을 확인한다.
+     프로덕션 동작에는 쓰지 않는다. */
+  window.LIO_FOOTSTEPS = { voice: voice, steps: STEPS };
 
   // bLioWalk = theme-b.css 의 걷기 프레임 애니메이션. 이름이 바뀌면 여기도 바꿔야 한다.
   document.addEventListener('animationstart', function (e) {
