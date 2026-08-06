@@ -451,53 +451,63 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-post_skill_pick .quickexit.has-bg{
   background:#1C4BD6 !important;background-image:none !important}
 .scr-post_skill_pick .qe-scrim{display:none}
-/* slide 46 LIO — 두 팔 들고 환호하는 스프라이트.
-   IMAGE/b/lio_fp_cheer.webp — fp_sprite2(4×4, 436×618) 의 1-4 · 2-1 · 3-2 · 4-3 · 3-1.
-   이 시트는 정합된 애니메이션이 아니라 포즈 16장 모음이다 — 발밑이 519~615(96px),
-   발중심이 139~230(91px) 로 프레임마다 사자가 움직이고 머리 비율도 0.447~0.566 로 흔들린다.
-   그래서 ① 머리폭/머리-발이 뭉친 프레임만 남기고 ② 프레임마다 몸높이를 480px 로
-   정규화하며 발밑선·발중심을 맞춘 뒤 ③ 정규화 후 서로 가장 닮은 순서로 재배열했다.
-   10장까지 넣어보면 아무리 순서를 최적화해도 47.6·26.1 의 큰 점프가 남고 박스가 넓어져
-   left 가 음수(왼쪽 잘림)가 되므로, 차이 6.0~7.9 로 붙어 있는 5장만 쓴다.
-   크기 기준은 slide 5 : 사자 머리-발 485.5px. 발밑·발중심은 기존 에셋 자리 그대로.
+/* slide 46 LIO — 두 팔 들고 폴짝폴짝 뛰는 스프라이트.
+   IMAGE/b/lio_fp_cheer.webp — fp_sprite2(4×4, 436×618) 16프레임 전부 (459KB).
 
-   B 에서 안 쓰는 .qe-scrim(배경 스크림)을 호스트로 재사용하고, 하트 말풍선은 그 ::after 로
-   붙여 사자를 따라다니게 했다. */
+   이 시트는 프레임마다 사자의 크기·위치가 다르다(발밑 519~615 · 발중심 139~230 ·
+   몸높이 452~500). 처음엔 정합이 안 된 포즈 모음으로 보고 발밑까지 한 줄로 맞춰
+   5장만 썼는데, 그러면 점프가 사라져 상하 이동을 CSS 로 따로 만들어야 했다.
+   실제로는 발밑 차이가 점프 궤적이고, 팔을 모아 웅크린 프레임(1-2 · 2-3 · 3-4)이
+   준비·착지 자세다. 그래서 지금은
+     · 배율(몸높이 480px)과 가로(발중심)만 정규화 — 몸이 커지거나 좌우로 밀리는 것만 제거
+     · 세로 오프셋은 그대로 살린다 — 진폭 123px 의 점프가 프레임에 들어있다
+     · 순서는 발밑 내림차순(웅크림 → 정점)을 유지하되, 높이가 비슷한 프레임끼리는
+       서로 닮은 순으로 골라 튐을 줄였다
+   alternate 로 하강 구간을 되짚어 한 번의 폴짝(0.84s)이 된다. */
 .scr-quick_exit .qe-scrim{display:block;inset:auto;
-  left:6.42%;bottom:15.11%;width:38.13%;aspect-ratio:426/492;
+  left:.5%;bottom:15.14%;width:46.01%;aspect-ratio:514/615;
   z-index:0;pointer-events:none;
-  background:url("../IMAGE/b/lio_fp_cheer.webp") no-repeat 0% 0 / 500% 100%;
-  /* 프레임을 정규화해 발밑을 고정했으므로 뛰는 느낌은 프레임만으로는 안 난다 →
-     상하 이동을 transform 으로 따로 준다. 착지 때 살짝 눌리게 scaleY 를 쓰고,
-     transform-origin 을 바닥에 둬서 눌릴 때 발이 뜨지 않게 한다.
-     프레임 왕복 한 바퀴(2.0s) 에 폴짝 4번(0.5s) 이 들어간다. */
-  transform-origin:50% 100%;
-  animation:bLioCheer 1.0s steps(5,jump-none) infinite alternate,
-            bLioHop   0.5s ease-in-out infinite}
+  background:url("../IMAGE/b/lio_fp_cheer.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioCheer .42s steps(16,jump-none) infinite alternate}
 @keyframes bLioCheer{from{background-position:0% 0} to{background-position:100% 0}}
-@keyframes bLioHop{
-  0%   {transform:translateY(0)          scaleY(1)}
-  26%  {transform:translateY(-5.2%)      scaleY(1.015)}   /* 상승 */
-  42%  {transform:translateY(-6%)        scaleY(1)}       /* 정점 */
-  68%  {transform:translateY(0)          scaleY(1)}       /* 착지 */
-  78%  {transform:translateY(0)          scaleY(.985)}    /* 눌림 — .965 는 머리가 기준선보다
-                                                              18px 내려가 과했다 */
-  100% {transform:translateY(0)          scaleY(1)}
-}
 /* 하트 말풍선 — 원래 lio_intro_fp2.png 안에 합쳐져 있던 것을 잘라낸 에셋
-   (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격). 위치는 에셋 안 좌표(x704 y30)를
-   화면 좌표로 환산한 뒤 호스트 기준으로 다시 환산한 값이라 원래 자리와 같다.
+   (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격). 위치는 원래 자리 유지.
+   호스트는 제자리에 있고 점프는 프레임 안에 있으므로 말풍선은 함께 튀지 않는다.
    slide 5 HI! · slide 6 GO · slide 7 ? 와 같은 키프레임으로 둥둥, 에셋에 그림자가 없어
    알파 모양을 따르는 drop-shadow 를 준다. */
 .scr-quick_exit .qe-scrim::after{content:'';position:absolute;
-  left:77.95%;top:3.03%;width:16.52%;aspect-ratio:146/141;
+  left:77.47%;top:22.47%;width:13.70%;aspect-ratio:146/141;
   background:url("../IMAGE/b/bubble_heart.png") no-repeat center/contain;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
-  animation:bBubbleFloat 2.4s ease-in-out infinite}
+  /* 사자가 120px 넘게 뛰어오르므로 말풍선이 제자리에 있으면 정점에서 얼굴과 겹친다.
+     프레임별 상승량을 그대로 top 에 넣어 같이 올라가게 했다 — top 의 % 는 호스트 높이
+     기준이라 해상도가 달라져도 어긋나지 않는다(px·cqw 는 어긋난다).
+     스프라이트와 같은 steps(16,jump-none)·같은 duration 이라 프레임과 정확히 맞는다. */
+  animation:bBubbleFloat 2.4s ease-in-out infinite,
+            bHeartRide   .42s steps(16,jump-none) infinite alternate}
+@keyframes bHeartRide{
+  0.0000% {top:22.470%}
+  6.6667% {top:21.543%}
+  13.3333% {top:21.543%}
+  20.0000% {top:11.803%}
+  26.6667% {top:11.250%}
+  33.3333% {top:12.437%}
+  40.0000% {top:9.202%}
+  46.6667% {top:7.738%}
+  53.3333% {top:5.381%}
+  60.0000% {top:3.462%}
+  66.6667% {top:4.795%}
+  73.3333% {top:3.332%}
+  80.0000% {top:3.104%}
+  86.6667% {top:3.283%}
+  93.3333% {top:2.649%}
+  100.0000% {top:2.421%}
+}
 @media (prefers-reduced-motion:reduce){
   .scr-quick_exit .qe-scrim,
   .scr-quick_exit .qe-scrim::after{animation:none}
 }
+
 .scr-quick_exit .quickexit::before,
 .scr-post_skill_pick .quickexit::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
