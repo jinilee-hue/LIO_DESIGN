@@ -454,58 +454,54 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-post_skill_pick .quickexit.has-bg{
   background:#1C4BD6 !important;background-image:none !important}
 .scr-post_skill_pick .qe-scrim{display:none}
-/* slide 46 LIO — 두 팔 벌리며 폴짝 뛰는 스프라이트, fp_sprite2 16프레임 전부.
-   IMAGE/b/lio_fp_cheer.webp — 원본 프레임(436×618)을 리샘플·재배치 없이 그대로 쓴다.
+/* slide 46 LIO — 두 팔 벌리며 폴짝 뛰는 스프라이트.
+   IMAGE/b/lio_fp_cheer.webp — fp_sprite2 중 2-2 · 4-4 · 3-3 · 2-4 · 4-2 · 4-3 · 3-1 · 3-2
+   (8프레임). 원본 프레임(436×618)을 리샘플·재배치 없이 그대로 쓴다.
 
-   앞서 "시트에 사자가 두 종류 섞여 있다"고 판단해 5장만 썼는데 오진이었다.
-   근거로 쓴 "발 중앙"이 다리를 크게 벌리는 프레임에서 92px 씩 끌려서 그렇게 보인 것이고,
-   그 값으로 가로를 맞추는 바람에 내가 몸을 좌우로 최대 84px 밀어버린 것이 떨림의 원인이었다.
-   머리 중심(216~229)·몸통 중심(215~230)으로 재보면 14px 안이라 시트는 이미 정합돼 있다.
-   → 정규화는 아예 하지 않고, 발밑 내림차순(웅크림 → 정점)으로만 재배열했다.
-     발밑 615 → 519 로 96px 올라가는 게 점프 궤적이고, 팔이 접힌 1-2 · 2-3 · 3-4 가
-     웅크린 준비 자세다. alternate 로 하강을 되짚어 한 번의 폴짝이 0.8s.
-   크기·위치는 기존 에셋 기준 : 몸통 중심 282.1px · 지면 프레임 발밑 645.9px,
-   사자 머리-발은 slide 5 와 같은 485.5px(16장 평균 478 기준). */
+   떨림의 원인은 두 번 오진했다. ① 발 중앙으로 가로를 맞춘 것(다리를 벌리면 92px 끌려서
+   내가 몸을 최대 84px 밀어버렸다) ② 그 다음엔 16장을 발 높이순으로만 늘어놓은 것.
+   스카프 중심으로 재보면 236~242(6px)라 시트는 정확히 정합돼 있고, 진짜 문제는 순서였다 —
+   높이순으로 놓으면 머리 기울기가 무작위로 튀어(인접 최대 13.5px) 떨려 보인다.
+   그래서 "발밑은 계속 올라가면서 인접 프레임 차이가 작은" 최장 경로를 DP 로 뽑았다.
+     · 인접 차이 한계 25 → 8장 (평균 19.5) ← 채택
+     · 35 로 풀면 12장이 되지만 인접 차이가 최대 35 까지 벌어져 다시 떨린다
+   이 경로는 발밑 606 → 519 로 87px 오르고 머리 중심 흔들림도 최대 8px 로 줄어든다.
+   alternate 로 하강을 되짚어 한 번의 폴짝이 0.88s.
+   가로는 스카프 중심(가장 안정적인 기준)을 기존 에셋의 스카프 중심에 맞췄고,
+   사자 머리-발은 slide 5 와 같은 485.5px 이다. */
 .scr-quick_exit .qe-scrim{display:block;inset:auto;
-  left:4.91%;bottom:15.50%;width:39.38%;aspect-ratio:436/618;
+  left:2.81%;bottom:14.32%;width:39.01%;aspect-ratio:436/618;
   z-index:0;pointer-events:none;
-  background:url("../IMAGE/b/lio_fp_cheer.webp") no-repeat 0% 0 / 1600% 100%;
-  animation:bLioCheer .40s steps(16,jump-none) infinite alternate}
+  background:url("../IMAGE/b/lio_fp_cheer.webp") no-repeat 0% 0 / 800% 100%;
+  animation:bLioCheer .44s steps(8,jump-none) infinite alternate}
 @keyframes bLioCheer{from{background-position:0% 0} to{background-position:100% 0}}
 /* 하트 말풍선 — 원래 lio_intro_fp2.png 안에 합쳐져 있던 것을 잘라낸 에셋
    (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격). 위치는 원래 자리에서 시작.
-   사자가 96px 뛰어올라 제자리에 두면 정점에서 얼굴과 겹치므로, 프레임별 상승량을 그대로
+   사자가 87px 뛰어올라 제자리에 두면 정점에서 얼굴과 겹치므로, 프레임별 상승량을 그대로
    top 키프레임에 넣어 같이 올라가게 했다 — top 의 % 는 호스트 높이 기준이라 해상도가
-   달라져도 어긋나지 않는다. 스프라이트와 같은 steps(16,jump-none)·같은 duration.
+   달라져도 어긋나지 않는다. 스프라이트와 같은 steps(8,jump-none)·같은 duration.
    에셋에 그림자가 없어 알파 모양을 따르는 drop-shadow 를 준다. */
 .scr-quick_exit .qe-scrim::after{content:'';position:absolute;
-  left:79.31%;top:23.98%;width:16.00%;aspect-ratio:146/141;
+  left:85.45%;top:21.79%;width:16.15%;aspect-ratio:146/141;
   background:url("../IMAGE/b/bubble_heart.png") no-repeat center/contain;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   animation:bBubbleFloat 2.4s ease-in-out infinite,
-            bHeartRide   .40s steps(16,jump-none) infinite alternate}
+            bHeartRide   .44s steps(8,jump-none) infinite alternate}
 @keyframes bHeartRide{
-  0.0000% {top:23.976%}
-  6.6667% {top:23.976%}
-  13.3333% {top:23.976%}
-  20.0000% {top:23.490%}
-  26.6667% {top:22.519%}
-  33.3333% {top:21.548%}
-  40.0000% {top:18.474%}
-  46.6667% {top:17.179%}
-  53.3333% {top:13.134%}
-  60.0000% {top:12.001%}
-  66.6667% {top:10.869%}
-  73.3333% {top:8.927%}
-  80.0000% {top:9.251%}
-  86.6667% {top:8.765%}
-  93.3333% {top:9.251%}
-  100.0000% {top:8.442%}
+  0.0000% {top:21.795%}
+  14.2857% {top:17.749%}
+  28.5714% {top:16.455%}
+  42.8571% {top:12.410%}
+  57.1429% {top:10.144%}
+  71.4286% {top:8.202%}
+  85.7143% {top:8.041%}
+  100.0000% {top:7.717%}
 }
 @media (prefers-reduced-motion:reduce){
   .scr-quick_exit .qe-scrim,
   .scr-quick_exit .qe-scrim::after{animation:none}
 }
+
 
 
 
