@@ -274,7 +274,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    말풍선 없이 흰 텍스트가 배경 위에 바로 올라간다.
    .introseq 의 배경 일러스트는 flow-data(공용)의 inline style 이라 손대지 않고
    ::before 오버레이로 덮는다. (마스코트 z-index:3, 말풍선 z-index:2 는 위에 남는다) */
-.scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd, .scr-fp2_intro .hd, .scr-fp2_intro_cut2 .hd{display:none}
+.scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd,
+.scr-skill_video_intro .hd, .scr-game_intro .hd,
+.scr-fp2_intro .hd, .scr-fp2_intro_cut2 .hd{display:none}
 /* 배경 = 소형 로고(좌상단) + Figma 마스코트(좌측, 물결 위) + 하단 3겹 물결 + 플랫 블루.
    마스코트 크기·위치는 Figma 좌표 기준 : lio 프레임 673/1072 = 높이 62.8%,
    좌측 x=115/1577 ≈ 7.3% (cut2) · x=59/1577 ≈ 3.7% (Game/FP Intro) */
@@ -300,6 +302,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-greeting .introseq,
 .scr-greeting_cut3 .introseq,
 .scr-plan .introseq,
+.scr-skill_video_intro .introseq,
+.scr-game_intro .introseq,
 .scr-fp2_intro .introseq,
 .scr-fp2_intro_cut2 .introseq{--b-intro-lio:none;--b-intro-shadow:none;--b-intro-bg:transparent;
   background-image:none !important;background-color:#1C4BD6}
@@ -344,7 +348,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    크기·위치는 기존 lio_intro_plan.png 렌더에서 역산 :
      머리-발 487.9px · 발밑 y644.5 · 발중심 x263.9 → width 32.26% · left 5.63% · bottom 14.93%.
    구조(파란 배경을 .introseq 로 내리고 ::before 는 물결만, 그림자 끄기)는 slide 6 과 동일. */
-.scr-plan .introseq .introseq-scrim{display:block;inset:auto;
+.scr-plan .introseq .introseq-scrim,
+.scr-skill_video_intro .introseq .introseq-scrim,
+.scr-game_intro .introseq .introseq-scrim{display:block;inset:auto;
   /* 크기 기준은 slide 5 : 사자 머리-발 485.5px.
      이 시트는 머리폭/머리-발 비율이 0.451 로 slide 5(0.501)보다 작아 머리-발을 맞추면
      머리가 10% 작게 보이지만, 화면 간 크기 기준을 slide 5 로 통일하는 쪽을 택했다. */
@@ -353,7 +359,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   animation:bLioGameIdle 2.4s steps(16,jump-none) infinite alternate}
 @keyframes bLioGameIdle{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
-  .scr-plan .introseq .introseq-scrim{animation:none}
+  .scr-plan .introseq .introseq-scrim,
+  .scr-skill_video_intro .introseq .introseq-scrim,
+  .scr-game_intro .introseq .introseq-scrim{animation:none}
 }
 /* plan 은 스프라이트(.introseq-scrim)로 바뀌어 배경 레이어를 쓰지 않는다.
    ⚠ 여기서 --b-intro-lio 를 다시 지정하면 위(.scr-plan .introseq{--b-intro-lio:none})와
@@ -470,10 +478,18 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    ⚠ Design A 는 같은 버튼을 ctaImg(ui/btn_letsplay.png) 이미지로 그리므로 영향 없다. */
 .scr-plan .introseq .introseq-next,
 .scr-plan .introseq .introseq-next.btn,
-.scr-plan .introseq .introseq-next.btn.primary{
+.scr-plan .introseq .introseq-next.btn.primary,
+.scr-skill_video_intro .introseq .introseq-next,
+.scr-skill_video_intro .introseq .introseq-next.btn,
+.scr-skill_video_intro .introseq .introseq-next.btn.primary,
+.scr-game_intro .introseq .introseq-next,
+.scr-game_intro .introseq .introseq-next.btn,
+.scr-game_intro .introseq .introseq-next.btn.primary{
   width:auto;white-space:nowrap;
   padding:0 calc(var(--cta-chev) + clamp(10px,1.4cqw,20px)) 0 clamp(20px,2.4cqw,34px)}
 .scr-plan .introseq .introseq-next::before{content:"Let's get started!"}
+.scr-skill_video_intro .introseq .introseq-next::before{content:"Let's watch!"}
+.scr-game_intro .introseq .introseq-next::before{content:"Let's play!"}
 .introseq .ib-spk{font-size:var(--fz-ui)}
 .introseq .introseq-replay{bottom:5%;right:3%;font-size:var(--fz-ui-sm)}
 .quickexit .ib-left{left:18%;top:11%}
