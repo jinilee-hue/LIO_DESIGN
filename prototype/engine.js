@@ -280,7 +280,7 @@
   function blockHTML(b) {
     switch (b.t) {
       case 'label':
-        return `<div class="et-label${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}"${interestAttr(b)}>${b.html}</div>`;
+        return `<div class="et-label${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}${b.afterFly ? ' fly-hidden' : ''}"${interestAttr(b)}>${b.html}</div>`;
       case 'walkarea':
         return `<div class="walk-area"></div>`;
       case 'lio':
@@ -317,7 +317,8 @@
           const ic = it.bImg
             ? `<img class="mi-img" src="${IMG}b_skill/${it.bImg}" alt="">`
             : (LI[it.icon] || it.icon || '');
-          return `<button class="menu-item${it.state ? ' ' + it.state : ''}"><span class="mi-ic">${ic}</span><span class="mi-tx">${txBlock(it.html, { kr: b.kr, krHtml: it.krHtml || it.kr })}</span></button>`;
+          const go = it.go ? ` data-go="${it.go}"` : '';
+          return `<button class="menu-item${it.state ? ' ' + it.state : ''}"${go}><span class="mi-ic">${ic}</span><span class="mi-tx">${txBlock(it.html, { kr: b.kr, krHtml: it.krHtml || it.kr })}</span></button>`;
         }).join('');
         return `<div class="menu${b.hidden ? ' reveal-hidden' : ''}">${items}</div>`;
       }
@@ -334,10 +335,13 @@
           const chk = it.check ? ' btn-check' : '';
           const act = it.act ? ` data-act="${it.act}"` : '';
           const tst = it.toast ? ` data-toast="${it.toast}"` : '';
+          // act:'pick' 전용 : 어느 분기인지(pick) 와 입력창에 자동 완성할 문장(fill)
+          const pk = it.pick ? ` data-pick="${it.pick}"` : '';
+          const fl = it.fill ? ` data-fill="${it.fill}"` : '';
           const adv = (it.reveal || it.check || it.act) ? '' : ' data-advance';
-          return `<button class="btn ${it.style || 'primary'}${rev}${chk}${btnLong(it.html)}"${adv}${act}${tst}>${stripEmoji(it.html).replace(/▶/g, PLAY)}</button>`;
+          return `<button class="btn ${it.style || 'primary'}${rev}${chk}${btnLong(it.html)}"${adv}${act}${tst}${pk}${fl}>${stripEmoji(it.html).replace(/▶/g, PLAY)}</button>`;
         }).join('');
-        return `<div class="btnrow${b.align === 'end' ? ' end' : ''}${b.nowrap ? ' nowrap' : ''}${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}"${interestAttr(b)}>${items}</div>`;
+        return `<div class="btnrow${b.align === 'end' ? ' end' : b.align === 'start' ? ' start' : ''}${b.nowrap ? ' nowrap' : ''}${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}"${interestAttr(b)}>${items}</div>`;
       }
       case 'strategy': {
         const items = F.STRATEGY.items.map((it, i) => {
@@ -897,7 +901,17 @@
     if (scr.focusWord) {
       const chip0 = stage.querySelector('.wordchip');
       if (chip0) chip0.style.visibility = 'hidden';
-      later(runWordFocusFly, 550);
+      // act:'wordFly' 버튼이 있으면 자동 시작하지 않고 그 클릭을 기다린다
+      // (기획서: 'Let's check!' 버튼을 눌러 단어 테스트 진입)
+      const cue = stage.querySelector('[data-act="wordFly"]');
+      if (cue) {
+        cue.addEventListener('click', () => {
+          const row = cue.closest('.btnrow'); if (row) row.style.display = 'none';
+          runWordFocusFly();
+        });
+      } else {
+        later(runWordFocusFly, 550);
+      }
     }
 
     // choices : 채점 전 선택 토글 (multi=복수, 그 외=단일선택). 이미 채점(correct/wrong)된 건 잠금.
@@ -1027,6 +1041,15 @@
       sfxFound();
     }));
 
+    // 'Something else' 3가지 옵션 : 버튼 → 입력창 문장 자동 완성. 답은 Send 를 눌러야 나온다.
+    // 어느 것을 골랐는지 stage 에 남겨 두고, 아래 Send 핸들러가 그 분기만 걷어낸다.
+    delete stage.dataset.pick;   // 화면이 바뀌면 초기화 (dataset 은 #stage 에 남는다)
+    stage.querySelectorAll('[data-act="pick"]').forEach(b => b.addEventListener('click', () => {
+      stage.dataset.pick = b.dataset.pick || '';
+      const inp = stage.querySelector('.chatinput input');
+      if (inp && b.dataset.fill) { inp.value = b.dataset.fill; inp.focus(); }
+    }));
+
     // Quick Exit 카드 분기
     stage.querySelectorAll('.qe-card[data-go]').forEach(card => card.addEventListener('click', () => {
       const id = card.dataset.go;
@@ -1040,7 +1063,16 @@
       btn.addEventListener('click', () => {
         const wrap = btn.closest('.chatinput');
         if (wrap) wrap.style.display = 'none';
-        stage.querySelectorAll('.reveal-hidden').forEach(el => el.classList.remove('reveal-hidden'));
+        const pick = stage.dataset.pick;
+        if (pick) {
+          // 고른 옵션의 답 + 공통 마무리(next)만 표출 — 세 답이 한꺼번에 나오면 안 된다
+          stage.querySelectorAll(`[data-interest="${pick}"], [data-interest="next"]`)
+            .forEach(el => el.classList.remove('reveal-hidden'));
+          const row = stage.querySelector('[data-act="pick"]');
+          if (row && row.closest('.btnrow')) row.closest('.btnrow').style.display = 'none';
+        } else {
+          stage.querySelectorAll('.reveal-hidden').forEach(el => el.classList.remove('reveal-hidden'));
+        }
         if (scr.id === 'interest') {
           stage.querySelectorAll('[data-interest="more"], [data-interest="next"]').forEach(el => el.classList.remove('reveal-hidden'));
         }
@@ -1117,9 +1149,17 @@
       stage.querySelectorAll('.passage .kw').forEach(el =>
         el.addEventListener('click', (e) => { e.stopPropagation(); showWordPopup(el.textContent.trim()); }));
 
-    // menu items → advance
+    // menu items → data-go 가 있으면 그 화면으로, 없으면 다음 화면
     stage.querySelectorAll('.menu-item').forEach(m =>
-      m.addEventListener('click', () => { if (!m.classList.contains('sel')) goNext(); }));
+      m.addEventListener('click', () => {
+        if (m.classList.contains('sel')) return;
+        const id = m.dataset.go;
+        if (id) {
+          const i = SCREENS.findIndex(x => x.id === id);
+          if (i >= 0) { goTo(i); return; }
+        }
+        goNext();
+      }));
 
     // strategy 항목 → 하나 선택 후 다음 화면
     stage.querySelectorAll('.strat-item').forEach(btn =>

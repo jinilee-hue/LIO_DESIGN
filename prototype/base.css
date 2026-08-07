@@ -210,6 +210,9 @@ body{
 .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:2px}
 .btnrow.center{justify-content:center;margin-top:14px}
 .btnrow.end{justify-content:flex-end}
+/* align:'start' 옵트인 — 아래 .reading .activity .btnrow 우측 정렬을 이기려면
+   같은 특정도(0,3,0)보다 높아야 한다 */
+.btnrow.start,.reading .activity .btnrow.start{justify-content:flex-start}
 /* 우측 대화창(activity) 내 버튼은 모두 오른쪽 정렬로 통일 */
 .reading .activity .btnrow{justify-content:flex-end}
 /* 한 줄 배치(nowrap) : 좁은 패널에 여러 버튼을 한 줄로 */
