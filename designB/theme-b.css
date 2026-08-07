@@ -358,15 +358,18 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background:url("../IMAGE/b/lio_game_idle.webp") no-repeat 0% 0 / 1600% 100%;
   animation:bLioGameIdle 2.4s steps(16,jump-none) infinite alternate}
 @keyframes bLioGameIdle{from{background-position:0% 0} to{background-position:100% 0}}
-/* slide 10 (Skill Video Intro) : 극장 의자에서 팝콘 들고 보는 LIO.
-   IMAGE/b/lio_video_watch.webp — video_sprite(4×4, 442×630) 16프레임 전부, 원본 그대로.
-   16프레임이 bbox(3~439 · 아래 627)·폭 436·중심 x221 이 완전히 같아 정규화가 필요 없다
-   (높이만 621~625 로 4px 흔들린다). 프레임차 2.3~12.1 로 고르다.
-   크기·위치는 slide 9 LIO 기준 : 사자 전체 높이 485.5px 를 그대로 맞추고(배율 0.778),
-   의자 다리 아래를 같은 접지선(y644.5)에, 몸 중심을 같은 x(263.9)에 뒀다 —
-   두 화면을 넘길 때 LIO 가 같은 자리·같은 크기로 이어진다. */
+/* slide 10 (Skill Video Intro) : 안락의자에서 팝콘 들고 보며 손 흔드는 LIO.
+   IMAGE/b/lio_video_watch.webp — video_sprite(4×4, 462×540) 16프레임 전부, 원본 그대로.
+   16프레임이 바닥 531 · 좌단 31 이 완전히 같고 스카프 중심도 130~135(4px)라 정규화가
+   필요 없다(폭 401~428 · 높이 520~529 변동은 흔드는 앞발). 프레임차 3.0~23.7 · 평균 11.2.
+   크기·위치는 slide 9 LIO 기준 : 전체 높이 485.5px 를 맞추고(배율 0.934), 의자 아래를
+   같은 접지선(y644.5)에, 내용 왼쪽 끝을 같은 x(68.3px)에 뒀다.
+   ⚠ 가로를 스카프 중심으로 맞추면 안 된다 — 이 시트는 스카프가 몸 왼쪽에 치우쳐 있어
+     전체가 오른쪽으로 밀리고 팝콘이 본문 영역(x530~)을 침범한다. 왼쪽 끝 정렬이면
+     내용이 x68~444 로 끝나 여유가 있다.
+   → slide 9 · 10 · 12 · 14 에서 LIO 가 같은 접지선·같은 크기로 이어진다. */
 .scr-skill_video_intro .introseq .introseq-scrim{display:block;inset:auto;
-  left:8.14%;bottom:15.77%;width:30.43%;aspect-ratio:442/630;
+  left:3.48%;bottom:14.98%;width:38.17%;aspect-ratio:462/540;
   z-index:0;pointer-events:none;
   background:url("../IMAGE/b/lio_video_watch.webp") no-repeat 0% 0 / 1600% 100%;
   animation:bLioVideoWatch 2.4s steps(16,jump-none) infinite alternate}
