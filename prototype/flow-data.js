@@ -185,8 +185,8 @@ const SCREENS = [
   id:'plan', slide:9, section:'Intro', title:'Game_Intro', layout:'center',
   mascot:'lio_face2.png', mascotBig:true,
   message:[
-    'Here\'s how today will go: play a game 🎮 → read &amp; practice 📖',
-    "First stop — let's play! 🎮",
+    'Here\'s how today will go: <b class="nm">watch a video</b> → <b class="nm">play a game</b> → <b class="nm">read &amp; practice</b>',
+    "Ready? Let's get started!",
   ],
   buttons:[{ html:"Let's play! ▶", style:'primary' }],
   // Design A : A_Game Intro (침실 배경 + 순차 말풍선 + Let's play)
@@ -194,8 +194,8 @@ const SCREENS = [
     image:'intro4.png',
     fadeIn:true,
     bubbles:[  // Figma A_Game Intro 원문 그대로
-      { side:'left',  text:"Here's how today will go..." },
-      { side:'right', text:'first, we\'ll <b class="nm">play a game</b>,<br>and then we\'ll <b class="mi">read<br>and practice</b> together!' },
+      { side:'left',  text:'Here\'s how today will go:<br><b class="nm">watch a video</b> → <b class="nm">play a game</b> → <b class="nm">read &amp; practice</b>' },
+      { side:'right', text:"Ready? Let's get started!" },
     ],
     cta:"Let's play!", ctaImg:'ui/btn_letsplay.png',   // Figma 버튼 원본
   },
