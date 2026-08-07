@@ -540,26 +540,44 @@ const SCREENS = [
         '본 화면은 2개 모두 정답 → 학습 마무리 reaction 🎉 confetti → Teach(Word Peek) 진입'],
 },
 
-/* 20 ─ Scaffolding Word Check (오답 → 게임) */
+/* 20 ─ Scaffolding Word Check 오답 (기획서 PAGE 24)
+   문제가 둘이다 : spotted → Next → explore. 각 문제는 2지 선다(기획서: 전레벨 고정).
+   결과는 '1개만 정답' → 실패 멘트 (1/2) → Teach(Word Peek) → Game.
+   ※ 지문에서 단어가 날아와 chip 에 박히는 연출(focusWord)은 첫 문제에만 걸린다 —
+     engine 의 runWordFocusFly 가 .kw-focus/.wordchip 을 하나씩만 잡는다. 두 번째 단어는
+     Next 와 함께 chip 이 그대로 나타난다. */
 {
-  id:'wordcheck_b', slide:25, section:'Further Practice 1', title:'FP1_Main_Question_오답경로_word check_오답', layout:'reading',
+  id:'wordcheck_b', slide:25, section:'Further Practice 1',
+  title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_word check_오답',
+  layout:'reading',
   passage:true, focusWord:'spotted',   // 지문에서 해당 단어만 포커스
   blocks:[
+    // ── 문제 1 : spotted (오답 → 바로 정답 제시)
     { t:'chip', html:'spotted' },
     { t:'lio', html:'What does "spotted" mean?', tts:true, kr:true, afterFly:true },
     { t:'emoji', kr:true, reveal:true, afterFly:true, items:[
-      { emoji:'👀', html:'Saw or noticed', state:'correct' },
-      { emoji:'🎨', html:'Painted or colored', state:'wrong' },
-      { emoji:'👟', html:'Walked or ran quickly' },
-      { emoji:'🌧️', html:'Rain fell heavily' },
+      { emoji:'👀', html:'Saw or noticed.', state:'correct' },
+      { emoji:'✏️', html:'Painted or colored.' },
     ]},
-    { t:'lio', html:'X does not mean that. "Spotted" means saw or noticed.', tts:true, kr:true, hidden:true },   // 답 선택 후 피드백
-    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary', reveal:true }] },   // Next 탭 → 2-3 표출
-    { t:'lio', html:"It looks like some words need a little more practice — let's do some word learning together! (1/2)", tts:true, kr:true, stage2:true },
-    { t:'lio', stage2:true, html:"Next, we'll peek at the key words together — then play a quick game!", tts:true, kr:true },
-    { t:'buttons', stage2:true, align:'end', items:[{ html:'Go to Teach ▶', style:'primary' }] },
+    { t:'lio', html:'X does not mean that. "Spotted" means saw or noticed.', tts:true, kr:true, hidden:true },
+    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary', reveal:true }] },
+    // ── 문제 2 : explore (Next 로 표출)
+    { t:'chip', html:'explore', stage2:true },
+    { t:'lio', html:"What does 'explore' mean?", tts:true, kr:true, stage2:true },
+    { t:'emoji', kr:true, reveal:true, stage2:true, items:[
+      { emoji:'🧭', html:'to look around', state:'correct' },
+      { emoji:'☀️', html:'to shine' },
+    ]},
+    // ── 두 문제 결과 : 1개만 정답 → 단어 테스트 실패 언급
+    { t:'lio', html:"It looks like some words need a little more practice — let's do some word learning together! (1/2)", tts:true, kr:true, hidden:true },
+    { t:'lio', html:"Next, we'll peek at the key words together — then play a quick game!", tts:true, kr:true, hidden:true },
+    { t:'buttons', align:'end', hidden:true, items:[{ html:'Go to Teach ▶', style:'primary' }] },
   ],
-  spec:['오답의 경우, 바로 정답 제시','1개만 정답 또는 모두 오답 → "단어 테스트 실패" 언급','Teach(Word Peek) + Game 활동 진행'],
+  spec:['문제 제시 동시에 지문 영역 내 해당 단어 하이라이트',
+        '학생 단어 카드 탭 — 오답의 경우 바로 정답 제시',
+        "문제 답 선택 후 'Next' 버튼 생성 → 두 번째 단어 문제",
+        '본 화면은 1개만 정답 또는 모두 오답 → "단어 테스트 실패" 언급',
+        'Teach(Word Peek) 이후 Game 활동 진입'],
 },
 
 /* 21 ─ Word Peek / Teach (PPTX 21) */

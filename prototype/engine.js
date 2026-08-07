@@ -327,7 +327,8 @@
         const items = b.items.map(it =>
           `<button class="emoji-opt" data-state="${it.state || ''}"><span class="eo-ic">${it.emoji}</span><span class="eo-tx">${txBlock(it.html, { kr: b.kr, krHtml: it.krHtml || it.kr })}</span></button>`
         ).join('');
-        return `<div class="emoji-grid${b.reveal ? ' emoji-reveal' : ''}${b.afterFly ? ' fly-hidden' : ''}">${items}</div>`;
+        // data-n : 보기 개수. 기본 4칸 그리드라 2·3개면 칸이 남아 왼쪽으로 몰린다(base.css)
+        return `<div class="emoji-grid${b.reveal ? ' emoji-reveal' : ''}${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}${b.afterFly ? ' fly-hidden' : ''}" data-n="${b.items.length}">${items}</div>`;
       }
       case 'buttons': {
         const items = b.items.map(it => {
@@ -353,7 +354,7 @@
         return `<div class="strategy${b.hidden ? ' reveal-hidden' : ''}"><div class="strat-title">${F.STRATEGY.title}</div>${items}</div>`;
       }
       case 'chip':
-        return `<div class="wordchip">${b.html}</div>`;
+        return `<div class="wordchip${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}">${b.html}</div>`;
       case 'note':
         return `<div class="note${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}">${b.html}</div>`;
       case 'actcard': {
@@ -1008,10 +1009,19 @@
     // Next(reveal) 버튼 → 숨겨둔 STRATEGY 박스 표출 (기획서: Next 탭 → strategy cue)
     stage.querySelectorAll('.btn-reveal').forEach(btn =>
       btn.addEventListener('click', () => {
-        const hids = [...stage.querySelectorAll('.reveal-hidden, .reveal2-hidden')];
-        hids.forEach(el => el.classList.remove('reveal-hidden', 'reveal2-hidden'));
+        const row = btn.closest('.btnrow');
+        // 버튼 뒤의 숨긴 블록을 표출한다. 뒤에 다음 문제(.emoji-grid)가 있으면 그 문제까지만 —
+        // 그 문제의 피드백은 답을 골라야 나와야 한다(slide 25). 뒤에 문제가 없는 화면은
+        // 예전처럼 뒤쪽 전체가 열린다. reveal 버튼 '앞' 에 숨긴 블록을 두는 화면은 없다.
+        const hids = [];
+        for (let n = (row || btn).nextElementSibling; n; n = n.nextElementSibling) {
+          const was = n.classList.contains('reveal-hidden') || n.classList.contains('reveal2-hidden');
+          n.classList.remove('reveal-hidden', 'reveal2-hidden');
+          if (was) hids.push(n);
+          if (n.classList.contains('emoji-grid')) break;
+        }
         if (hids.length) hids[hids.length - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        const row = btn.closest('.btnrow'); if (row) row.style.display = 'none';
+        if (row) row.style.display = 'none';
       }));
 
     // 마이크 버튼 : 누르면 녹음(발화) 상태 토글 → 빨간 버튼 + 음파 리플
@@ -1134,7 +1144,11 @@
         const correct = op.dataset.state === 'correct';
         op.classList.add(correct ? 'correct' : 'wrong');            // 클릭한 것 정/오답 표시
         if (!correct) { const cor = grid.querySelector('.emoji-opt[data-state="correct"]'); if (cor) cor.classList.add('correct'); }
-        stage.querySelectorAll('.reveal-hidden').forEach(el => el.classList.remove('reveal-hidden'));   // 피드백·Next 표출
+        // 그 문제 뒤의 숨긴 블록만 표출한다 — 다음 문제(.emoji-grid) 전까지.
+        // 한 화면에 문제가 둘이면(slide 25) 뒤 문제의 피드백이 미리 열려서는 안 된다.
+        for (let n = grid.nextElementSibling; n && !n.classList.contains('emoji-grid'); n = n.nextElementSibling) {
+          n.classList.remove('reveal-hidden');
+        }
         if (correct) {                                              // 정답 → 파티클 + 효과음
           const r = op.getBoundingClientRect();
           burstParticles(r.left + r.width / 2, r.top + r.height / 2);

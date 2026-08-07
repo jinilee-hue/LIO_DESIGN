@@ -198,6 +198,10 @@ body{
 .mi-ic .mi-img{width:40px;height:40px;object-fit:contain;display:block}
 .mi-tx{flex:1}
 .emoji-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* 보기가 4개보다 적으면 남은 칸 때문에 왼쪽으로 몰린다 → 개수만큼 폭을 나눈다.
+   (slide 24 word check 는 기획서대로 2지 선다) */
+.emoji-grid[data-n="2"]{grid-template-columns:repeat(2,1fr)}
+.emoji-grid[data-n="3"]{grid-template-columns:repeat(3,1fr)}
 .emoji-opt{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px 8px;cursor:pointer;font-size:12.5px;color:#3a4560;transition:.15s}
 .emoji-opt:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(60,70,110,.14)}
 .eo-ic{font-size:26px}
