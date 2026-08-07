@@ -348,8 +348,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    크기·위치는 기존 lio_intro_plan.png 렌더에서 역산 :
      머리-발 487.9px · 발밑 y644.5 · 발중심 x263.9 → width 32.26% · left 5.63% · bottom 14.93%.
    구조(파란 배경을 .introseq 로 내리고 ::before 는 물결만, 그림자 끄기)는 slide 6 과 동일. */
-.scr-plan .introseq .introseq-scrim,
-.scr-game_intro .introseq .introseq-scrim{display:block;inset:auto;
+.scr-plan .introseq .introseq-scrim{display:block;inset:auto;
   /* 크기 기준은 slide 5 : 사자 머리-발 485.5px.
      이 시트는 머리폭/머리-발 비율이 0.451 로 slide 5(0.501)보다 작아 머리-발을 맞추면
      머리가 10% 작게 보이지만, 화면 간 크기 기준을 slide 5 로 통일하는 쪽을 택했다. */
@@ -370,6 +369,19 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background:url("../IMAGE/b/lio_video_watch.webp") no-repeat 0% 0 / 1600% 100%;
   animation:bLioVideoWatch 2.4s steps(16,jump-none) infinite alternate}
 @keyframes bLioVideoWatch{from{background-position:0% 0} to{background-position:100% 0}}
+/* slide 12 (Game Intro) : 안락의자에서 컨트롤러 든 LIO.
+   IMAGE/b/lio_game_play.webp — game_sprite(4×4, 470×608) 중 14프레임, 원본 그대로.
+   4-1 · 4-2 만 바닥이 605(다른 프레임은 597)로 8px 낮아 빼면 세로가 완전히 고정된다.
+   가로는 스카프 중심이 277~284(8px)로 가장 안정적이라 그걸 기준으로 잡았다
+   (bbox 중심은 꼬리가 움직여 21px 흔들린다).
+   크기·위치는 slide 9 LIO 기준 : 전체 높이 485.5px · 접지 y644.5 · 중심 x263.9
+   → slide 9 · 10 · 12 세 화면에서 LIO 가 같은 자리·같은 크기로 이어진다. */
+.scr-game_intro .introseq .introseq-scrim{display:block;inset:auto;
+  left:2.97%;bottom:14.89%;width:34.40%;aspect-ratio:470/608;
+  z-index:0;pointer-events:none;
+  background:url("../IMAGE/b/lio_game_play.webp") no-repeat 0% 0 / 1400% 100%;
+  animation:bLioGamePlay 2.1s steps(14,jump-none) infinite alternate}
+@keyframes bLioGamePlay{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .scr-plan .introseq .introseq-scrim,
   .scr-game_intro .introseq .introseq-scrim,

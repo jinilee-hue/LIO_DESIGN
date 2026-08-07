@@ -251,7 +251,7 @@ const SCREENS = [
     fadeIn:true,
     bubbles:[
       { side:'left',  text:'Nice job watching, <b class="nm">Maya</b>!' },
-      { side:'right', text:'Now let\'s warm up those <b class="mi">Main Idea</b> skills<br>with a game!' },
+      { side:'right', text:'Now let\'s warm up those <b class="mi">Main Idea</b> skills with a game!' },
     ],
     cta:"Let's play!", ctaImg:'ui/btn_letsplay.png',
   },
