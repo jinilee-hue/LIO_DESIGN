@@ -568,40 +568,38 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
      12장에서 인접 차이 최대 32.6(웅크림이 풀리며 팔이 벌어지는 실제 동작) · 평균 22.2 ·
      머리 중심 흔들림 최대 8px. 남은 4장(1-1 · 1-3 · 1-4 · 4-1)은 어디에 끼워도 이웃과의
      차이가 39~57 로 벌어져 다시 떨리므로 뺐다.
-   발밑 615 → 519 로 96px(전체 진폭) 오르고, alternate 로 하강을 되짚어 폴짝 한 번이 0.9s.
+   ★ 떨림의 실제 원인은 순서가 아니라 '상승을 시트에 구워 넣은 것' 이었다. 발밑이
+     617·616·616·607·583·575·549·535·525·523·522·521 로 3프레임 정지 → 25px 두 번 급등 →
+     정점에선 1~2px. 1차 추세를 제거해도 잔차가 폭 29.8px(프레임당 최대 14px)이고,
+     37.5ms/프레임이라 이게 진동으로 보였다.
+     → 모든 프레임 발밑을 617 로 정렬해(편차 1px) 상승을 시트에서 빼고, 96px 은 아래
+       bLioHop(translateY) 로 옮겼다. 자세는 steps 로 넘어가고 수직 이동만 보간되어
+       완전히 매끄럽다. 프레임은 원본 칸 그대로라(가로 오프셋 0) 원본에서 다시 만들었다.
+   폴짝 한 번이 0.9s (오르기 .45s + alternate 로 내려오기 .45s).
    가로는 스카프 중심(가장 안정적인 기준)을 기존 에셋에 맞췄고 머리-발은 slide 5 와 같은 485.5px. */
 .scr-quick_exit .qe-scrim{display:block;inset:auto;
   left:2.41%;bottom:15.50%;width:39.60%;aspect-ratio:436/618;
   z-index:0;pointer-events:none;
   background:url("../IMAGE/b/lio_fp_cheer.webp") no-repeat 0% 0 / 1200% 100%;
-  animation:bLioCheer .45s steps(12,jump-none) infinite alternate}
+  animation:bLioCheer .45s steps(12,jump-none) infinite alternate,
+            bLioHop   .45s ease-out          infinite alternate}
 @keyframes bLioCheer{from{background-position:0% 0} to{background-position:100% 0}}
+/* 96px / 시트 높이 618px = 15.534%. translate 의 % 는 요소 자기 크기 기준이라
+   해상도가 달라져도 어긋나지 않는다.
+   ease-out : 뛰어오를수록 느려지는 실제 도약. alternate 로 되짚으면 내려올 때는
+   반대로 가속(ease-in)이 되어 낙하가 자연스럽다. */
+@keyframes bLioHop{from{transform:translateY(0)} to{transform:translateY(-15.534%)}}
 /* 하트 말풍선 — 원래 lio_intro_fp2.png 안에 합쳐져 있던 것을 잘라낸 에셋
-   (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격). 위치는 원래 자리에서 시작.
-   사자가 96px 뛰어올라 제자리에 두면 정점에서 얼굴과 겹치므로, 프레임별 상승량을 그대로
-   top 키프레임에 넣어 같이 올라가게 했다 — top 의 % 는 호스트 높이 기준이라 해상도가
-   달라져도 어긋나지 않는다. 스프라이트와 같은 steps(12,jump-none)·같은 duration.
+   (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격).
+   전에는 프레임별 상승량을 top 키프레임(bHeartRide)에 손으로 넣어 사자를 따라 올라가게
+   했지만, 이제 상승이 호스트의 translateY 라서 배경(사자)과 ::after(하트)가 함께 움직인다
+   — 키프레임을 지웠고 둥둥 뜨는 bBubbleFloat 만 남는다.
    에셋에 그림자가 없어 알파 모양을 따르는 drop-shadow 를 준다. */
 .scr-quick_exit .qe-scrim::after{content:'';position:absolute;
   left:85.18%;top:24.39%;width:15.91%;aspect-ratio:146/141;
   background:url("../IMAGE/b/bubble_heart.png") no-repeat center/contain;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
-  animation:bBubbleFloat 2.4s ease-in-out infinite,
-            bHeartRide   .45s steps(12,jump-none) infinite alternate}
-@keyframes bHeartRide{
-  0.0000% {top:24.389%}
-  9.0909% {top:24.389%}
-  18.1818% {top:24.389%}
-  27.2727% {top:22.933%}
-  36.3636% {top:18.887%}
-  45.4545% {top:17.593%}
-  54.5455% {top:13.548%}
-  63.6364% {top:11.282%}
-  72.7273% {top:9.664%}
-  81.8182% {top:9.341%}
-  90.9091% {top:9.179%}
-  100.0000% {top:8.855%}
-}
+  animation:bBubbleFloat 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){
   .scr-quick_exit .qe-scrim,
   .scr-quick_exit .qe-scrim::after{animation:none}
@@ -1509,30 +1507,36 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    흰 줄만 쓰면 지문·대화 패널이 흰색이라 보이지 않는다. 그래서 host 에 짙은
    남색 wash 를 얇게 깔고 그 위에 흰 줄을 얹는다 — 비구름처럼 어두워지면서
    가운데 LIO 도 함께 도드라진다. pointer-events:none 이라 조작을 막지는 않는다. */
-.quiz-rain{position:absolute;inset:0;z-index:59;pointer-events:none;overflow:hidden;
-  background:linear-gradient(180deg, rgba(14,30,74,.24) 0%, rgba(14,30,74,.13) 62%, rgba(14,30,74,.06) 100%);
+.quiz-rain{position:absolute;top:60px;left:0;right:0;height:64%;
+  z-index:59;pointer-events:none;overflow:hidden;
+  /* 아래로 갈수록 사라지게 — 띠 끝에서 빗줄기가 잘려 보이지 않게 한다.
+     host 에 마스크를 걸면 가상요소까지 함께 페이드된다(host 자체 배경은 없다) */
+  -webkit-mask-image:linear-gradient(180deg,#000 0 66%, transparent 100%);
+          mask-image:linear-gradient(180deg,#000 0 66%, transparent 100%);
   animation:bRainIn .42s ease-out both, bRainOut .46s ease-in 3.24s both}
 .quiz-rain::before,.quiz-rain::after{content:'';position:absolute;
-  left:-12%;top:-60%;width:124%;height:220%;
+  top:-60%;width:124%;height:220%;
   animation-timing-function:linear;animation-iteration-count:infinite}
-/* 앞쪽(굵고 빠른) 비 */
-.quiz-rain::before{transform:rotate(6deg);
-  background-image:repeating-linear-gradient(180deg, rgba(255,255,255,.52) 0 18px, transparent 18px 96px),
-                   repeating-linear-gradient(180deg, rgba(255,255,255,.30) 0 26px, transparent 26px 148px);
-  background-position:0 0, 0 40px;
-  -webkit-mask-image:repeating-linear-gradient(90deg,#000 0 2px, transparent 2px 27px);
-          mask-image:repeating-linear-gradient(90deg,#000 0 2px, transparent 2px 27px);
+/* 빗줄기 색 : 흰색을 쓰면 지문·대화 패널이 흰색이라 안 보인다. wash 를 깔지 않기로 했으니
+   패널 위에서도 읽히는 청회색으로 칠한다.
+   성기게 : 가로 간격을 27px → 86px(앞) · 19px → 112px(뒤) 로 벌려 confetti 밀도에 맞췄다.
+   레이어도 각 1줄로 줄였다(전에는 레이어마다 2줄, 총 4줄).
+   비는 사선이 아니라 위에서 아래로 곧게 떨어진다 — 두 레이어 모두 회전 없음. */
+.quiz-rain::before{left:-12%;
+  background-image:repeating-linear-gradient(180deg, rgba(74,105,180,.50) 0 18px, transparent 18px 104px);
+  background-position:0 0;
+  -webkit-mask-image:repeating-linear-gradient(90deg,#000 0 2px, transparent 2px 86px);
+          mask-image:repeating-linear-gradient(90deg,#000 0 2px, transparent 2px 86px);
   animation-name:bRainFall1;animation-duration:.62s}
-/* 뒤쪽(가늘고 흐린) 비 — 각도·간격·속도를 달리해 격자무늬로 보이지 않게 한다 */
-.quiz-rain::after{transform:rotate(9deg);filter:blur(.6px);opacity:.85;
-  background-image:repeating-linear-gradient(180deg, rgba(255,255,255,.34) 0 12px, transparent 12px 74px),
-                   repeating-linear-gradient(180deg, rgba(255,255,255,.22) 0 20px, transparent 20px 122px);
-  background-position:0 0, 0 18px;
-  -webkit-mask-image:repeating-linear-gradient(90deg,#000 0 1.5px, transparent 1.5px 19px);
-          mask-image:repeating-linear-gradient(90deg,#000 0 1.5px, transparent 1.5px 19px);
+/* 뒤쪽은 각도·간격·속도를 달리하고 left 를 어긋나게 둬서 두 줄이 겹쳐 보이지 않게 한다 */
+.quiz-rain::after{left:-6%;filter:blur(.5px);opacity:.8;
+  background-image:repeating-linear-gradient(180deg, rgba(74,105,180,.34) 0 12px, transparent 12px 82px);
+  background-position:0 0;
+  -webkit-mask-image:repeating-linear-gradient(90deg,#000 0 1.5px, transparent 1.5px 112px);
+          mask-image:repeating-linear-gradient(90deg,#000 0 1.5px, transparent 1.5px 112px);
   animation-name:bRainFall2;animation-duration:.44s}
-@keyframes bRainFall1{to{background-position:0 96px, 0 188px}}
-@keyframes bRainFall2{to{background-position:0 74px, 0 140px}}
+@keyframes bRainFall1{to{background-position:0 104px}}
+@keyframes bRainFall2{to{background-position:0 82px}}
 @keyframes bRainIn{from{opacity:0} to{opacity:1}}
 @keyframes bRainOut{from{opacity:1} to{opacity:0}}
 @media (prefers-reduced-motion:reduce){
