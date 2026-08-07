@@ -375,17 +375,19 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   animation:bLioVideoWatch 2.4s steps(16,jump-none) infinite alternate}
 @keyframes bLioVideoWatch{from{background-position:0% 0} to{background-position:100% 0}}
 /* slide 12 (Game Intro) : 안락의자에서 컨트롤러 든 LIO.
-   IMAGE/b/lio_game_play.webp — game_sprite(4×4, 470×608) 중 14프레임, 원본 그대로.
-   4-1 · 4-2 만 바닥이 605(다른 프레임은 597)로 8px 낮아 빼면 세로가 완전히 고정된다.
-   가로는 스카프 중심이 277~284(8px)로 가장 안정적이라 그걸 기준으로 잡았다
-   (bbox 중심은 꼬리가 움직여 21px 흔들린다).
-   크기·위치는 slide 9 LIO 기준 : 전체 높이 485.5px · 접지 y644.5 · 중심 x263.9
-   → slide 9 · 10 · 12 세 화면에서 LIO 가 같은 자리·같은 크기로 이어진다. */
+   IMAGE/b/lio_game_play.webp — game_sprite(4×4, 534×524) 16프레임 전부, 원본 그대로.
+   갱신본은 정합이 매우 좋다 : 우단 487 · 바닥 521 이 16프레임 전부 동일, 스카프 중심도
+   286~287(1px). 좌단 2~77 · 높이 509~518 변동은 움직이는 꼬리와 앞발이다.
+   프레임차 6.4~19.9 · 평균 12.5.
+   크기·접지는 slide 9 LIO 기준(전체 높이 485.5px · 접지 y644.5, 배율 0.952).
+   가로는 내용 왼쪽 끝을 slide 9 와 같은 x(68.3px)에 맞춘다 — 스카프 중심(1px 로 가장
+   안정적)으로 맞추면 left 가 -0.78% 가 되어 사자가 화면 왼쪽 밖으로 밀린다.
+   → 이 정렬이면 내용이 x68~514 로 끝나 본문(x530~) 앞에서 여유가 생긴다. */
 .scr-game_intro .introseq .introseq-scrim{display:block;inset:auto;
-  left:2.97%;bottom:14.89%;width:34.40%;aspect-ratio:470/608;
+  left:4.44%;bottom:15.71%;width:44.99%;aspect-ratio:534/524;
   z-index:0;pointer-events:none;
-  background:url("../IMAGE/b/lio_game_play.webp") no-repeat 0% 0 / 1400% 100%;
-  animation:bLioGamePlay 2.1s steps(14,jump-none) infinite alternate}
+  background:url("../IMAGE/b/lio_game_play.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioGamePlay 2.4s steps(16,jump-none) infinite alternate}
 @keyframes bLioGamePlay{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .scr-plan .introseq .introseq-scrim,
