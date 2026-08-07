@@ -8,6 +8,8 @@
    판정 : 채점된 그룹에 .choice.wrong 이 있으면 오답, 없으면 정답.
      (오답이면 engine 이 "누른 선지 .wrong + 정답 선지 .correct" 를 함께 붙인다)
 
+   오답일 때는 LIO 뒤(z-index 59)로 비 레이어 .quiz-rain 을 함께 깐다.
+
    오버레이는 .device 안에 넣어야 프로토타입 프레임 안에서만 뜬다. 재생이 끝나면
    animationend 로 스스로 제거한다 — 남겨두면 다음 화면에서 클릭을 가로챈다.
    ⚠ instantGrade 는 flow-data 에서 slide 16(fp1_mq_correct)만 쓴다. 다른 화면에도 붙으면
@@ -16,19 +18,32 @@
   'use strict';
   if (window.LIO_THEME !== 'B') return;
 
-  var DUR = 2200;   // 스프라이트 재생 시간(ms) — theme-b 의 bQuizIn/Out 합과 맞춘다
+  var DUR = 3700;   // 총 재생 시간(ms) — theme-b 의 bQuizIn(.34)+bQuizFrame(1.45×2)+bQuizOut(.46)
 
   function show(kind) {
     var dev = document.querySelector('#stage .device');
     if (!dev) return;
-    var old = dev.querySelector('.quiz-reaction');
-    if (old) old.remove();
+    dev.querySelectorAll('.quiz-reaction, .quiz-rain').forEach(function (n) { n.remove(); });
+
+    // 오답이면 LIO 보다 먼저 비 레이어를 넣는다 (z-index 59 < LIO 60 → 확실히 뒤)
+    var rain = null;
+    if (kind === 'x') {
+      rain = document.createElement('div');
+      rain.className = 'quiz-rain';
+      dev.appendChild(rain);
+    }
+
     var el = document.createElement('div');
     el.className = 'quiz-reaction quiz-' + kind;   // quiz-o | quiz-x
     dev.appendChild(el);
     // 애니메이션이 끝나면 스스로 사라진다 (animationend 가 안 오는 환경 대비 타이머도 둔다)
     var done = false;
-    function kill() { if (done) return; done = true; el.remove(); }
+    function kill() {
+      if (done) return;
+      done = true;
+      el.remove();
+      if (rain) rain.remove();
+    }
     el.addEventListener('animationend', function (e) {
       if (e.animationName === 'bQuizOut') kill();
     });

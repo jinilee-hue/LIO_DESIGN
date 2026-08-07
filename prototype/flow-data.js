@@ -356,8 +356,11 @@ const SCREENS = [
     { t:'lio', html:'Great work! You found where Maya discovered tide pools. The evidence strongly supports the main idea about her exploration.', tts:true, kr:true },
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time.", tts:true, kr:true },
     { t:'strategy' },
+    // Next : slide 37 Pre-Retry 로 점프 (slide 16 과 같은 goPreRetry 핸들러)
+    { t:'buttons', align:'end', items:[{ html:'Next \u25B6', style:'primary', act:'goPreRetry' }] },
   ],
-  spec:['ET(Evidence Tap) 정답','M07b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','strategy cue 제공'],
+  spec:['ET(Evidence Tap) 정답','M07b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','strategy cue 제공',
+        'STRATEGY 박스 밑 Next 버튼 → Pre-Retry(slide 37) 로 이동'],
 },
 
 /* 15 ─ FP1 ET 1차 오답 */

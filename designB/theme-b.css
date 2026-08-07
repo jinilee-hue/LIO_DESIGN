@@ -1464,13 +1464,24 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   transform:translate(-50%,-50%);z-index:60;pointer-events:none;
   background-repeat:no-repeat;background-position:0% 0;
   filter:drop-shadow(0 clamp(6px,1.2cqw,18px) clamp(12px,2.4cqw,34px) rgba(6,18,52,.34));
-  animation:bQuizIn .34s cubic-bezier(.2,1.5,.4,1) both,
-            bQuizFrame 1.46s steps(16,jump-none) .34s both,
-            bQuizOut .40s cubic-bezier(.4,0,.7,-.2) 1.80s both}
+  /* longhand 로 쓴 이유 : 프레임 재생 방향만 시트별로 다르고(아래 .quiz-x) 나머지는 같다.
+     shorthand 로 쓰면 규칙 전체를 두 번 복사해야 한다.
+     0 ─ bQuizIn .34s (튀어들어옴) → bQuizFrame 1.45s ×2 = 2.9s → bQuizOut .46s (3.24s~3.70s) */
+  animation-name:bQuizIn,bQuizFrame,bQuizOut;
+  animation-duration:.34s,1.45s,.46s;
+  animation-delay:0s,.34s,3.24s;
+  animation-timing-function:cubic-bezier(.2,1.5,.4,1),steps(16,jump-none),cubic-bezier(.4,0,.7,-.2);
+  animation-iteration-count:1,2,1;
+  animation-direction:normal;
+  animation-fill-mode:both}
+/* quiz_o : 16→1 프레임차가 인접 평균의 1.02배(22.1 vs 21.7)로 그대로 이어 붙여도 매끄럽다 */
 .quiz-reaction.quiz-o{width:auto;aspect-ratio:436/572;
   background-image:url("../IMAGE/b/quiz_o.webp");background-size:1600% 100%}
+/* quiz_x : 이음새가 평균의 1.99배(12.3 vs 6.2)라 그대로 반복하면 첫 프레임으로 튄다.
+   되돌림(alternate)으로 재생하면 이음새를 지나지 않고, 웅크린 자세라 오히려 자연스럽다 */
 .quiz-reaction.quiz-x{width:auto;aspect-ratio:556/516;
-  background-image:url("../IMAGE/b/quiz_x.webp");background-size:1600% 100%}
+  background-image:url("../IMAGE/b/quiz_x.webp");background-size:1600% 100%;
+  animation-direction:normal,alternate,normal}
 @keyframes bQuizFrame{from{background-position:0% 0} to{background-position:100% 0}}
 @keyframes bQuizIn{
   from{opacity:0;transform:translate(-50%,-50%) scale(.55)}
@@ -1480,7 +1491,50 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   from{opacity:1;transform:translate(-50%,-50%) scale(1)}
   to  {opacity:0;transform:translate(-50%,-52%) scale(.82)}
 }
+
+/* ── slide 16 오답 : LIO 뒤로 비가 내린다 ──────────────────────────────────
+   quiz-reaction.js 가 오답일 때만 .quiz-rain 을 LIO 보다 먼저 넣는다.
+   z-index 59 < LIO 60 이라 확실히 뒤에 깔린다(형제 요소로 둔 이유 — 가상요소를
+   음수 z-index 로 내려도 부모의 배경, 즉 LIO 스프라이트보다 뒤로는 못 간다).
+
+   빗줄기는 '세로 방향 띠 그라디언트 × 가로 방향 마스크' 로 만든다.
+   띠만 쓰면 화면 폭 전체를 채운 가로줄이 되고, 마스크로 얇은 열만 남기면
+   비로소 낱개 빗줄기가 된다. 낙하는 background-position 을 정확히 한 주기만큼
+   내려 이어붙인다(레이어마다 주기가 달라 keyframes 도 따로 둔다).
+
+   흰 줄만 쓰면 지문·대화 패널이 흰색이라 보이지 않는다. 그래서 host 에 짙은
+   남색 wash 를 얇게 깔고 그 위에 흰 줄을 얹는다 — 비구름처럼 어두워지면서
+   가운데 LIO 도 함께 도드라진다. pointer-events:none 이라 조작을 막지는 않는다. */
+.quiz-rain{position:absolute;inset:0;z-index:59;pointer-events:none;overflow:hidden;
+  background:linear-gradient(180deg, rgba(14,30,74,.24) 0%, rgba(14,30,74,.13) 62%, rgba(14,30,74,.06) 100%);
+  animation:bRainIn .42s ease-out both, bRainOut .46s ease-in 3.24s both}
+.quiz-rain::before,.quiz-rain::after{content:'';position:absolute;
+  left:-12%;top:-60%;width:124%;height:220%;
+  animation-timing-function:linear;animation-iteration-count:infinite}
+/* 앞쪽(굵고 빠른) 비 */
+.quiz-rain::before{transform:rotate(6deg);
+  background-image:repeating-linear-gradient(180deg, rgba(255,255,255,.52) 0 18px, transparent 18px 96px),
+                   repeating-linear-gradient(180deg, rgba(255,255,255,.30) 0 26px, transparent 26px 148px);
+  background-position:0 0, 0 40px;
+  -webkit-mask-image:repeating-linear-gradient(90deg,#000 0 2px, transparent 2px 27px);
+          mask-image:repeating-linear-gradient(90deg,#000 0 2px, transparent 2px 27px);
+  animation-name:bRainFall1;animation-duration:.62s}
+/* 뒤쪽(가늘고 흐린) 비 — 각도·간격·속도를 달리해 격자무늬로 보이지 않게 한다 */
+.quiz-rain::after{transform:rotate(9deg);filter:blur(.6px);opacity:.85;
+  background-image:repeating-linear-gradient(180deg, rgba(255,255,255,.34) 0 12px, transparent 12px 74px),
+                   repeating-linear-gradient(180deg, rgba(255,255,255,.22) 0 20px, transparent 20px 122px);
+  background-position:0 0, 0 18px;
+  -webkit-mask-image:repeating-linear-gradient(90deg,#000 0 1.5px, transparent 1.5px 19px);
+          mask-image:repeating-linear-gradient(90deg,#000 0 1.5px, transparent 1.5px 19px);
+  animation-name:bRainFall2;animation-duration:.44s}
+@keyframes bRainFall1{to{background-position:0 96px, 0 188px}}
+@keyframes bRainFall2{to{background-position:0 74px, 0 140px}}
+@keyframes bRainIn{from{opacity:0} to{opacity:1}}
+@keyframes bRainOut{from{opacity:1} to{opacity:0}}
 @media (prefers-reduced-motion:reduce){
-  /* 움직임을 줄이면 프레임 재생 없이 첫 프레임만 잠깐 보여준다 */
-  .quiz-reaction{animation:bQuizIn .2s both, bQuizOut .3s 1.2s both}
+  /* 움직임을 줄이면 프레임 재생·낙하 없이 첫 모습만 잠깐 보여준다 */
+  .quiz-reaction{animation:bQuizIn .2s both, bQuizOut .3s 2.2s both}
+  .quiz-rain{animation:bRainIn .2s both, bRainOut .3s 2.2s both}
+  .quiz-rain::before,.quiz-rain::after{animation:none}
+}
 }
