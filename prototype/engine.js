@@ -280,7 +280,7 @@
   function blockHTML(b) {
     switch (b.t) {
       case 'label':
-        return `<div class="et-label${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}${b.afterFly ? ' fly-hidden' : ''}"${interestAttr(b)}>${b.html}</div>`;
+        return `<div class="et-label${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}${b.afterFly ? ' fly-hidden' : ''}"${interestAttr(b)}${b.para ? ` data-para="${b.para}"` : ''}>${b.html}</div>`;
       case 'walkarea':
         return `<div class="walk-area"></div>`;
       case 'lio':
@@ -1198,6 +1198,7 @@
     if (scr.layout === 'findflip')  wireFindFlip(scr);
     if (scr.walk)                   wireWalk(scr);
     if (scr.clarify)                wireClarify(scr);
+    if (scr.walkPara)               wireWalkPara();
     if (scr.freechat)               wireFreeChat(scr);
   }
 
@@ -1644,6 +1645,47 @@
     }
 
     renderClue();
+  }
+
+  /* ── 단락 진행에 따라 지문 하이라이트가 함께 움직인다 ──────────────────────
+     기획서: '화면 전환 시, 지문 영역 하이라이트 동시 효과'.
+     이 화면들은 4개 단락의 활동이 한 화면에 이어져 있어서, 활동 패널을 스크롤해 현재
+     단락 섹션이 바뀌면 그 단락 전체를 칠하고 지문도 그 단락으로 옮긴다.
+     정적 hl 맵으로는 표현할 수 없다(렌더 시 한 번 적용된다). */
+  function wireWalkPara() {
+    const stage = document.getElementById('stage');
+    const panel = stage.querySelector('.activity-scroll');
+    const pass  = stage.querySelector('.passage-scroll');
+    if (!panel || !pass) return;
+    const labels = [...panel.querySelectorAll('.et-label[data-para]')];
+    const paras  = [...pass.querySelectorAll('.ppara')];
+    if (!labels.length || !paras.length) return;
+
+    let cur = 0;
+    const apply = (n) => {
+      if (n === cur) return;
+      cur = n;
+      pass.querySelectorAll('.sent.hl-yellow').forEach(el => el.classList.remove('hl-yellow'));
+      const p = paras[n - 1];
+      if (!p) return;
+      p.querySelectorAll('.sent').forEach(el => el.classList.add('hl-yellow'));
+      p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+    // 패널 상단을 조금 지난 라벨 중 마지막 = 지금 보고 있는 단락.
+    // 단, 끝까지 스크롤했으면 마지막 단락으로 본다 — 마지막 섹션이 짧으면 상단까지 올라오지
+    // 못해서(스크롤 여유가 없다) 그 앞 라벨이 계속 선택된다.
+    const pick = () => {
+      if (panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 4) {
+        apply(+labels[labels.length - 1].dataset.para);
+        return;
+      }
+      const line = panel.getBoundingClientRect().top + 48;
+      let n = +labels[0].dataset.para;
+      labels.forEach(l => { if (l.getBoundingClientRect().top <= line) n = +l.dataset.para; });
+      apply(n);
+    };
+    panel.addEventListener('scroll', pick, { passive: true });
+    apply(+labels[0].dataset.para);
   }
 
   /* ================= Explore Words (PPTX 24) ================= */

@@ -651,11 +651,11 @@ const SCREENS = [
 /* 26 ─ Walk (Let's read & check) */
 {
   id:'walk_read', slide:31, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_A_Let’s read and check what I understand!', layout:'reading',
-  passage:true, hl:{ p2:'yellow' }, listen:true,
+  passage:true, walkPara:true,   /* 단락 진행에 맞춰 지문 하이라이트 이동 */ listen:true,
   blocks:[
     { t:'lio', html:'Let\'s read paragraph 1! Use the listen button in the passage.', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
-    { t:'label', html:'Paragraph 1' },
+    { t:'label', html:'Paragraph 1', para:1 },
     { t:'lio', html:'Where did Maya explore?', tts:true, kr:true },
     { t:'choices', kr:true, items:[
       { k:'A', html:'The rocky shore', state:'correct' },
@@ -665,7 +665,7 @@ const SCREENS = [
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
     { t:'lio', html:'Let\'s read paragraph 2! Listen, then answer.', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
-    { t:'label', html:'Paragraph 2' },
+    { t:'label', html:'Paragraph 2', para:2 },
     { t:'lio', html:'What did Maya spot in the pools?', tts:true, kr:true },
     { t:'choices', kr:true, items:[
       { k:'A', html:'A sea star', state:'correct' },
@@ -675,7 +675,7 @@ const SCREENS = [
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
     { t:'lio', html:'Paragraph 3 is next. Listen carefully!', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
-    { t:'label', html:'Paragraph 3' },
+    { t:'label', html:'Paragraph 3', para:3 },
     { t:'lio', html:'Why are tide pool animals tough?', tts:true, kr:true },
     { t:'choices', kr:true, items:[
       { k:'A', html:'They survive two different worlds', state:'correct' },
@@ -685,7 +685,7 @@ const SCREENS = [
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
     { t:'lio', html:'Last paragraph! Listen, then check.', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
-    { t:'label', html:'Paragraph 4' },
+    { t:'label', html:'Paragraph 4', para:4 },
     { t:'lio', html:'How did Maya feel when she left?', tts:true, kr:true },
     { t:'choices', kr:true, items:[
       { k:'A', html:'Amazed by her discovery', state:'correct' },
@@ -723,24 +723,24 @@ const SCREENS = [
 /* 27 ─ Walk (Explain the story) */
 {
   id:'walk_explain', slide:33, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_C_Explain the story to me!', layout:'reading',
-  passage:true, hl:{ p1:'yellow', p2:'yellow', p3:'yellow', p4:'yellow' }, listen:true,
+  passage:true, walkPara:true,   /* 단락 진행에 맞춰 지문 하이라이트 이동 */ listen:true,
   blocks:[
-    { t:'label', html:'Paragraph 1' },
+    { t:'label', html:'Paragraph 1', para:1 },
     { t:'lio', html:'Maya went to the ocean that summer. Her class explored the tide pools together. Tide pools are small water pools left by the ocean. Maya saw them for the first time. They walked on the rocky shore. 🔊', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Got it! 👍', style:'primary' },{ html:'More simply 🔁', style:'navy' }] },
     { t:'lio', html:'Maya saw little ocean pools for the first time. 🔊', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Okay! ✅', style:'primary' }] },
-    { t:'label', html:'Paragraph 2' },
+    { t:'label', html:'Paragraph 2', para:2 },
     { t:'lio', html:'The pools were full of living things. Maya spotted a bright orange sea star, a hermit crab with a borrowed shell, and small fish hiding between rocks. 🔊', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Got it! 👍', style:'primary' },{ html:'More simply 🔁', style:'navy' }] },
     { t:'lio', html:'Maya found a sea star, a hermit crab, and small fish. 🔊', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Okay! ✅', style:'primary' }] },
-    { t:'label', html:'Paragraph 3' },
+    { t:'label', html:'Paragraph 3', para:3 },
     { t:'lio', html:"Maya's teacher explained that tide pool animals must survive two worlds — cold ocean water when the tide is in, and warm sun when the tide is out. That makes them very tough. 🔊", tts:true, kr:true },
     { t:'buttons', items:[{ html:'Got it! 👍', style:'primary' },{ html:'More simply 🔁', style:'navy' }] },
     { t:'lio', html:'Tide pool animals are tough because they live in two worlds. 🔊', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Okay! ✅', style:'primary' }] },
-    { t:'label', html:'Paragraph 4' },
+    { t:'label', html:'Paragraph 4', para:4 },
     { t:'lio', html:'Maya wrote everything she observed in her notebook. She learned that even a small pool can hold many living things, and she left feeling amazed. 🔊', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Got it! 👍', style:'primary' },{ html:'More simply 🔁', style:'navy' }] },
     { t:'lio', html:'Maya wrote what she saw and left amazed. 🔊', tts:true, kr:true },
