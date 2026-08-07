@@ -581,14 +581,18 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   left:2.41%;bottom:15.50%;width:39.60%;aspect-ratio:436/618;
   z-index:0;pointer-events:none;
   background:url("../IMAGE/b/lio_fp_cheer.webp") no-repeat 0% 0 / 1200% 100%;
-  animation:bLioCheer .45s steps(12,jump-none) infinite alternate,
-            bLioHop   .45s ease-out          infinite alternate}
-@keyframes bLioCheer{from{background-position:0% 0} to{background-position:100% 0}}
+  animation:bLioCheer 1s steps(12,jump-none) infinite alternate,
+            bLioHop   1s ease-out          infinite alternate}
+/* 앞 20% 는 지면에서 쉬는 박자. alternate 라 '상승 직전' 과 '착지 직후' 양쪽에 걸려
+   실제 쉼은 0.40s 가 된다. 상승 0.80s(12프레임 → 66.7ms/프레임) · 한 번 뛰는 데 2.0s.
+   전에는 0.45s·37.5ms/프레임에 쉼도 없어(다음으로 빠른 bLioTalk 가 85ms, 통상 118~162ms)
+   끊임없이 튕기는 것이 떨림으로 읽혔다. */
+@keyframes bLioCheer{0%,20%{background-position:0% 0} 100%{background-position:100% 0}}
 /* 96px / 시트 높이 618px = 15.534%. translate 의 % 는 요소 자기 크기 기준이라
    해상도가 달라져도 어긋나지 않는다.
    ease-out : 뛰어오를수록 느려지는 실제 도약. alternate 로 되짚으면 내려올 때는
    반대로 가속(ease-in)이 되어 낙하가 자연스럽다. */
-@keyframes bLioHop{from{transform:translateY(0)} to{transform:translateY(-15.534%)}}
+@keyframes bLioHop{0%,20%{transform:translateY(0)} 100%{transform:translateY(-15.534%)}}
 /* 하트 말풍선 — 원래 lio_intro_fp2.png 안에 합쳐져 있던 것을 잘라낸 에셋
    (IMAGE/b/bubble_heart.png · 146×141, HI!/GO 와 같은 규격).
    전에는 프레임별 상승량을 top 키프레임(bHeartRide)에 손으로 넣어 사자를 따라 올라가게
