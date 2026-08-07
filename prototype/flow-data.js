@@ -66,11 +66,11 @@ const STRATEGY = {
      B 에서 쓸 새 이름은 bName 에 두고 THEME==='B' 일 때만 쓴다. */
 const SKILLS = [
   { name:'Main Ideas',            today:true, aImg:'skill1.png',  bImg:'skill_main_ideas.png',                 color:'#F2B01E' }, // 노랑
-  { name:'Recalling Facts 1',     bName:'Facts: WH Question', aImg:'skill2.png',  bImg:'skill_recalling_facts_1.png',          color:'#3E9BE0' }, // 파랑
-  { name:'Recalling Facts 2',     bName:'Facts: True or Not True', aImg:'skill3.png',  bImg:'skill_recalling_facts_2.png',          color:'#3E9BE0' }, // 파랑
-  { name:'Recalling Facts 3',     bName:'Facts: Sentence Completion', aImg:'skill10.png', bImg:'skill_recalling_facts_3.png',          color:'#25438A' }, // 네이비
+  { name:'Recalling Facts 1',     bName:'Facts: WH Question', aImg:'skill2.png',  bImg:'skill_facts_wh_question.png',          color:'#3E9BE0' }, // 파랑
+  { name:'Recalling Facts 2',     bName:'Facts: True or Not True', aImg:'skill3.png',  bImg:'skill_facts_true_or_not_true.png',          color:'#3E9BE0' }, // 파랑
+  { name:'Recalling Facts 3',     bName:'Facts: Sentence Completion', aImg:'skill10.png', bImg:'skill_facts_sentence_completion.png',          color:'#25438A' }, // 네이비
   { name:'Drawing Conclusions',   bName:'Conclusions', aImg:'skill4.png',  bImg:'skill_drawing_conclusions.png',        color:'#7DBD3E' }, // 초록
-  { name:'Making Inferences',     bName:'Inferences', aImg:'skill5.png',  bImg:'skill_making_inferences.png',          color:'#A66BF8' }, // 보라
+  { name:'Making Inferences',     bName:'Inferences', aImg:'skill5.png',  bImg:'skill_inferences.png',          color:'#A66BF8' }, // 보라
   { name:'Cause & Effect',        aImg:'skill6.png',  bImg:'skill_cause_effect.png',               color:'#EF8A2A' }, // 주황
   { name:'Analyzing Characters',  bName:'Characters', aImg:'skill7.png',  bImg:'skill_analyzing_characters.png',       color:'#C1502E' }, // 빨강
   { name:"Author's Purpose",      aImg:'skill8.png',  bImg:'skill_authors_purpose.png',            color:'#D99A5B' }, // 탠
@@ -131,7 +131,7 @@ const SCREENS = [
   message:[
     'Hi <b>Maya</b>! Welcome to Skill Core!',
     "I'm <b>LIO</b>, and I'll be your reading buddy today.",
-    'We will practice a skill called "<b class="hl">Determining Main Ideas</b>" together!',
+    'We will practice together!',
     "Ready? Let's go!",
   ],
   buttons:[{ html:"Let's go! ▶", style:'primary' }],
@@ -157,7 +157,7 @@ const SCREENS = [
     image:'intro2.png',   // A_Intro_cut3 배경 (도서관 — cut2와 동일)
     fadeIn:false,         // cut2와 같은 배경 → 페이드 없이 말풍선만 교체
     bubbles:[  // Figma A_Intro_cut3 원문 그대로
-      { side:'left',  text:'We will practice a skill<br>called <b class="mi">"Determining Main<br>Ideas"</b> together!' },
+      { side:'left',  text:'We will practice together!' },
       { side:'right', text:"Ready? Let's go!" },
     ],
     cta:"Let's go!", ctaImg:'ui/btn_letsgo.png',   // Figma 버튼 원본

@@ -1809,7 +1809,7 @@
      세트를 laneH 보다 길게 채워야 이음매가 안 보이므로 필요한 만큼 복제한다.
      컬럼마다 이동 거리(--set)가 달라 keyframes 에서 var() 로 받는다.
      홀수 컬럼은 위로, 짝수 컬럼은 아래로 (교차). A 는 호출되지 않는다(THEME 가드). */
-  const B_SKILL_COLS = [[0, 4, 8], [6], [1, 3], [2, 5, 7, 9]];   // 컬럼별 data-skill (Figma 배치)
+  const B_SKILL_COLS = [[0, 5, 8], [4], [1, 3, 6], [2, 7, 9]];   // Figma B_Skill_list_AI 선택 기준   // 컬럼별 data-skill (Figma 배치)
   const B_CARD_H = 19.8;                                             // .b-cell 높이(cqw) — theme-b.css 와 동기
   const B_CARD_GAP = 2.2;                                            // .b-lane-set gap / padding-bottom
   const B_CARD_PITCH = B_CARD_H + B_CARD_GAP;                        // 22.0
