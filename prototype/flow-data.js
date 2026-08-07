@@ -592,10 +592,9 @@ const SCREENS = [
   id:'wordpeek', slide:26, section:'Further Practice 1', title:'FP1_Main_Question_오답경로_word check_이후_Teach(공통)', layout:'teach',
   passage:true,
   lioLine:"Here are the key words. Tap any card — I'll read the word and show what it means. 🔊",
-  // 'Want to explore more words? ...' 안내는 뺐다 — 지문 단어를 더 탭하라는 안내인데
-  // 그 동작을 하던 'Tap a word!' 버튼을 제거했고(실제로도 no-op 이었다), 지문 단어 탭은
-  // 별도 화면 Explore Words(slide 29)가 담당한다.
-  doneLio:['You found them all! Great job! 🔊'],
+  // 완료 시 말풍선은 두지 않는다 — 카드 6개가 모두 완료 색으로 바뀌고 'Next' 가 나오는 것으로
+  // 충분하다. (탭 안내는 없어진 'Tap a word!' 버튼을 가리켰고, 지문 단어 탭은 별도 화면
+  // Explore Words(slide 29)가 담당한다.) doneLio 를 아예 두지 않으면 engine 이 빈 배열로 다룬다.
   // 기획서 3: 마지막 단어 카드 완료 후 'Next' 버튼 하나. 다른 화면의 Next 와 같은 primary 색.
   // 'Tap a word!' 는 뺐다 — 기획서 완료 상태에 없고, 엔진 핸들러가 자기 버튼줄을
   // scrollIntoView 하는 것뿐이어서 실제로 아무 동작도 하지 않았다. 지문 단어를 더 탭해 보는
