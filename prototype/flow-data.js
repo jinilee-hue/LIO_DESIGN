@@ -436,13 +436,17 @@ const SCREENS = [
     { t:'lio', html:"No worries, mistakes help us learn! Let's see why this answer might not fit.", tts:true, kr:true },
     { t:'lio', html:'Pick why this answer is wrong.', tts:true, kr:true },
     { t:'choices', variant:'reason', kr:true, items:[
-      { k:'A', html:'Not in the text', state:'sel' },
+      // 정답이므로 sel(파란 라인)이 아니라 correct — 다른 화면의 정답 공통 배경(연두)과 같게 한다.
+      // sel 은 slide 29·42·43 처럼 '학생이 고른 메뉴 항목' 표시에 쓰는 상태다.
+      { k:'A', html:'Not in the text', state:'correct' },
       { k:'B', html:'Opposite meaning to what the text says' },
       { k:'C', html:'Too specific or too general (only one detail, or too broad)', state:'wrong' },
       { k:'D', html:'Not what the question asks for' },
     ]},
     { t:'lio', html:"The correct reason is 'Too specific or too general'. The passage does not mention Maya learning to swim — it only talks about exploring.", tts:true, kr:true },
-    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'orange', reveal:true }] },   // 우측 · 탭하면 아래 표출
+    // primary 로 통일 : orange 는 이 한 곳만 쓰던 예외였다. primary 는 A 에선 주황, B 에선 파랑이라
+    // 두 디자인 모두 각자의 공통 Next 색이 된다.
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', reveal:true }] },   // 우측 · 탭하면 아래 표출
     { t:'lio', html:"Now we know why it didn't fit — let's practice and try again! What would you like to do first?", tts:true, kr:true, hidden:true },
     { t:'menu', hidden:true, kr:true, items:[
       { bImg:'skill_literary_genres.png', html:'Can I check some words?' },
