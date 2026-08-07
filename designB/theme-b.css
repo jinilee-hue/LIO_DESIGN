@@ -231,6 +231,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 }
 .msg .bubble{border-radius:18px}
 .msg.lio .bubble{background:#eef2f8;border:none;color:#0a0a0a}
+/* retry 말풍선(slide 19·46)도 일반 말풍선과 같은 색.
+   base.css 의 분홍(#fff3f3 + 붉은 테두리)은 .msg.lio.retry 로 클래스가 하나 더 많아
+   위 규칙보다 우선하므로, 같은 선택자로 덮어야 한다. theme-a 도 같은 처리를 해 두었다. */
+.msg.lio.retry .bubble{background:#eef2f8;border:none}
 
 /* ── 버튼 : 라운드, 굵게 ──
    그라데이션 세기를 파란 버튼 기준으로 통일한다. 위→아래 밝기 차이를 크게 주면
