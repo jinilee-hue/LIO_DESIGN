@@ -70,7 +70,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .hd-pill,.hd-skill{font-size:var(--fz-hd-meta)}
 
 /* 공용 소형 UI (KR 토글 · TTS · 배지 · 라벨) */
-.kr,.tts,.ko-gloss,.note .muted,.td-extag,.td-recap-tag,.wp-kr,.wp-ex{font-size:var(--fz-ui-sm)}
+.kr,.tts,.ko-gloss,.note .muted,.td-extag,.wp-kr,.wp-ex{font-size:var(--fz-ui-sm)}
 .qlabel{font-size:var(--fz-ui-sm)}
 .choice .ckey,.choice .cbullet{font-size:var(--fz-ui-sm)}
 .sysline span,.note,.et-label,.wordchip,.emoji-opt,
@@ -1131,7 +1131,6 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .ff-front b{color:var(--b-text)}
 /* Teach 단어카드 recap : A는 크림 + 갈색 텍스트 */
 .td-recap{background:var(--b-mint);border:1px dashed var(--b-mint-line);color:#12655a}
-.td-recap-tag{color:var(--b-mint-ink)}
 .td-recap-ex{color:#2f7a6c}
 /* Memory Hint : A는 주황, B는 액센트 옐로 + 진한 글자 */
 .mem-hint{background:var(--accent);color:var(--b-navy)}

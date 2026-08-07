@@ -1410,11 +1410,11 @@
              <div class="td-def"><span class="tx-host">${txBlock(k.def, { kr:true, krHtml:k.kr })}</span></div>
              <div class="td-ex"><span class="td-extag">EXAMPLE</span> <span class="tx-host">${txBlock(exEn, { kr:true, krHtml:exKr })}</span></div>
              <div class="td-recap" hidden></div>
+             <div class="btnrow td-btns">
+               <button class="btn primary td-got">Got it!</button>
+               <button class="btn ghost td-not">Not sure</button>
+             </div>
            </div>
-         </div>
-         <div class="btnrow td-btns">
-           <button class="btn primary td-got">Got it!</button>
-           <button class="btn ghost td-not">Not sure</button>
          </div>`;
       bindKr(defBox);
       const tts = defBox.querySelector('.tts-ic');
@@ -1436,8 +1436,8 @@
         recap.hidden = false;
         const card = document.createElement('div');
         card.className = 'td-recap-card';
-        card.innerHTML = `<span class="td-recap-tag">Let me explain it more simply</span>
-          <div class="tx-host">${txBlock('“' + k.w + '” means ' + v.def + '.', { kr:true, krHtml:'“' + k.w + '” 은(는) ' + v.defKr + ' 이에요.' })}</div>
+        // 타이틀('Let me explain it more simply') 없이 설명·예문만. 카드 사이는 점선으로 구분한다.
+        card.innerHTML = `<div class="tx-host">${txBlock('“' + k.w + '” means ' + v.def + '.', { kr:true, krHtml:'“' + k.w + '” 은(는) ' + v.defKr + ' 이에요.' })}</div>
           <div class="td-recap-ex"><span class="tx-host">${txBlock(v.ex, { kr:true, krHtml:v.exKr })}</span></div>`;
         recap.appendChild(card);   // 덮어쓰지 않고 쌓는다
         bindKr(card);
