@@ -593,8 +593,12 @@ const SCREENS = [
   passage:true,
   lioLine:"Here are the key words. Tap any card — I'll read the word and show what it means. 🔊",
   doneLio:['You found them all! Great job! 🔊','Want to explore more words? Blue words are our key words. Dotted words are other words you can tap too! 🔊'],
-  buttons:[{ html:'Tap a word! 👆', style:'primary' },{ html:"I'm done! Let's go ▶", style:'dark' }],
-  spec:['Teach_Word Peek(Peek & Pop)','key word 카드 6개 모두 탭 후 다음 활동 진행 · 카드 커서 이동 시 색상 전환','탭 즉시 지문 영역 단어 하이라이트 · 학습 완료된 카드 색상 전환','단어 설명 카드(이미지 포함) · 예문은 본문 원문에서 발췌','"Not sure" 클릭: 재설명 실시간 LLM 생성 / "Got it" 이후 남은 카드 탭 이어서','Teach 활동 후 Explore Words 또는 다음 활동(Game) 진행'],
+  // 기획서 3: 마지막 단어 카드 완료 후 'Next' 버튼. 다른 화면의 Next 와 같은 primary 색으로.
+  // 'Tap a word!' 는 단어를 더 탭해 보는 보조 동작. B 의 .btn.dark 는 초록(#2FB471)이라
+  // 주 동작처럼 보인다 → 짙은 남색 navy 로 낮춘다.
+  buttons:[{ html:'Tap a word! 👆', style:'navy', advance:false },
+           { html:'Next ▶', style:'primary', advance:true }],
+  spec:['Teach_Word Peek(Peek & Pop)','key word 카드 6개 모두 탭 후 다음 활동 진행 · 카드 커서 이동 시 색상 전환','탭 즉시 지문 영역 단어 하이라이트 · 학습 완료된 카드 색상 전환','단어 설명 카드(이미지 포함) · 예문은 본문 원문에서 발췌','"Not sure" 클릭: 재설명 실시간 LLM 생성 / "Got it" 이후 남은 카드 탭 이어서','마지막 단어 카드 완료 후 \'Next\' 버튼 → Word Check 만점이면 Explore Words, 1개 이상 오답이면 Game'],
 },
 
 /* 22 ─ Teach 이후 Game : Memory Match (PPTX 22) */

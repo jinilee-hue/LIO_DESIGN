@@ -1463,8 +1463,13 @@
     });
 
     function finish() {
-      const btns = (scr.buttons || []).map(b =>
-        `<button class="btn ${b.style === 'dark' ? 'dark' : 'primary'}" ${b.style === 'dark' ? 'data-advance' : 'data-tapmore'}>${stripEmoji(b.html).replace(/▶/g, PLAY)}</button>`).join('');
+      // 동작은 advance 플래그로 정한다. 예전에는 style==='dark' 를 화면 이동으로 썼는데,
+      // 색과 동작이 묶여 있어 라벨·색을 따로 정할 수 없었다(플래그가 없으면 옛 규칙을 따른다).
+      const btns = (scr.buttons || []).map(b => {
+        const isAdv = ('advance' in b) ? b.advance : (b.style === 'dark');
+        const cls = b.style === 'dark' ? 'dark' : (b.style || 'primary');
+        return `<button class="btn ${cls}" ${isAdv ? 'data-advance' : 'data-tapmore'}>${stripEmoji(b.html).replace(/▶/g, PLAY)}</button>`;
+      }).join('');
       doneBox.innerHTML =
         (scr.doneLio || []).map(d => lioBubble(d)).join('') +
         `<div class="btnrow">${btns}</div>`;
