@@ -461,6 +461,19 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   box-shadow:0 10px 26px rgba(6,26,84,.24)}
 .introseq .introseq-next::before{content:"Let's Go!";
   font-family:var(--font-head);font-weight:800;font-size:var(--fz-cta);letter-spacing:-.2px}
+/* slide 9 (Game_Intro) 만 버튼 라벨이 다르다. 라벨은 flow-data 가 아니라 여기서 CSS 로
+   그리므로(.introseq-next img 는 display:none) 화면별로 덮어쓴다.
+   "Let's Go!"(9자) → "Let's get started!"(18자) 로 두 배가 되어 고정 폭 21.5% 에서는
+   글자가 겹친다 → 이 화면만 내용에 맞춰 늘리고(왼쪽 끝·높이는 그대로) 줄바꿈을 막는다.
+   좌우 여백을 같게 줘야 pill 안에서 글자가 가운데 온다(기본 규칙은 오른쪽에 셰브론 자리를
+   비워두느라 좌우가 비대칭이다).
+   ⚠ Design A 는 같은 버튼을 ctaImg(ui/btn_letsplay.png) 이미지로 그리므로 영향 없다. */
+.scr-plan .introseq .introseq-next,
+.scr-plan .introseq .introseq-next.btn,
+.scr-plan .introseq .introseq-next.btn.primary{
+  width:auto;white-space:nowrap;
+  padding:0 calc(var(--cta-chev) + clamp(10px,1.4cqw,20px)) 0 clamp(20px,2.4cqw,34px)}
+.scr-plan .introseq .introseq-next::before{content:"Let's get started!"}
 .introseq .ib-spk{font-size:var(--fz-ui)}
 .introseq .introseq-replay{bottom:5%;right:3%;font-size:var(--fz-ui-sm)}
 .quickexit .ib-left{left:18%;top:11%}
