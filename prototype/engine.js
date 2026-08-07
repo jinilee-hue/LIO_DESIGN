@@ -337,10 +337,11 @@
           const act = it.act ? ` data-act="${it.act}"` : '';
           const tst = it.toast ? ` data-toast="${it.toast}"` : '';
           // act:'pick' 전용 : 어느 분기인지(pick) 와 입력창에 자동 완성할 문장(fill)
+          const go = it.go ? ` data-go="${it.go}"` : '';   // 지정 화면으로 점프
           const pk = it.pick ? ` data-pick="${it.pick}"` : '';
           const fl = it.fill ? ` data-fill="${it.fill}"` : '';
-          const adv = (it.reveal || it.check || it.act) ? '' : ' data-advance';
-          return `<button class="btn ${it.style || 'primary'}${rev}${chk}${btnLong(it.html)}"${adv}${act}${tst}${pk}${fl}>${stripEmoji(it.html).replace(/▶/g, PLAY)}</button>`;
+          const adv = (it.reveal || it.check || it.act || it.go) ? '' : ' data-advance';
+          return `<button class="btn ${it.style || 'primary'}${rev}${chk}${btnLong(it.html)}"${adv}${act}${tst}${go}${pk}${fl}>${stripEmoji(it.html).replace(/▶/g, PLAY)}</button>`;
         }).join('');
         return `<div class="btnrow${b.align === 'end' ? ' end' : b.align === 'start' ? ' start' : ''}${b.nowrap ? ' nowrap' : ''}${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}"${interestAttr(b)}>${items}</div>`;
       }
@@ -1058,6 +1059,12 @@
       stage.dataset.pick = b.dataset.pick || '';
       const inp = stage.querySelector('.chatinput input');
       if (inp && b.dataset.fill) { inp.value = b.dataset.fill; inp.focus(); }
+    }));
+
+    // go:'<화면 id>' 버튼 → 그 화면으로. 다음 화면이 아닌 곳으로 보내야 할 때 쓴다.
+    stage.querySelectorAll('.btnrow .btn[data-go]').forEach(b => b.addEventListener('click', () => {
+      const i = SCREENS.findIndex(x => x.id === b.dataset.go);
+      if (i >= 0) goTo(i); else goNext();
     }));
 
     // Quick Exit 카드 분기

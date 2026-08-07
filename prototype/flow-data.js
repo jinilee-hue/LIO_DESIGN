@@ -530,7 +530,9 @@ const SCREENS = [
       { emoji:'😢', html:'sad and upset' },
     ]},
     { t:'lio', html:"'Tough' means strong and hard, like the rocks at the tide pools!", tts:true, kr:true, hidden:true },
-    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary' }] },
+    // 기획서: 2개 모두 정답 → Teach(Word Peek) 진입. 바로 다음 화면(slide 25 = word check
+    // 오답)이 아니라 slide 26 wordpeek 으로 보내야 한다.
+    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary', go:'wordpeek' }] },
   ],
   spec:["3가지 옵션 중 A·B 선택 시 'Let's check!' 버튼 생성 → Word Check(단어 테스트) 필수 진입",
         "C(Something else) 는 마지막 학습으로 Word Check 필수 진입",
@@ -571,13 +573,18 @@ const SCREENS = [
     // ── 두 문제 결과 : 1개만 정답 → 단어 테스트 실패 언급
     { t:'lio', html:"It looks like some words need a little more practice — let's do some word learning together! (1/2)", tts:true, kr:true, hidden:true },
     { t:'lio', html:"Next, we'll peek at the key words together — then play a quick game!", tts:true, kr:true, hidden:true },
+    // 기획서 2-2 와 그 위 보라색 박스. 프로토타입에 이미 있는 블록으로 그대로 표현한다 —
+    // note 가 보라 박스(base.css .note #f0edff/#d8d0ff), actcard 가 초록 카드다.
+    { t:'note', hidden:true, html:'This sample ends at the Word Check. Next step would be:<br><span class="muted">이 샘플은 단어 테스트까지. 다음 단계:</span>' },
+    { t:'actcard', hidden:true, icon:'book', title:'단어 학습 활동 (Word Activity)', sub:'단어 테스트 실패 → 단어 학습 활동으로.' },
     { t:'buttons', align:'end', hidden:true, items:[{ html:'Go to Teach ▶', style:'primary' }] },
   ],
   spec:['문제 제시 동시에 지문 영역 내 해당 단어 하이라이트',
         '학생 단어 카드 탭 — 오답의 경우 바로 정답 제시',
         "문제 답 선택 후 'Next' 버튼 생성 → 두 번째 단어 문제",
         '본 화면은 1개만 정답 또는 모두 오답 → "단어 테스트 실패" 언급',
-        'Teach(Word Peek) 이후 Game 활동 진입'],
+        'Teach(Word Peek) 이후 Game 활동 진입',
+        '샘플 종료 안내(보라 박스) + 다음 단계 카드 : 단어 학습 활동(Word Activity)'],
 },
 
 /* 21 ─ Word Peek / Teach (PPTX 21) */
