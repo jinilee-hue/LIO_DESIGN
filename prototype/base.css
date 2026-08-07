@@ -592,7 +592,8 @@ body{
 .td-ex{margin-top:8px;font-size:13.5px;color:#4a5570;background:#f7f9fc;border-radius:6px;padding:8px 10px;line-height:1.5}
 .td-extag{font-weight:800;font-size:10.5px;letter-spacing:.5px;color:#9aa3b8;display:block;margin-bottom:2px}
 .td-recap{margin-top:9px;background:#fff8ec;border:1px dashed #f0cf8f;border-radius:10px;padding:9px 11px;font-size:13.5px;color:#7a5a1e;line-height:1.5}
-.td-recap-ex{margin-top:6px;color:#8a6a2a}
+/* 설명 문장과 예문 사이 점선 구분 (카드끼리의 구분선과 같은 방식) */
+.td-recap-ex{margin-top:6px;padding-top:6px;border-top:1px dashed currentColor;color:#8a6a2a}
 /* 'Not sure' 를 다시 누르면 카드가 쌓인다 — 카드끼리 경계를 준다.
    :not([hidden]) 이 필요하다 — 작성자 스타일의 display 는 hidden 속성의 display:none(UA)을
    덮어써서, 그냥 .td-recap{display:flex} 로 두면 누르기 전에도 빈 초록 상자가 보인다. */
