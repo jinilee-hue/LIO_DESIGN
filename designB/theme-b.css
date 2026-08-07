@@ -275,7 +275,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    .introseq 의 배경 일러스트는 flow-data(공용)의 inline style 이라 손대지 않고
    ::before 오버레이로 덮는다. (마스코트 z-index:3, 말풍선 z-index:2 는 위에 남는다) */
 .scr-greeting .hd, .scr-greeting_cut3 .hd, .scr-plan .hd,
-.scr-skill_video_intro .hd, .scr-game_intro .hd,
+.scr-skill_video_intro .hd, .scr-game_intro .hd, .scr-fp1_intro .hd,
 .scr-fp2_intro .hd, .scr-fp2_intro_cut2 .hd{display:none}
 /* 배경 = 소형 로고(좌상단) + Figma 마스코트(좌측, 물결 위) + 하단 3겹 물결 + 플랫 블루.
    마스코트 크기·위치는 Figma 좌표 기준 : lio 프레임 673/1072 = 높이 62.8%,
@@ -304,6 +304,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-plan .introseq,
 .scr-skill_video_intro .introseq,
 .scr-game_intro .introseq,
+.scr-fp1_intro .introseq,
 .scr-fp2_intro .introseq,
 .scr-fp2_intro_cut2 .introseq{--b-intro-lio:none;--b-intro-shadow:none;--b-intro-bg:transparent;
   background-image:none !important;background-color:#1C4BD6}
@@ -348,7 +349,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    크기·위치는 기존 lio_intro_plan.png 렌더에서 역산 :
      머리-발 487.9px · 발밑 y644.5 · 발중심 x263.9 → width 32.26% · left 5.63% · bottom 14.93%.
    구조(파란 배경을 .introseq 로 내리고 ::before 는 물결만, 그림자 끄기)는 slide 6 과 동일. */
-.scr-plan .introseq .introseq-scrim{display:block;inset:auto;
+.scr-plan .introseq .introseq-scrim,
+.scr-fp1_intro .introseq .introseq-scrim{display:block;inset:auto;
   /* 크기 기준은 slide 5 : 사자 머리-발 485.5px.
      이 시트는 머리폭/머리-발 비율이 0.451 로 slide 5(0.501)보다 작아 머리-발을 맞추면
      머리가 10% 작게 보이지만, 화면 간 크기 기준을 slide 5 로 통일하는 쪽을 택했다. */
@@ -384,6 +386,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 @keyframes bLioGamePlay{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .scr-plan .introseq .introseq-scrim,
+  .scr-fp1_intro .introseq .introseq-scrim,
   .scr-game_intro .introseq .introseq-scrim,
   .scr-skill_video_intro .introseq .introseq-scrim{animation:none}
 }
@@ -424,6 +427,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
     auto}
 /* cut2는 문장 1줄 + 버튼 → 텍스트를 조금 올려 버튼과 여유 확보 */
 .scr-fp2_intro_cut2 .introseq .ib-layer{top:28%;bottom:22%}
+/* slide 14 (FP1 Intro) 는 문장이 길어 기본 영역(top 32.9%)에서는 6줄이 되어 버튼
+   (상단 y535px = 69.7%)과 겹친다 → 이 화면만 영역을 올리고 글자를 0.9배로 줄인다. */
+.scr-fp1_intro .introseq .ib-layer{top:24%}
+.scr-fp1_intro .introseq .ib-bubble{font-size:calc(var(--fz-introtxt) * .9)}
 .introseq .introseq-scrim{display:none}
 /* 좌상단 로고를 배경 스택에서 떼어 별도 레이어로 둔다 (::before 는 배경·물결·마스코트).
    slide 5 는 대형 로고가 우측 중앙에 있고, slide 6 에서 좌상단으로 축소·이동한다.
