@@ -349,8 +349,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    크기·위치는 기존 lio_intro_plan.png 렌더에서 역산 :
      머리-발 487.9px · 발밑 y644.5 · 발중심 x263.9 → width 32.26% · left 5.63% · bottom 14.93%.
    구조(파란 배경을 .introseq 로 내리고 ::before 는 물결만, 그림자 끄기)는 slide 6 과 동일. */
-.scr-plan .introseq .introseq-scrim,
-.scr-fp1_intro .introseq .introseq-scrim{display:block;inset:auto;
+.scr-plan .introseq .introseq-scrim{display:block;inset:auto;
   /* 크기 기준은 slide 5 : 사자 머리-발 485.5px.
      이 시트는 머리폭/머리-발 비율이 0.451 로 slide 5(0.501)보다 작아 머리-발을 맞추면
      머리가 10% 작게 보이지만, 화면 간 크기 기준을 slide 5 로 통일하는 쪽을 택했다. */
@@ -384,11 +383,25 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    안정적)으로 맞추면 left 가 -0.78% 가 되어 사자가 화면 왼쪽 밖으로 밀린다.
    → 이 정렬이면 내용이 x68~514 로 끝나 본문(x530~) 앞에서 여유가 생긴다. */
 .scr-game_intro .introseq .introseq-scrim{display:block;inset:auto;
-  left:4.44%;bottom:15.71%;width:44.99%;aspect-ratio:534/524;
+  /* 요청 : 20px 더 왼쪽 (4.44% → 2.67%) */
+  left:2.67%;bottom:15.71%;width:44.99%;aspect-ratio:534/524;
   z-index:0;pointer-events:none;
   background:url("../IMAGE/b/lio_game_play.webp") no-repeat 0% 0 / 1600% 100%;
   animation:bLioGamePlay 2.4s steps(16,jump-none) infinite alternate}
 @keyframes bLioGamePlay{from{background-position:0% 0} to{background-position:100% 0}}
+/* slide 14 (FP1 Intro) : 책과 연필 들고 서 있는 LIO.
+   IMAGE/b/lio_fp1_book.webp — fp_sprite0(4×4, 456×550) 16프레임 전부, 원본 그대로.
+   정합이 가장 좋은 시트다 : 발중심 238~240(1px) · 바닥 545~546(1px) · 상단 2~4(2px) ·
+   높이 541~544(3px). 좌단 2~30 변동은 움직이는 꼬리다. 프레임차 1.8~24.0 · 평균 9.4.
+   크기·위치는 slide 9 LIO 기준 : 전체 높이 485.5px · 접지 y644.5 (배율 0.897),
+   가로는 발중심을 같은 x(263.9)에 맞췄다 — 이 시트는 발중심이 1px 로 고정이어서
+   slide 9 과 같은 기준(발중심)을 그대로 쓸 수 있다. 내용은 x76~431 로 본문(530~) 앞에서 끝난다. */
+.scr-fp1_intro .introseq .introseq-scrim{display:block;inset:auto;
+  left:4.34%;bottom:15.49%;width:36.22%;aspect-ratio:456/550;
+  z-index:0;pointer-events:none;
+  background:url("../IMAGE/b/lio_fp1_book.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioFp1Book 2.4s steps(16,jump-none) infinite alternate}
+@keyframes bLioFp1Book{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .scr-plan .introseq .introseq-scrim,
   .scr-fp1_intro .introseq .introseq-scrim,
