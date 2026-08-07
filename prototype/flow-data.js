@@ -646,7 +646,7 @@ const SCREENS = [
 
 /* 26 ─ Walk (Let's read & check) */
 {
-  id:'walk_read', slide:31, section:'Further Practice 1', title:'FP1_오답경로_Scaffolding_Entry_Method_A', layout:'reading',
+  id:'walk_read', slide:31, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_A_Let’s read and check what I understand!', layout:'reading',
   passage:true, hl:{ p2:'yellow' }, listen:true,
   blocks:[
     { t:'label', html:'Paragraph 1' },
@@ -697,7 +697,7 @@ const SCREENS = [
 
 /* 27 ─ Walk (Explain the story) */
 {
-  id:'walk_explain', slide:32, section:'Further Practice 1', title:'FP1_오답경로_Scaffolding_Entry_Method_C', layout:'reading',
+  id:'walk_explain', slide:32, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_C_Explain the story to me!', layout:'reading',
   passage:true, hl:{ p1:'yellow', p2:'yellow', p3:'yellow', p4:'yellow' }, listen:true,
   blocks:[
     { t:'label', html:'Paragraph 1' },
@@ -728,7 +728,7 @@ const SCREENS = [
 
 /* 28 ─ Interest Probe (Small Talk) */
 {
-  id:'interest', slide:33, section:'Further Practice 1', title:'FP1_오답경로_Scaffolding_Entry_Method_B/Skill_Practice_진입', layout:'reading',
+  id:'interest', slide:33, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry_Method_B/Scaffolding_3_Skill_Practice_Intro', layout:'reading',
   passage:true,
   blocks:[
     { t:'lio', html:'This passage is about exploring tide pools. Do you like exploring new places?', tts:true, kr:true },
@@ -752,7 +752,7 @@ const SCREENS = [
 
 /* 29 ─ Skill Practice S1 (Question Type) */
 {
-  id:'skill_s1', slide:34, section:'Further Practice 1', title:'FP1_오답경로_Skill_Practice(S1-S3)', layout:'reading',
+  id:'skill_s1', slide:34, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice_단일_정답', layout:'reading',
   passage:true, hl:{ p2:'green', p5:'green', p14:'green', p15:'green' },
   blocks:[
     { t:'label', html:'S1 — Question Type' },
@@ -777,12 +777,17 @@ const SCREENS = [
     { t:'lio', html:'Yes! The whole passage is about Maya exploring and discovering tide-pool life — not just one detail. 🔊', tts:true, kr:true, hidden:true },
     { t:'buttons', hidden:true, items:[{ html:'Next ▶', style:'primary' }] },
   ],
-  spec:['Scaffolding 공통 학습 플로우 (변수: S1 Question Type / S2 Main Topic·Character / S3 Whole Pattern)','정오답 선택시 근거 문장 하이라이트','해당 활동 단계는 retry 없음','"Next" 클릭 → S3 Whole Pattern → 다음 Scaffolding(S2) 진행'],
+  spec:["Skill_Practice_단일_정답_화면 · Skill 마다 S(Step)의 명칭/정답 개수는 다름",
+        "2지 선다",
+        "정답: 🎉 confetti + correct reaction + brief praise",
+        "오답: 정답 제시 + Retry 없음",
+        "'Next' 버튼 클릭 후 다음 STEP 학습 활동 진행",
+        "S 구성(v1.2 공통 정의): S1 Question Type(전 스킬 공통·2지선다) / S2 Gather Clues(스킬별 가변) / S3 Analyze·Locate / S4 Evidence Tap 또는 Confirm"],
 },
 
 /* 30 ─ Skill Practice S2 (Key Details · 복수선택) */
 {
-  id:'skill_s2', slide:35, section:'Further Practice 1', title:'FP1_오답경로_Skill_Practice(S2_예외)', layout:'reading',
+  id:'skill_s2', slide:35, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice_복수_정답', layout:'reading',
   passage:true,
   blocks:[
     { t:'label', html:'S2 — Key Details' },
@@ -798,12 +803,18 @@ const SCREENS = [
     { t:'lio', html:'Almost there! Remember, Maya did not learn swimming. Correct details: explored tide pools, living things in pools, learned even small pools have many creatures.', tts:true, kr:true, hidden:true },
     { t:'buttons', hidden:true, items:[{ html:'Next ▶', style:'primary' }] },
   ],
-  spec:['S2 — Key Details인 경우','학생 답안 중복 선택 후 "check" 탭','정오답 선택시 근거 문장 하이라이트 = 동일','해당 활동 단계는 retry 없음 = 동일'],
+  spec:["Skill_Practice_복수_정답_화면 · Skill 마다 S(Step)의 명칭/정답 개수는 다름",
+        "지문 영역 key word 클릭 → 단어 뜻+예문 표출 동시 TTS",
+        "'Pick two clues' 지시문에 따라 학생 중복 답안 선택",
+        "학생 답안 선택 후 'check' 클릭",
+        "정답: 🎉 confetti + correct reaction + brief praise",
+        "오답: 정답 제시 + Retry 없음",
+        "'Next' 버튼 클릭 후 다음 STEP 학습 활동 진행"],
 },
 
 /* 31 ─ Skill Practice S4 (Find the Evidence) */
 {
-  id:'skill_s4', slide:36, section:'Further Practice 1', title:'FP1_오답경로_Skill_Practice(S4_예외)', layout:'reading',
+  id:'skill_s4', slide:36, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동1)', layout:'reading',
   passage:true, etMode:true,   /* 사전 하이라이트 없음 · 문장을 탭해야 하이라이트 */
   blocks:[
     { t:'label', html:'S4 — Find the Evidence' },
@@ -814,12 +825,17 @@ const SCREENS = [
     { t:'lio', html:'Here are the evidence sentences highlighted in green! Each one shows what Maya discovered or learned.', tts:true, kr:true },
     { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
   ],
-  spec:['S4 — Find the Evidence = ET','학생 답안 선택: ET 직접 탭','정답 선택 시 정답 공개','오답 선택 시 retry 있음, 2회 오답인 경우 reveal','위 두 정오답 경로의 정답 공개 시 근거 문장 하이라이트','"Next" 클릭 → 이해 안되는 문장 질문'],
+  spec:["S4 — ET(Evidence Tap) 활동 · 해당 skill 8개(Recalling Facts 3종, Drawing Conclusions, Making Inferences, Cause/Effect, Main Idea, Analyzing Characters)",
+        "학생 답안 선택: ET 직접 탭",
+        "정답 선택 시 정답 공개: 지문 영역 내 하이라이트 + 'Next' 버튼 생성",
+        "오답 선택 시 retry 있음 — 처음 선택한 오답 문장은 붉은색 하이라이트 후 사라짐, 2회 오답이면 정답 공개 + 'Next' 버튼 생성",
+        "두 정오답 경로 모두 정답 공개 시 근거 문장 하이라이트",
+        "'Next' 클릭 → Passage_Clarify 활동 진행"],
 },
 
 /* 32 ─ Passage Clarify */
 {
-  id:'clarify', slide:37, section:'Further Practice 1', title:'FP1_오답경로_Passage_Clarify', layout:'reading',
+  id:'clarify', slide:37, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Passage_Clarify', layout:'reading',
   passage:true, clarify:true,
   blocks:[
     { t:'lio', html:"Do you have anything you don't understand? Tap the sentence.", tts:true, kr:true },
@@ -829,17 +845,24 @@ const SCREENS = [
     ]},
     { t:'user', html:'Tap a sentence in the passage above!', side:'sys', hidden:true },
     { t:'lio', html:'A hermit crab moves with its borrowed shell on the sand.', tts:true, kr:true, stage2:true },
+    // v1.2: 'Yes, I'll tap it.' 로 활동을 진행한 경우의 'Let's move on!' 은 Retry 로 간다.
+    // (진행하지 않고 'No, let's move on' 을 누른 경우만 Pre-retry) — 그래서 여기만 go 를 준다.
     { t:'buttons', stage2:true, items:[
       { html:'Another sentence?', style:'primary', act:'another' },
-      { html:"Let's move on! ▶", style:'dark' },
+      { html:"Let's move on! ▶", style:'dark', go:'fp1_retry' },
     ]},
   ],
-  spec:['"이해 안 되는 문장 있어?" (Y/N)','Yes → 지문 영역 내 문장 선택 → 커서 이동 시 색상 전환 · 학생 답안 선택 → 해당 문장 하이라이트','No → 다음 활동','해당 문장에 대한 짧은 설명 제시 후 옵션 두 가지 제시'],
+  spec:["Passage Clarify — 이해 안 되는 문장이 있는지 확인하는 활동(Y/N)",
+        "오답경로에서는 스킬 연습(S1~S4)이 끝나면 Pre-Retry 전 필수 진행",
+        "지문 영역 내 문장 단위 점선 밑줄 · 커서 이동 시 클릭 가능",
+        "'Yes, I'll tap it.' → 지문에서 문장 Tap → 해당 문장 하이라이트 + 설명, 'Another sentence?' 로 추가 가능",
+        "'No, let's move on' (활동을 진행하지 않은 경우) → Pre-retry 진입",
+        "'Let's move on!' (활동을 진행한 경우) → Retry 진입"],
 },
 
 /* 33 ─ Pre-retry Q&A */
 {
-  id:'pre_retry', slide:38, section:'Further Practice 1', title:'Pre-Retry', layout:'reading',
+  id:'pre_retry', slide:38, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Pre_retry', layout:'reading',
   passage:true,
   blocks:[
     { t:'lio', html:'Before we try the question again — do you have anything you want to ask?', tts:true, kr:true },
@@ -849,12 +872,15 @@ const SCREENS = [
     ]},
     { t:'input', placeholder:'Ask anything about the passage…', mic:true, hidden:true },
   ],
-  spec:['두 가지 옵션 제시','Yes, I have a question! → 마이크 이미지 클릭 후 발화 가능 / 타이핑 후 "ASK" 버튼 클릭',"No, let's go! → Retry 활동 진행, 화면 전환"],
+  spec:["Pre-retry — 'Passage Clarify' 에서 'No, let's move on' 을 누른 경우 진입",
+        "Q&A 두 가지 옵션",
+        "'Yes, I have a question!' → 영어/한국어 가능 · 마이크 버튼 클릭 후 발화 · 타이핑 후 'Ask' 클릭",
+        "'No, let's go!' → Retry 활동 진입, 화면 전환"],
 },
 
 /* 34 ─ Retry Main Question (FP1) */
 {
-  id:'fp1_retry', slide:39, section:'Further Practice 1', title:'Retry_FP1', layout:'reading',
+  id:'fp1_retry', slide:39, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_오답경로_FP1_Retry', layout:'reading',
   passage:true,
   blocks:[
     { t:'label', html:'Retry — Main Question' },
@@ -872,7 +898,9 @@ const SCREENS = [
     { t:'strategy' },
     { t:'buttons', items:[{ html:'Continue to Further Practice 2 ▶', style:'green' }] },
   ],
-  spec:['M11 retry_intro','SA — Retry: Main Question 재출제 (문제 + 4지선다)','정답 → CA M07b(마우리멘트+전략카드) → M13(FP2_Intro)','오답 → Answer Reveal + Skill Tip + 전략 카드 없음 → M13(FP2_Intro)'],
+  spec:["Retry — Main Question 재출제 (문제 + 보기, 선지 개수는 학생 수준에 따라 다름)",
+        "정답: 🎉 confetti + correct reaction + brief praise + strategy cue 표출 → 'Next' → FP2_Intro",
+        "오답: 정답 공개 + strategy cue 표출 → 'Got it' → FP2_Intro"],
 },
 
 /* 35 ─ FP2 Intro (cut1) — slide 6과 같이 두 컷으로 분할 (버튼 겹침 방지) */
