@@ -594,6 +594,9 @@ body{
 .td-recap{margin-top:9px;background:#fff8ec;border:1px dashed #f0cf8f;border-radius:10px;padding:9px 11px;font-size:13.5px;color:#7a5a1e;line-height:1.5}
 .td-recap-tag{display:block;font-weight:800;font-size:11px;color:#c08a2a;margin-bottom:3px}
 .td-recap-ex{margin-top:6px;color:#8a6a2a}
+/* 'Not sure' 를 다시 누르면 카드가 쌓인다 — 카드끼리 경계를 준다 */
+.td-recap{display:flex;flex-direction:column;gap:9px}
+.td-recap-card + .td-recap-card{padding-top:9px;border-top:1px dashed currentColor}
 .td-btns{display:flex;gap:10px;margin-top:12px}
 .btn.ghost.td-not{background:#1E2A4A;color:#fff}
 .btn.ghost.td-not:hover{filter:brightness(1.12)}

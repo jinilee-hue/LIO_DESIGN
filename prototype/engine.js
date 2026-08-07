@@ -1420,14 +1420,30 @@
       const tts = defBox.querySelector('.tts-ic');
       if (tts) tts.onclick = () => speak(k.w, null, () => {});
       // 재설명 (Not sure → 실시간 LLM 생성 시뮬레이션: 난이도를 낮춘 예문 활용의 설명)
-      defBox.querySelector('.td-not').onclick = () => {
+      // 기획서: 연속으로 누르면 설명 카드가 '누적' 된다. 표현은 KEYWORDS 에 이미 있는
+      // 필드로만 만든다 — 1번째 easyDef+exEasy(기획서 본문 2-2 와 같은 내용),
+      // 2번째 short+ex(가장 짧은 뜻 + 본문 원문 예문). 다 쓰면 버튼을 감춘다.
+      const recaps = [
+        { def: k.easyDef, defKr: k.easyDefKr, ex: k.exEasy, exKr: k.exEasyKr },
+        { def: k.short,   defKr: k.shortKr,   ex: k.ex,     exKr: k.exKr },
+      ].filter(v => v.def && v.ex);
+      let ri = 0;
+      const notBtn = defBox.querySelector('.td-not');
+      notBtn.onclick = () => {
+        const v = recaps[ri++];
+        if (!v) return;
         const recap = defBox.querySelector('.td-recap');
         recap.hidden = false;
-        recap.innerHTML = `<span class="td-recap-tag">Let me explain it more simply</span>
-          <div class="tx-host">${txBlock('“' + k.w + '” means ' + k.easyDef + '.', { kr:true, krHtml:'“' + k.w + '” 은(는) ' + k.easyDefKr + ' 이에요.' })}</div>
-          <div class="td-recap-ex"><span class="tx-host">${txBlock(k.exEasy, { kr:true, krHtml:k.exEasyKr })}</span></div>`;
-        bindKr(recap);
-        speak(k.w + ' means ' + k.easyDef + '. ' + k.exEasy, null, () => {});
+        const card = document.createElement('div');
+        card.className = 'td-recap-card';
+        card.innerHTML = `<span class="td-recap-tag">Let me explain it more simply</span>
+          <div class="tx-host">${txBlock('“' + k.w + '” means ' + v.def + '.', { kr:true, krHtml:'“' + k.w + '” 은(는) ' + v.defKr + ' 이에요.' })}</div>
+          <div class="td-recap-ex"><span class="tx-host">${txBlock(v.ex, { kr:true, krHtml:v.exKr })}</span></div>`;
+        recap.appendChild(card);   // 덮어쓰지 않고 쌓는다
+        bindKr(card);
+        speak(k.w + ' means ' + v.def + '. ' + v.ex, null, () => {});
+        if (ri >= recaps.length) notBtn.style.display = 'none';   // 준비된 표현을 다 씀
+        card.scrollIntoView({ behavior:'smooth', block:'nearest' });
       };
       defBox.querySelector('.td-got').onclick = () => {
         done.add(k.w);
