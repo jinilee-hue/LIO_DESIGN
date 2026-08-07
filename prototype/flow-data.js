@@ -331,7 +331,7 @@ const SCREENS = [
     { t:'lio', html:"You did great! You found the main idea about the girl's discovery at the tide pools. Let's move on to the next step!", tts:true, kr:true },
     { t:'lio', html:"Nice work! Choose what you'd like to do next.", tts:true, kr:true },
     // Next : 다음 화면이 아니라 Pre-Retry(slide 37)로 점프한다 → engine 의 data-act 핸들러
-    { t:'buttons', align:'end', items:[{ html:'Next \u25B6', style:'primary', act:'goPreRetry' }] },
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', act:'goPreRetry' }] },
   ],
   spec:['M06: Main Question 제시','M07: Main question 정답(A) 탭 → 🎉 전체 confetti + correct reaction + brief praise','정답 시 quiz_o / 오답 시 quiz_x LIO 스프라이트가 가운데 크게 떴다 사라진다 (Design B)',"Next 버튼 → Pre-Retry 화면으로 이동"],
 },
@@ -357,7 +357,7 @@ const SCREENS = [
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time.", tts:true, kr:true },
     { t:'strategy' },
     // Next : slide 37 Pre-Retry 로 점프 (slide 16 과 같은 goPreRetry 핸들러)
-    { t:'buttons', align:'end', items:[{ html:'Next \u25B6', style:'primary', act:'goPreRetry' }] },
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', act:'goPreRetry' }] },
   ],
   spec:['ET(Evidence Tap) 정답','M07b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','strategy cue 제공',
         'STRATEGY 박스 밑 Next 버튼 → Pre-Retry(slide 37) 로 이동'],
@@ -394,8 +394,11 @@ const SCREENS = [
     { t:'lio', html:'Great work! You found where Maya discovered tide pools. The evidence strongly supports the main idea about her exploration.', tts:true, kr:true },
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time.", tts:true, kr:true },
     { t:'strategy' },
+    // Next : slide 37 Pre-Retry 로 점프 (slide 16·18 과 같은 goPreRetry 핸들러)
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', act:'goPreRetry' }] },
   ],
-  spec:['ET(Evidence Tap) 정답 (Retry 이후)','M07b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','strategy cue 제공'],
+  spec:['ET(Evidence Tap) 정답 (Retry 이후)','M07b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','strategy cue 제공',
+        'STRATEGY 박스 밑 Next 버튼 → Pre-Retry(slide 37) 로 이동'],
 },
 
 /* 17 ─ FP1 ET 2차 오답 */
@@ -409,8 +412,12 @@ const SCREENS = [
     { t:'lio', html:'Not quite, but good try! The evidence is highlighted in the passage. It shows how Maya\'s visit helped her discover many wonders in the tide pools.', tts:true, kr:true },
     { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', reveal:true }] },   // 우측 끝 · 탭하면 전략 표출
     { t:'strategy', hidden:true },   // Next 누르기 전엔 숨김
+    // 전략 박스 밑 Next : slide 37 Pre-Retry 로 점프. hidden 이라 전략과 함께 나타난다
+    // (위 reveal 버튼이 .reveal-hidden 을 전부 걷어낸다)
+    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary', act:'goPreRetry' }] },
   ],
-  spec:['ET(Evidence Tap)_retry 이후 2차 오답','M07c_Evidence Reveal: 정답 공개 + 다른 ET 정답도 하이라이트 (붉은 하이라이트 없음)','Next 버튼 탭 → strategy cue 표출'],
+  spec:['ET(Evidence Tap)_retry 이후 2차 오답','M07c_Evidence Reveal: 정답 공개 + 다른 ET 정답도 하이라이트 (붉은 하이라이트 없음)','Next 버튼 탭 → strategy cue 표출',
+        'STRATEGY 박스 밑 Next 버튼 → Pre-Retry(slide 37) 로 이동'],
 },
 
 /* 18 ─ FP1 Main Question 오답 → Scaffolding intro */
