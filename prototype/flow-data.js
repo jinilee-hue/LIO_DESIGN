@@ -330,8 +330,10 @@ const SCREENS = [
     ]},
     { t:'lio', html:"You did great! You found the main idea about the girl's discovery at the tide pools. Let's move on to the next step!", tts:true, kr:true },
     { t:'lio', html:"Nice work! Choose what you'd like to do next.", tts:true, kr:true },
+    // Next : 다음 화면이 아니라 Pre-Retry(slide 37)로 점프한다 → engine 의 data-act 핸들러
+    { t:'buttons', align:'end', items:[{ html:'Next \u25B6', style:'primary', act:'goPreRetry' }] },
   ],
-  spec:['M06: Main Question 제시','M07: Main question 정답(A) 탭 → 🎉 전체 confetti + correct reaction + brief praise'],
+  spec:['M06: Main Question 제시','M07: Main question 정답(A) 탭 → 🎉 전체 confetti + correct reaction + brief praise','정답 시 quiz_o / 오답 시 quiz_x LIO 스프라이트가 가운데 크게 떴다 사라진다 (Design B)',"Next 버튼 → Pre-Retry 화면으로 이동"],
 },
 
 /* 13 ─ FP1 Evidence Tap */

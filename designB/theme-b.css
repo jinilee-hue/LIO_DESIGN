@@ -1450,3 +1450,37 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 @media (prefers-reduced-motion:reduce){
   .skillscreen:not(.selected) .think-bubble{animation:none}
 }
+
+/* ── slide 16 정/오답 LIO 반응 (Design B) ─────────────────────────────────
+   quiz-reaction.js 가 채점 순간 .device 안에 .quiz-reaction.quiz-o / .quiz-x 를 넣고,
+   재생이 끝나면 스스로 지운다. 여기서는 그 요소의 크기·연출만 정의한다.
+
+   가운데 크게 : 높이 62%(화면) · 좌우 중앙. 두 시트의 프레임 비율이 달라
+   (quiz_o 436/572=0.762 · quiz_x 556/516=1.078) aspect-ratio 를 각각 준다.
+   연출 : bQuizIn(튀어들어옴 .34s) → 스프라이트 16프레임 재생 → bQuizOut(줄며 사라짐 .40s).
+   프레임 재생은 steps(16,jump-none) 1회 — alternate 를 쓰면 되감기처럼 보인다.
+   z-index 는 지문·대화 위(60), 오버레이라 pointer-events:none 로 클릭을 막지 않는다. */
+.quiz-reaction{position:absolute;left:50%;top:46%;height:62%;
+  transform:translate(-50%,-50%);z-index:60;pointer-events:none;
+  background-repeat:no-repeat;background-position:0% 0;
+  filter:drop-shadow(0 clamp(6px,1.2cqw,18px) clamp(12px,2.4cqw,34px) rgba(6,18,52,.34));
+  animation:bQuizIn .34s cubic-bezier(.2,1.5,.4,1) both,
+            bQuizFrame 1.46s steps(16,jump-none) .34s both,
+            bQuizOut .40s cubic-bezier(.4,0,.7,-.2) 1.80s both}
+.quiz-reaction.quiz-o{width:auto;aspect-ratio:436/572;
+  background-image:url("../IMAGE/b/quiz_o.webp");background-size:1600% 100%}
+.quiz-reaction.quiz-x{width:auto;aspect-ratio:556/516;
+  background-image:url("../IMAGE/b/quiz_x.webp");background-size:1600% 100%}
+@keyframes bQuizFrame{from{background-position:0% 0} to{background-position:100% 0}}
+@keyframes bQuizIn{
+  from{opacity:0;transform:translate(-50%,-50%) scale(.55)}
+  to  {opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes bQuizOut{
+  from{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  to  {opacity:0;transform:translate(-50%,-52%) scale(.82)}
+}
+@media (prefers-reduced-motion:reduce){
+  /* 움직임을 줄이면 프레임 재생 없이 첫 프레임만 잠깐 보여준다 */
+  .quiz-reaction{animation:bQuizIn .2s both, bQuizOut .3s 1.2s both}
+}

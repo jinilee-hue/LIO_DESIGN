@@ -41,6 +41,8 @@ IMAGE/lio_sprite*.png
 IMAGE/video_sprite.png
 #   game_sprite → IMAGE/b/lio_game_play.webp
 IMAGE/game_sprite.png
+#   quiz_o/x_sprite → IMAGE/b/quiz_o.webp · quiz_x.webp
+IMAGE/quiz_?_sprite.png
 #   교체 전 백업본
 IMAGE/*_bak.png
 

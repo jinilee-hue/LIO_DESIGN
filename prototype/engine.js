@@ -1076,6 +1076,12 @@
       if (i >= 0) goTo(i);
     }));
 
+    // Next(slide 16) : 다음 화면이 아니라 Pre-Retry 로 점프
+    stage.querySelectorAll('[data-act="goPreRetry"]').forEach(b => b.addEventListener('click', () => {
+      const i = SCREENS.findIndex(x => x.id === 'pre_retry');
+      if (i >= 0) goTo(i);
+    }));
+
     // Pilot Skill Pick: 스킬 카드 선택
     if (scr.skillPick) {
       stage.querySelectorAll('.skill-card.pickable').forEach(card => {
