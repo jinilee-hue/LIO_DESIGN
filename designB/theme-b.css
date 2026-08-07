@@ -349,7 +349,6 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
      머리-발 487.9px · 발밑 y644.5 · 발중심 x263.9 → width 32.26% · left 5.63% · bottom 14.93%.
    구조(파란 배경을 .introseq 로 내리고 ::before 는 물결만, 그림자 끄기)는 slide 6 과 동일. */
 .scr-plan .introseq .introseq-scrim,
-.scr-skill_video_intro .introseq .introseq-scrim,
 .scr-game_intro .introseq .introseq-scrim{display:block;inset:auto;
   /* 크기 기준은 slide 5 : 사자 머리-발 485.5px.
      이 시트는 머리폭/머리-발 비율이 0.451 로 slide 5(0.501)보다 작아 머리-발을 맞추면
@@ -358,10 +357,23 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background:url("../IMAGE/b/lio_game_idle.webp") no-repeat 0% 0 / 1600% 100%;
   animation:bLioGameIdle 2.4s steps(16,jump-none) infinite alternate}
 @keyframes bLioGameIdle{from{background-position:0% 0} to{background-position:100% 0}}
+/* slide 10 (Skill Video Intro) : 극장 의자에서 팝콘 들고 보는 LIO.
+   IMAGE/b/lio_video_watch.webp — video_sprite(4×4, 442×630) 16프레임 전부, 원본 그대로.
+   16프레임이 bbox(3~439 · 아래 627)·폭 436·중심 x221 이 완전히 같아 정규화가 필요 없다
+   (높이만 621~625 로 4px 흔들린다). 프레임차 2.3~12.1 로 고르다.
+   크기·위치는 slide 9 LIO 기준 : 사자 전체 높이 485.5px 를 그대로 맞추고(배율 0.778),
+   의자 다리 아래를 같은 접지선(y644.5)에, 몸 중심을 같은 x(263.9)에 뒀다 —
+   두 화면을 넘길 때 LIO 가 같은 자리·같은 크기로 이어진다. */
+.scr-skill_video_intro .introseq .introseq-scrim{display:block;inset:auto;
+  left:8.14%;bottom:15.77%;width:30.43%;aspect-ratio:442/630;
+  z-index:0;pointer-events:none;
+  background:url("../IMAGE/b/lio_video_watch.webp") no-repeat 0% 0 / 1600% 100%;
+  animation:bLioVideoWatch 2.4s steps(16,jump-none) infinite alternate}
+@keyframes bLioVideoWatch{from{background-position:0% 0} to{background-position:100% 0}}
 @media (prefers-reduced-motion:reduce){
   .scr-plan .introseq .introseq-scrim,
-  .scr-skill_video_intro .introseq .introseq-scrim,
-  .scr-game_intro .introseq .introseq-scrim{animation:none}
+  .scr-game_intro .introseq .introseq-scrim,
+  .scr-skill_video_intro .introseq .introseq-scrim{animation:none}
 }
 /* plan 은 스프라이트(.introseq-scrim)로 바뀌어 배경 레이어를 쓰지 않는다.
    ⚠ 여기서 --b-intro-lio 를 다시 지정하면 위(.scr-plan .introseq{--b-intro-lio:none})와
