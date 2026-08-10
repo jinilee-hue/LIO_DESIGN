@@ -1362,6 +1362,9 @@ const SCREENS = [
     { t:'lio', html:"Great choice! The evidence shows Maya's discoveries in the tide pools connect perfectly with the main idea of discovering animals and wonders.", tts:true, kr:true },
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used—save it for next time.", tts:true, kr:true },
     { t:'strategy' },
+    // 기획서 PAGE 58 2) : 'Next' 클릭 → 학습 종료(P67 = session_end).
+    // 1차 오답을 거친 경로(slide 57·58)는 'M22 진입' 이라 목적지가 다르다.
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', go:'session_end' }] },
   ],
   confetti:true,
   spec:['ET(Evidence Tap) 정답','M16b_Evidence: 정답 공개 + 다른 ET 정답도 하이라이트 표출'],
@@ -1401,6 +1404,8 @@ const SCREENS = [
     { t:'lio', html:'Great job! You found the right details. You connected Maya\'s visit to finding living things. 🔊', tts:true, kr:true },
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time. 🔊", tts:true, kr:true },
     { t:'strategy' },
+    // 기획서 PAGE 60 3) : 전략 카드 뒤 'Next' → FP2 학습 종료 → M22(Free Chat)
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary' }] },
   ],
   spec:['ET(Evidence Tap)_retry 이후 정답','M16b Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','Strategy cue 제공','FP2 학습 종료 안내 → M22 진입'],
 },
@@ -1447,6 +1452,8 @@ const SCREENS = [
     { t:'lio', html:"Not quite, but good try! The evidence is highlighted in the passage. It shows how Maya's visit helped her discover many wonders in the tide pools.", tts:true, kr:true },
     { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', reveal:true }] },
     { t:'strategy', hidden:true },
+    // 전략이 열린 뒤 진행할 버튼. 위 reveal 버튼이 이것도 함께 연다.
+    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary' }] },
   ],
   spec:['ET(Evidence Tap)_retry 이후 2차 오답','M16c Evidence Reveal: 정답 공개 + 다른 ET 정답도 하이라이트','Next 버튼 탭 → strategy cue 표출','FP2 학습 종료 안내 → M22 진입'],
 },
