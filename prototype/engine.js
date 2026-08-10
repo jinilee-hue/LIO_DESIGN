@@ -798,6 +798,13 @@
     // 하단 캡션 = PPTX TITLE 원문. 같은 슬라이드를 쪼갠 화면은 cut 라벨을 흐리게 덧붙인다.
     const nt = document.getElementById('nav-title');
     nt.textContent = scr.title || '';
+    // 기획서 PAGE — slide 번호(v1.1 PPTX)와 어긋나므로 대조용으로 함께 보여준다
+    if (scr.page) {
+      const pg = document.createElement('span');
+      pg.className = 'ct-cut';
+      pg.textContent = 'PAGE ' + scr.page;
+      nt.appendChild(pg);
+    }
     if (scr.cut) {
       const cut = document.createElement('span');
       cut.className = 'ct-cut';
@@ -2324,11 +2331,11 @@
   /* ---------------- jump menu (Index / slide 2) ---------------- */
   function buildJump() {
     const j = document.getElementById('jump-list');
-    // Index 항목 = PPTX 슬라이드 번호 + TITLE 원문 (+ 같은 슬라이드 분할 시 cut 라벨)
+    // Index 항목 = PPTX 슬라이드 번호 + TITLE 원문 (+ 기획서 PAGE · 같은 슬라이드 분할 시 cut 라벨)
     const esc = (t) => String(t == null ? '' : t)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     j.innerHTML = SCREENS.map((s, i) =>
-      `<button class="jump-item" data-i="${i}"><span class="ji-slide">${s.slide}</span><span class="ji-sec">${esc(s.section)||'—'}</span><span class="ji-title">${esc(s.title)}${s.cut ? `<span class="ji-cut">${esc(s.cut)}</span>` : ''}</span></button>`
+      `<button class="jump-item" data-i="${i}"><span class="ji-slide">${s.slide}</span><span class="ji-sec">${esc(s.section)||'—'}</span><span class="ji-title">${esc(s.title)}${s.page ? `<span class="ji-cut">PAGE ${s.page}</span>` : ''}${s.cut ? `<span class="ji-cut">${esc(s.cut)}</span>` : ''}</span></button>`
     ).join('');
     j.querySelectorAll('.jump-item').forEach(b =>
       b.addEventListener('click', () => { goTo(+b.dataset.i); toggleJump(false); }));

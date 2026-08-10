@@ -171,13 +171,13 @@ const SCREENS = [
 
 /* 5 ─ 진입 표지 */
 {
-  id:'entry', slide:5, section:'', title:'STEP2_Skill Score 진입 화면 표지', layout:'splash',
+  id:'entry', page:4, slide:5, section:'', title:'STEP2_Skill Score 진입 화면 표지', layout:'splash',
   spec:['LIO 캐릭터 아이콘 + 애니메이션 효과','타이틀 "LIO Skill Core" 표출 · 음악 + 제목 읽기'],
 },
 
 /* 6 ─ Greeting / A_Intro_cut2 (일러스트 + 순차 말풍선 + TTS) */
 {
-  id:'greeting', slide:6, section:'Greeting', title:'STEP2_Intro', cut:'cut2', layout:'center',
+  id:'greeting', page:5, slide:6, section:'Greeting', title:'LIO · STEP2 Skill Core', cut:'cut2', layout:'center',
   mascot:'lio2.png',
   // Design B(센터 카드)용 메시지
   message:[
@@ -203,7 +203,7 @@ const SCREENS = [
 
 /* 6b ─ A_Intro_cut3 (일러스트 + 순차 말풍선 + TTS) — Design A 전용 */
 {
-  id:'greeting_cut3', slide:6, section:'Greeting', title:'STEP2_Intro', cut:'cut3', layout:'center',
+  id:'greeting_cut3', page:5, slide:6, section:'Greeting', title:'LIO · STEP2 Skill Core', cut:'cut3', layout:'center',
   message:[],
   introSeq:{
     image:'intro2.png',   // A_Intro_cut3 배경 (도서관 — cut2와 동일)
@@ -219,13 +219,13 @@ const SCREENS = [
 
 /* 7 ─ Skill Intro */
 {
-  id:'skill', slide:7, section:'Intro', title:'Skill_Name_Intro', layout:'skill',
+  id:'skill', page:6, slide:7, section:'Intro', title:'Skill1/2_Warming_Up_Skill_Name_Intro', layout:'skill',
   spec:['Skill 대표 이미지와 학습 스킬 10개 표출','회전 후 "Let\'s find your skill!" 하면서 오늘 학습 스킬에서 멈춤','전체 리스트 사라지면 다음 확대 화면(아이콘 위치)로 이동'],
 },
 
 /* 8 ─ Topic Selection */
 {
-  id:'topic', slide:8, section:'Topic Selection', title:'Topic_Selection', layout:'topic',
+  id:'topic', page:7, slide:8, section:'Topic Selection', title:'Skill1/2_Warming_Up_Topic_Selection', layout:'topic',
   mascot:'lio_face.png', // Figma B_Topic_list lio_face 1 (thinking)
   // Figma: line1 Nunito Medium 36 / line2 Nunito ExtraBold 60
   lioLine:'<span class="tl-sub">Before practicing, let\'s pick two topics, <b class="nm">Maya</b>!</span><span class="tl-main">Which ones sound fun?</span>',
@@ -234,7 +234,7 @@ const SCREENS = [
 
 /* 9 ─ Activity Plan Intro */
 {
-  id:'plan', slide:9, section:'Intro', title:'Game_Intro', layout:'center',
+  id:'plan', page:8, slide:9, section:'Intro', title:'Skill1/2_Warming_Up_전체_활동_Intro', layout:'center',
   mascot:'lio_face2.png', mascotBig:true,
   message:[
     'Here\'s how today will go: <b class="nm">watch a video</b> → <b class="nm">play a game</b> → <b class="nm">read &amp; practice</b>',
@@ -256,7 +256,7 @@ const SCREENS = [
 /* 9b ─ Skill Video Intro (기획서 PAGE 10) : LIO TTS 후 'Let's watch!' 버튼 생성.
    디자인은 slide 9(Game_Intro)와 동일한 인트로 씬을 그대로 쓴다. */
 {
-  id:'skill_video_intro', slide:10, section:'Intro', title:'Skill1/2_Warming_Up_Skill_Video_Intro', layout:'center',
+  id:'skill_video_intro', page:9, slide:10, section:'Intro', title:'Skill1/2_Warming_Up_Skill_Video_Intro', layout:'center',
   mascot:'lio_face2.png', mascotBig:true,
   message:[
     'Time for a quick video, <b>Maya</b>! Let\'s learn all about "<b class="hl">Determining Main Ideas</b>" before we jump in.',
@@ -278,7 +278,7 @@ const SCREENS = [
 /* 9c ─ Skill Video (기획서 PAGE 11) : 스킬 영상 시청. 게임 실행화면과 같은 풀블리드 형태.
    ⚠ 썸네일은 임시로 게임 썸네일을 쓴다 — 실제 skill video 썸네일/영상으로 교체 필요. */
 {
-  id:'skill_video', slide:11, section:'Intro', title:'Skill1/2_Warming_Up_Skill_Video', layout:'game',
+  id:'skill_video', page:10, slide:11, section:'Intro', title:'Skill1/2_Warming_Up_Skill_Video', layout:'game',
   gameImage:'launcher/video_thumbnails/video_main_idea.png',   // A : 영상 썸네일 원본(2400×1600)
   gameImageB:'b/video_main_idea.jpg',                          // B : 디바이스 크기로 맞춘 JPG (game_bg.jpg 와 같은 규격)
   gameCta:"Let's go! ▶", gameCtaImg:'ui/btn_letsgo.png',
@@ -289,7 +289,7 @@ const SCREENS = [
 /* 9d ─ Game Intro (기획서 PAGE 12) : 영상 시청 후 게임 안내.
    디자인은 slide 9(Game_Intro)와 동일. */
 {
-  id:'game_intro', slide:12, section:'Game', title:'Skill1/2_Warming_Up_Game_Intro', layout:'center',
+  id:'game_intro', page:11, slide:12, section:'Game', title:'Skill1/2_Warming_Up_Game_Intro', layout:'center',
   mascot:'lio_face2.png', mascotBig:true,
   message:[
     'Nice job watching, <b>Maya</b>!',
@@ -310,7 +310,7 @@ const SCREENS = [
 
 /* 10 ─ FP1 Game Intro (Warm-up) */
 {
-  id:'game', slide:13, section:'Game', title:'Game+FP1_Intro_화면전환', layout:'game',
+  id:'game', page:12, slide:13, section:'Game', title:'Skill1/2_Warming_Up_Game', layout:'game',
   gameImage:'launcher/thumbnails/09_main_ideas.png',  // Design A : Main Ideas 게임 풀 일러스트
   gameImageB:'b/game_bg.jpg',                         // Design B : 게임 썸네일 풀블리드
   gameCta:"Let's go! ▶", gameCtaImg:'ui/btn_letsgo.png',   // Figma 버튼 원본
@@ -327,7 +327,7 @@ const SCREENS = [
    ※ 이 문구는 원래 game 화면의 transition 배열에 있었지만, layoutGame 이 A/B 모두 조기
      반환해서 실제로는 렌더되지 않았다(별도 화면으로 분리됨). transition 은 그대로 남겨둔다. */
 {
-  id:'fp1_intro', slide:14, section:'Further Practice 1', title:'Skill1/2_FP1_Intro', layout:'center',
+  id:'fp1_intro', page:13, slide:14, section:'Further Practice 1', title:'LIO · STEP2 Skill Core', layout:'center',
   mascot:'lio_face2.png', mascotBig:true,
   message:[
     'Great job with the game, <b>Maya</b>!',
@@ -349,7 +349,7 @@ const SCREENS = [
 
 /* 11 ─ FP1 Main Question */
 {
-  id:'fp1_mq', slide:15, section:'Further Practice 1', title:'FP1/2_Main_Question', layout:'reading',
+  id:'fp1_mq', page:14, slide:15, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question', layout:'reading',
   passage:true, listen:true,
   blocks:[
     { t:'lio', html:'Read the passage and answer the question.', tts:true, kr:true },
@@ -367,7 +367,7 @@ const SCREENS = [
 
 /* 12 ─ FP1 Main Question 정답경로 */
 {
-  id:'fp1_mq_correct', slide:16, section:'Further Practice 1', title:'FP1_Main_Question_정답경로', cut:'M06/M07 정답', layout:'reading',
+  id:'fp1_mq_correct', page:15, slide:16, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_정답_경로', cut:'M06/M07 정답', layout:'reading',
   passage:true,
   blocks:[
     { t:'lio', html:'Read the passage and answer the question.', tts:true, kr:true },
@@ -388,7 +388,7 @@ const SCREENS = [
 
 /* 13 ─ FP1 Evidence Tap */
 {
-  id:'fp1_et', slide:17, section:'Further Practice 1', title:'FP1_Main_Question_정답경로', cut:'Evidence Tap 안내', layout:'reading',
+  id:'fp1_et', page:16, slide:17, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_정답_경로_Evidence_Tap', cut:'Evidence Tap 안내', layout:'reading',
   passage:true, etMode:true,   /* 사전 하이라이트 없음 · 문장 탭 시에만 하이라이트 */
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -399,7 +399,7 @@ const SCREENS = [
 
 /* 14 ─ FP1 Evidence Tap 정답 */
 {
-  id:'fp1_et_correct', slide:18, section:'Further Practice 1', title:'FP1_Main_Question_정답경로', cut:'Evidence Tap 정답', layout:'reading',
+  id:'fp1_et_correct', page:17, slide:18, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_정답경로_Evidence_Tap', cut:'Evidence Tap 정답', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green', p5:'green', p14:'green', p15:'green', p16:'green' },
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -415,7 +415,7 @@ const SCREENS = [
 
 /* 15 ─ FP1 ET 1차 오답 */
 {
-  id:'fp1_et_wrong1', slide:19, section:'Further Practice 1', title:'FP1_Main_Question_정답경로_ET_1차_오답', layout:'reading',
+  id:'fp1_et_wrong1', page:18, slide:19, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_정답경로_Evidence_Tap_1차_오답', layout:'reading',
   // 기획서와 동일 : 붉은 오답 하이라이트를 유지한 채 지문에서 답을 다시 고를 수 있다.
   // 이미 1번 틀린 상태(etTries:1) — 결과에 따라 각 결과 화면으로 간다(FP2 slide 56 과 같은 방식).
   passage:true, listen:true, etMode:true, hl:{ p10:'red', p11:'red' },
@@ -439,7 +439,7 @@ const SCREENS = [
 
 /* 16 ─ FP1 ET 1차 오답 Retry 이후 정답 */
 {
-  id:'fp1_et_retry', slide:20, section:'Further Practice 1', title:'FP1_Main_Question_정답경로_ET_1차_오답_Retry_이후_정답', layout:'reading',
+  id:'fp1_et_retry', page:19, slide:20, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_정답경로_Evidence_Tap_1차_오답_Retry_이후_정답', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green' },
   blocks:[
     { t:'lio', html:"You're ready to dive into Evidence Tap. Let's explore together!", tts:true, kr:true },
@@ -457,7 +457,7 @@ const SCREENS = [
 
 /* 17 ─ FP1 ET 2차 오답 */
 {
-  id:'fp1_et_wrong2', slide:21, section:'Further Practice 1', title:'FP1_Main_Question_정답경로_ET_Retry_이후_2차_오답', layout:'reading',
+  id:'fp1_et_wrong2', page:20, slide:21, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_정답경로_Evidence_Tap_1차_오답_Retry_이후_2차_오답', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green', p5:'green' },
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -476,7 +476,7 @@ const SCREENS = [
 
 /* 18 ─ FP1 Main Question 오답 → Scaffolding intro */
 {
-  id:'fp1_mq_wrong', slide:22, section:'Further Practice 1', title:'FP1_Main_Question_오답경로', layout:'reading',
+  id:'fp1_mq_wrong', page:21, slide:22, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로', layout:'reading',
   passage:true, listen:true,   // 기획서와 달리: 좌 지문 / 우 내용 2단
   blocks:[
     { t:'lio', html:'Read the question and pick your answer.', tts:true, kr:true },
@@ -516,7 +516,7 @@ const SCREENS = [
    3가지 옵션 버튼 → 문장이 입력창에 자동 완성 → Send → 옵션별 LIO 멘트.
    옵션에 따른 별도 활동은 없고, 어느 것을 골라도 Word Check 로 들어간다. */
 {
-  id:'fp1_something_else', slide:23, section:'Further Practice 1',
+  id:'fp1_something_else', page:22, slide:23, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_C_Something_else_선택',
   cut:'Something else 선택', layout:'reading',
   passage:true,
@@ -563,7 +563,7 @@ const SCREENS = [
 
 /* 19 ─ Scaffolding Word Check (A · 정답) */
 {
-  id:'wordcheck_a', slide:24, section:'Further Practice 1',
+  id:'wordcheck_a', page:23, slide:24, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_word check_정답', layout:'reading',
   wcResult:'perfect',   /* 기획서 PAGE 25 : 이 화면은 2개 모두 정답 */
   passage:true, focusWord:'tough',   // 지문에서 해당 단어만 포커스
@@ -601,7 +601,7 @@ const SCREENS = [
      engine 의 runWordFocusFly 가 .kw-focus/.wordchip 을 하나씩만 잡는다. 두 번째 단어는
      Next 와 함께 chip 이 그대로 나타난다. */
 {
-  id:'wordcheck_b', slide:25, section:'Further Practice 1',
+  id:'wordcheck_b', page:24, slide:25, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_word check_오답',
   layout:'reading',
   wcResult:'partial',   /* 기획서 PAGE 26 : 1개만 정답 또는 모두 오답 */
@@ -638,7 +638,7 @@ const SCREENS = [
 
 /* 21 ─ Word Peek / Teach (PPTX 21) */
 {
-  id:'wordpeek', slide:26, section:'Further Practice 1', title:'FP1_Main_Question_오답경로_word check_이후_Teach(공통)', layout:'teach',
+  id:'wordpeek', page:25, slide:26, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_word check_이후_Teach(Word_Peek)', layout:'teach',
   // 기획서 PAGE 25 : 마지막 카드 완료 후 'Next' → 만점이면 Explore Words, 아니면 Game.
   teachGo:{ perfect:'explore_words' },
   passage:true,
@@ -656,7 +656,7 @@ const SCREENS = [
 
 /* 22 ─ Teach 이후 Game : Memory Match (PPTX 22) */
 {
-  id:'teach_game', slide:27, section:'Further Practice 1', title:'FP1_Main_Question_오답경로_word check_Teach_이후_Game', cut:'Memory Match', layout:'memory',
+  id:'teach_game', page:26, slide:27, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_Teach(Word_Peek)_이후_Game_1', cut:'Memory Match', layout:'memory',
   passage:true,
   lioLine:"Nice! You've met all the words. Which game do you want to play? 🔊",
   spec:['Memory Match','Hint 기회 3번 제공','5초 동안 단어·의미 기억 → 이후 카드 뒷면 뒤집기','단어와 의미가 맞는 경우 카드 색상 전환(성공), 아니면 다시 뒷면','짝 맞추기 6쌍 완료 → 다음 활동','Definition Detective 선택 시 해당 게임으로 전환'],
@@ -664,7 +664,7 @@ const SCREENS = [
 
 /* 23 ─ Teach 이후 Game : Definition Detective (PPTX 23) */
 {
-  id:'teach_detective', slide:28, section:'Further Practice 1', title:'FP1_Main_Question_오답경로_word check_Teach_이후_Game', cut:'Definition Detective', layout:'detective',
+  id:'teach_detective', page:27, slide:28, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_Teach(Word_Peek)_이후_Game_2', cut:'Definition Detective', layout:'detective',
   passage:true,
   lioLine:"Nice! You've met all the words. Which game do you want to play? 🔊",
   spec:['Definition Detective','의미와 매칭되는 단어 2개 카드 중 택1','애니메이션 효과: 카드 움직임','오답의 경우: 붉은색 하이라이트 + Retry 제시','정답의 경우: 🎉 confetti + correct reaction + brief praise','6개 clue 완료 → 다음 활동(Explore Words)'],
@@ -672,7 +672,7 @@ const SCREENS = [
 
 /* 24 ─ Teach/Game 이후 Explore Words (PPTX 24) */
 {
-  id:'explore_words', slide:29, section:'Further Practice 1', title:'FP1_Main_Question_오답경로_word check_Teach/Game_이후_Explore_Words', layout:'explore',
+  id:'explore_words', page:28, slide:29, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_Game_이후_Explore_Words', layout:'explore',
   passage:true,
   lioLine:'Before we go — want to know any other words? Tap any word in the passage to see its meaning. The pink words are our key words. 🔊',
   spec:['Explore Words_지문영역','박스 도형(key words) 이외 단어 학습 활동','탭 가능한 단어(점선 표시)만 클릭 가능 · 지문 영역 단어 클릭 시 하이라이트','학습 활동 표출: LIO가 클릭한 단어 표시 및 영영뜻 제시','단어 학습 제한 없음','Skill Practice 진입'],
@@ -680,7 +680,7 @@ const SCREENS = [
 
 /* 25 ─ Entry Method (3택1) */
 {
-  id:'entry_method', slide:30, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_A_Let’s read and check what I understand!', layout:'reading',
+  id:'entry_method', page:29, slide:30, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_A_Let’s read and check what I understand!', layout:'reading',
   passage:true,
   blocks:[
     { t:'lio', html:"Let's practice the skill! How would you like to start?", tts:true, kr:true },
@@ -698,7 +698,7 @@ const SCREENS = [
 
 /* 26 ─ Walk (Let's read & check) */
 {
-  id:'walk_read', slide:31, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_A_Let’s read and check what I understand!', layout:'reading',
+  id:'walk_read', page:30, slide:31, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_A_Let’s read and check what I understand!', layout:'reading',
   passage:true, walkPara:true,   /* 단락 진행에 맞춰 지문 하이라이트 이동 */ listen:true,
   blocks:[
     { t:'lio', html:'Let\'s read paragraph 1! Use the listen button in the passage.', tts:true, kr:true },
@@ -750,7 +750,7 @@ const SCREENS = [
    메뉴에서 'Explain the story to me!' 를 고른 상태. 'Let's go!' → 문단 요약 읽기(다음 화면).
    구조는 slide 30(A 선택)과 동일하다. */
 {
-  id:'entry_c', slide:32, section:'Further Practice 1',
+  id:'entry_c', page:31, slide:32, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_C_Explain the story to me!',
   cut:'C 선택', layout:'reading',
   passage:true,
@@ -770,7 +770,7 @@ const SCREENS = [
 
 /* 27 ─ Walk (Explain the story) */
 {
-  id:'walk_explain', slide:33, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_C_Explain the story to me!', layout:'reading',
+  id:'walk_explain', page:32, slide:33, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_C_Explain the story to me!', layout:'reading',
   passage:true, walkPara:true,   /* 단락 진행에 맞춰 지문 하이라이트 이동 */ listen:true,
   blocks:[
     { t:'label', html:'Paragraph 1', para:1 },
@@ -803,7 +803,7 @@ const SCREENS = [
    'Let's go!' → Scaffolding 3 Skill Practice Intro(다음 화면 = interest).
    ⚠ LIO 답변 문구는 기획서 목업이 이미지라 추출할 수 없어 초안이다. */
 {
-  id:'entry_b', slide:34, section:'Further Practice 1',
+  id:'entry_b', page:33, slide:34, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry Method_B_Let me practice the skill!',
   cut:'B 선택', layout:'reading',
   passage:true,
@@ -824,7 +824,7 @@ const SCREENS = [
 
 /* 28 ─ Interest Probe (Small Talk) */
 {
-  id:'interest', slide:35, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry_Method_B/Scaffolding_3_Skill_Practice_Intro', layout:'reading',
+  id:'interest', page:34, slide:35, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_2_Entry_Method_B/Scaffolding_3_Skill_Practice_Intro', layout:'reading',
   passage:true,
   blocks:[
     { t:'lio', html:'This passage is about exploring tide pools. Do you like exploring new places?', tts:true, kr:true },
@@ -848,7 +848,7 @@ const SCREENS = [
 
 /* 29 ─ Skill Practice S1 (Question Type) */
 {
-  id:'skill_s1', slide:36, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice_단일_정답', layout:'reading',
+  id:'skill_s1', page:36, slide:36, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice_단일_정답', layout:'reading',
   passage:true, hl:{ p2:'green', p5:'green', p14:'green', p15:'green' },
   blocks:[
     // S1 은 전 스킬 공통 2지선다(기획서 PAGE 35). 답을 고르면 결과에 따라 멘트가 갈린다.
@@ -884,7 +884,7 @@ const SCREENS = [
 
 /* 30 ─ Skill Practice S2 (Key Details · 복수선택) */
 {
-  id:'skill_s2', slide:37, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice_복수_정답', layout:'reading',
+  id:'skill_s2', page:37, slide:37, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice_복수_정답', layout:'reading',
   passage:true,
   blocks:[
     { t:'label', html:'S2 — Key Details' },
@@ -916,7 +916,7 @@ const SCREENS = [
    S2-1 = Main Topic(단일 정답) · S2-2 = Key Events(복수 정답) 로 나눴다.
    ⚠ 기획서 목업이 이미지라 화면 문구를 추출할 수 없었다 — 아래 문구는 초안이다. */
 {
-  id:'skill_s2_split1', slide:38, section:'Further Practice 1',
+  id:'skill_s2_split1', page:38, slide:38, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice_S(Step)내_분리형_화면_단일_정답',
   cut:'S2-1 Main Topic', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green' },
@@ -946,7 +946,7 @@ const SCREENS = [
    위 S2-1 에 이어지는 S2-2. 복수 정답이라 'Check' 로 채점한다(skill_s2 와 같은 방식).
    ⚠ 문구는 초안이다. */
 {
-  id:'skill_s2_split2', slide:39, section:'Further Practice 1',
+  id:'skill_s2_split2', page:39, slide:39, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice_S(Step)내_분리형_화면_복수_정답',
   cut:'S2-2 Key Events', layout:'reading',
   passage:true,
@@ -976,7 +976,7 @@ const SCREENS = [
 
 /* 31 ─ Skill Practice S4 (Find the Evidence) */
 {
-  id:'skill_s4', slide:40, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동1)', layout:'reading',
+  id:'skill_s4', page:40, slide:40, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동1)', layout:'reading',
   // 문장을 탭해 채점한다. 근거 문장은 slide 18 과 같다(정답 공개 시 초록으로 표시된다).
   passage:true, etMode:true, etAnswers:['p1', 'p2', 'p5', 'p14', 'p15', 'p16'],   /* 사전 하이라이트 없음 · 문장을 탭해야 하이라이트 */
   blocks:[
@@ -1003,7 +1003,7 @@ const SCREENS = [
    문장을 탭하는 형태로 만들었다(문장 탭은 Passage Clarify 와 같은 clarify 배선을 쓴다).
    ⚠ 문구는 초안이다. */
 {
-  id:'skill_s4_confirm', slide:41, section:'Further Practice 1',
+  id:'skill_s4_confirm', page:41, slide:41, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동2)',
   cut:'S4 Confirm', layout:'reading',
   // Confirm 은 Literary Genres / Author's Purpose 스킬의 활동이라 기획서도 다른 지문을 쓴다
@@ -1029,7 +1029,7 @@ const SCREENS = [
    처음 탭한 문장을 유지한 채 다른 문장을 탭하면 하이라이트와 설명이 '누적' 된다.
    ⚠ 문구는 초안이다. */
 {
-  id:'skill_s4_confirm_more', slide:42, section:'Further Practice 1',
+  id:'skill_s4_confirm_more', page:42, slide:42, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동2)',
   cut:'S4 Confirm · 누적', layout:'reading',
   passage:true, passageRef:'PASSAGE_FARM', skillName:'Identifying Literary Genres',
@@ -1055,7 +1055,7 @@ const SCREENS = [
 
 /* 32 ─ Passage Clarify */
 {
-  id:'clarify', slide:43, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Passage_Clarify', layout:'reading',
+  id:'clarify', page:43, slide:43, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Passage_Clarify', layout:'reading',
   passage:true, clarify:true,
   blocks:[
     { t:'lio', html:"Do you have anything you don't understand? Tap the sentence.", tts:true, kr:true },
@@ -1082,7 +1082,7 @@ const SCREENS = [
 
 /* 33 ─ Pre-retry Q&A */
 {
-  id:'pre_retry', slide:44, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Pre_retry', layout:'reading',
+  id:'pre_retry', page:44, slide:44, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Pre_retry', layout:'reading',
   passage:true,
   blocks:[
     { t:'lio', html:'Before we try the question again — do you have anything you want to ask?', tts:true, kr:true },
@@ -1102,7 +1102,7 @@ const SCREENS = [
 
 /* 34 ─ Retry Main Question (FP1) */
 {
-  id:'fp1_retry', slide:45, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_오답경로_FP1_Retry', layout:'reading',
+  id:'fp1_retry', page:45, slide:45, section:'Further Practice 1', title:'Skill1/2_FP1_Main_Question_오답경로_FP1_Retry', layout:'reading',
   passage:true,
   blocks:[
     { t:'label', html:'Retry — Main Question' },
@@ -1130,7 +1130,7 @@ const SCREENS = [
 
 /* 35 ─ FP2 Intro (cut1) — slide 6과 같이 두 컷으로 분할 (버튼 겹침 방지) */
 {
-  id:'fp2_intro', slide:46, section:'Further Practice 2', title:'FP2_Intro', cut:'cut1', layout:'center',
+  id:'fp2_intro', page:46, slide:46, section:'Further Practice 2', title:'Skill1/2_FP1_Main_Question_오답경로_FP2_Intro', cut:'cut1', layout:'center',
   mascot:'lio2.png',
   // Design B(센터 카드)용 메시지
   message:[
@@ -1153,7 +1153,7 @@ const SCREENS = [
 
 /* 35b ─ FP2 Intro (cut2) */
 {
-  id:'fp2_intro_cut2', slide:46, section:'Further Practice 2', title:'FP2_Intro', cut:'cut2', layout:'center',
+  id:'fp2_intro_cut2', page:46, slide:46, section:'Further Practice 2', title:'Skill1/2_FP1_Main_Question_오답경로_FP2_Intro', cut:'cut2', layout:'center',
   message:[],
   introSeq:{
     image:'intro_fp2.png',
@@ -1168,7 +1168,7 @@ const SCREENS = [
 
 /* 36 ─ FP2 Main Question (+ 4 활동 옵션) */
 {
-  id:'fp2_mq', slide:47, section:'Further Practice 2', title:'FP2_Main Question_정답경로', layout:'reading',
+  id:'fp2_mq', page:47, slide:47, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로', layout:'reading',
   passage:true, listen:true,
   blocks:[
     { t:'lio', html:'Read the passage and answer the question.', tts:true, kr:true },
@@ -1195,7 +1195,7 @@ const SCREENS = [
 
 /* 37 ─ Find & Flip */
 {
-  id:'find_flip', slide:48, section:'Further Practice 2', title:'FP2_Main Question_정답경로_B', cut:'Find & Flip', layout:'findflip',
+  id:'find_flip', page:48, slide:48, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로_B_I_want_to_check_some_words', cut:'Find & Flip', layout:'findflip',
   intro:"Great choice! Let's explore some key words together!",
   label:'Find & Flip',
   lioLine:"Find each word in the passage, then tap it to flip the card and see what it means! 🔊",
@@ -1206,7 +1206,7 @@ const SCREENS = [
 
 /* 38 ─ Walk the Passage */
 {
-  id:'walk_passage', slide:49, section:'Further Practice 2', title:'FP2_Main Question_정답경로_C', cut:'Walk the Passage', layout:'reading',
+  id:'walk_passage', page:51, slide:49, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로_C_Walk_me_through_the_passage', cut:'Walk the Passage', layout:'reading',
   // 기획서 P52 : 마지막 문단 후 'Next' → ET / 'I have a question' → 문장 탭 활동(P53)
   passage:true, listen:true, walk:true, walkNextGo:'fp2_et', walkQGo:'walk_q',
   walkParas:[
@@ -1238,7 +1238,7 @@ const SCREENS = [
    (기획서 v1.2 PAGE 53) 첫 단락은 다시 하지 않고 다음 단락으로 넘어간다.
    ⚠ 문구는 초안이다(목업이 이미지). */
 {
-  id:'walk_q', slide:50, section:'Further Practice 2',
+  id:'walk_q', page:53, slide:50, section:'Further Practice 2',
   title:'Skill1/2_FP2_Main_Question_정답_경로_C_Walk_me_through_the_passage',
   cut:'I have a question', layout:'reading',
   passage:true, clarify:true,
@@ -1263,7 +1263,7 @@ const SCREENS = [
    'Another sentence' 로 설명을 더 듣고, 'Next paragraph' 로 다음 문단으로 간다.
    ⚠ 문구는 초안이다. */
 {
-  id:'walk_q_sent', slide:51, section:'Further Practice 2',
+  id:'walk_q_sent', page:54, slide:51, section:'Further Practice 2',
   title:'Skill1/2_FP2_Main_Question_정답_경로_C_Walk_me_through_the_passage',
   cut:'I have a question · 문장 선택', layout:'reading',
   passage:true, clarify:true, hl:{ p3:'green' },
@@ -1289,7 +1289,7 @@ const SCREENS = [
    (기획서 v1.2 PAGE 55) 이후 ET 로 진입한다.
    ⚠ 문구는 초안이다. */
 {
-  id:'walk_q_last', slide:52, section:'Further Practice 2',
+  id:'walk_q_last', page:55, slide:52, section:'Further Practice 2',
   title:'Skill1/2_FP2_Main_Question_정답_경로_C_Walk_me_through_the_passage',
   cut:'I have a question · 마지막 문단', layout:'reading',
   passage:true, clarify:true, hl:{ p14:'green', p15:'green', p16:'green' },
@@ -1309,7 +1309,7 @@ const SCREENS = [
 
 /* 39 ─ Something else (자유 입력) */
 {
-  id:'something_else', slide:53, section:'Further Practice 2', title:'FP2_Main Question_정답경로_D', cut:'Something else', layout:'reading',
+  id:'something_else', page:56, slide:53, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로_D_I_need_something_else', cut:'Something else', layout:'reading',
   passage:true, listen:true,
   blocks:[
     { t:'menu', kr:true, items:[
@@ -1332,7 +1332,7 @@ const SCREENS = [
 
 /* 40 ─ FP2 Evidence Tap (문제 제시) */
 {
-  id:'fp2_et', slide:54, section:'Further Practice 2', title:'FP2_Main Question_정답경로_A/ET', layout:'reading',
+  id:'fp2_et', page:57, slide:54, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로_A_I’m_ready!_Let’s_go!/Evidence_Tap', layout:'reading',
   passage:true, etMode:true, etAnswers:['p1', 'p2', 'p5', 'p14', 'p15', 'p16'],   /* 사전 하이라이트 없음 · 문장 탭 시에만 하이라이트 */
   blocks:[
     // 기획서 P57 : 옵션 목록에서 A 를 고른 상태 + 진입 멘트 뒤에 ET 가 시작된다
@@ -1356,7 +1356,7 @@ const SCREENS = [
 
 /* 41 ─ FP2 Evidence Tap 정답 */
 {
-  id:'fp2_et_correct', slide:55, section:'Further Practice 2', title:'FP2_Main Question_정답경로_ET_정답', layout:'reading',
+  id:'fp2_et_correct', page:58, slide:55, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로_A_I’m_ready!_Let’s_go!/Evidence_Tap', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green', p5:'green', p14:'green', p15:'green', p16:'green' },
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -1376,7 +1376,7 @@ const SCREENS = [
 
 /* 42 ─ FP2 ET 1차 오답 */
 {
-  id:'fp2_et_wrong1', slide:56, section:'Further Practice 2', title:'FP2_Main Question_정답경로_ET_1차_오답', layout:'reading',
+  id:'fp2_et_wrong1', page:59, slide:56, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로_A_I’m_ready!_Let’s_go!/Evidence_Tap_1차_오답', layout:'reading',
   // 기획서 PAGE 59 4) : 붉은 오답 하이라이트를 유지한 채 지문에서 답을 다시 고를 수 있다.
   // 이미 1번 틀린 상태(etTries:1)라 다음 선택이 마지막 — 결과에 따라 각 페이지로 간다.
   passage:true, listen:true, etMode:true, hl:{ p14:'red' },
@@ -1400,7 +1400,7 @@ const SCREENS = [
 
 /* 43 ─ FP2 ET retry 이후 정답 → Complete */
 {
-  id:'fp2_et_retry', slide:57, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_1차_오답_Retry_이후_정답', layout:'reading',
+  id:'fp2_et_retry', page:60, slide:57, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로_A_I’m_ready!_Let’s_go!/Evidence_Tap_1차_오답_Retry_이후_정답', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green' },
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -1409,14 +1409,29 @@ const SCREENS = [
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time. 🔊", tts:true, kr:true },
     { t:'strategy' },
     // 기획서 PAGE 60 3) : 전략 카드 뒤 'Next' → FP2 학습 종료 → M22(Free Chat)
-    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary' }] },
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', go:'fp2_free_chat' }] },
   ],
   spec:['ET(Evidence Tap)_retry 이후 정답','M16b Evidence: 정답 공개 + 다른 ET 정답도 하이라이트','Strategy cue 제공','FP2 학습 종료 안내 → M22 진입'],
 },
 
 /* 45 ─ FP2 Free Chat (M22) */
 {
-  id:'fp2_free_chat', slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'Retry 정답 이후', layout:'reading',
+  id:'fp2_et_wrong2', page:61, slide:58, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_정답_경로_A_I’m_ready!_Let’s_go!/Evidence_Tap_2차_오답', layout:'reading',
+  passage:true, hl:{ p1:'green', p2:'green', p5:'green' },
+  blocks:[
+    { t:'label', html:'Evidence Tap' },
+    { t:'lio', html:'Now, tap the sentence in the passage that best supports the main idea.', tts:true, kr:true },
+    { t:'lio', html:'Try looking where Maya visits and discovers new things. Try again. Tap the sentence that best supports the main idea.', tts:true, kr:true },
+    { t:'lio', html:"Not quite, but good try! The evidence is highlighted in the passage. It shows how Maya's visit helped her discover many wonders in the tide pools.", tts:true, kr:true },
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', reveal:true }] },
+    { t:'strategy', hidden:true },
+    // 전략이 열린 뒤 진행할 버튼. 위 reveal 버튼이 이것도 함께 연다.
+    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary', go:'fp2_free_chat_3' }] },
+  ],
+  spec:['ET(Evidence Tap)_retry 이후 2차 오답','M16c Evidence Reveal: 정답 공개 + 다른 ET 정답도 하이라이트','Next 버튼 탭 → strategy cue 표출','FP2 학습 종료 안내 → M22 진입'],
+},
+{
+  id:'fp2_free_chat', page:62, slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'Retry 정답 이후', layout:'reading',
   passage:true, freechat:true, fcEndGo:'post_skill_pick',   /* 기획서: Skip/Done → 학습 종료 P66 */
   blocks:[
     { t:'lio', html:'You said that you like new places. Where do you want to explore next?', tts:true, kr:true },
@@ -1431,7 +1446,7 @@ const SCREENS = [
 
 /* 45 ─ FP2 Free Chat (M22) · 와이어는 M22 1경로 — cut 라벨로만 진입 맥락 구분 */
 {
-  id:'fp2_free_chat_2', slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'ET 정답 이후', layout:'reading',
+  id:'fp2_free_chat_2', page:62, slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'ET 정답 이후', layout:'reading',
   passage:true, freechat:true, fcEndGo:'post_skill_pick',   /* 기획서: Skip/Done → 학습 종료 P66 */
   blocks:[
     { t:'lio', html:'You finished Further Practice 2! Want to chat a little before we wrap up?', tts:true, kr:true },
@@ -1446,25 +1461,10 @@ const SCREENS = [
 },
 
 /* 44 ─ FP2 ET 2차 오답 reveal → Complete */
-{
-  id:'fp2_et_wrong2', slide:58, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_2차_오답', layout:'reading',
-  passage:true, hl:{ p1:'green', p2:'green', p5:'green' },
-  blocks:[
-    { t:'label', html:'Evidence Tap' },
-    { t:'lio', html:'Now, tap the sentence in the passage that best supports the main idea.', tts:true, kr:true },
-    { t:'lio', html:'Try looking where Maya visits and discovers new things. Try again. Tap the sentence that best supports the main idea.', tts:true, kr:true },
-    { t:'lio', html:"Not quite, but good try! The evidence is highlighted in the passage. It shows how Maya's visit helped her discover many wonders in the tide pools.", tts:true, kr:true },
-    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', reveal:true }] },
-    { t:'strategy', hidden:true },
-    // 전략이 열린 뒤 진행할 버튼. 위 reveal 버튼이 이것도 함께 연다.
-    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary' }] },
-  ],
-  spec:['ET(Evidence Tap)_retry 이후 2차 오답','M16c Evidence Reveal: 정답 공개 + 다른 ET 정답도 하이라이트','Next 버튼 탭 → strategy cue 표출','FP2 학습 종료 안내 → M22 진입'],
-},
 
 /* 45 ─ FP2 ET 2차 오답 이후 M22 */
 {
-  id:'fp2_free_chat_3', slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'ET 2차 오답 이후', layout:'reading',
+  id:'fp2_free_chat_3', page:62, slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'ET 2차 오답 이후', layout:'reading',
   passage:true, freechat:true, fcEndGo:'post_skill_pick',   /* 기획서: Skip/Done → 학습 종료 P66 */
   blocks:[
     { t:'lio', html:'You finished the Skill Practice! Great work today! 🔊', tts:true, kr:true },
@@ -1480,7 +1480,7 @@ const SCREENS = [
 
 /* 46 ─ FP2 Quick Exit 게이트 */
 {
-  id:'quick_exit', slide:60, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_오답_경로_진입_전_Quick_Exit', layout:'quickexit',
+  id:'quick_exit', page:63, slide:60, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_오답_경로_진입_전_Quick_Exit', layout:'quickexit',
   bg:'intro_qe.png',
   // 기획서 PAGE 63 문구 그대로 (한 말풍선)
   qeSeq:[
@@ -1495,7 +1495,7 @@ const SCREENS = [
 
 /* 47 ─ Retry FP2 Main Question */
 {
-  id:'fp2_retry', slide:61, section:'Further Practice 2', title:'Retry_FP2', cut:'Main Question', layout:'reading',
+  id:'fp2_retry', page:64, slide:61, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_오답_경로_FP2_Retry', cut:'Main Question', layout:'reading',
   passage:true,
   blocks:[
     { t:'label', html:'Retry — Main Question' },
@@ -1525,7 +1525,7 @@ const SCREENS = [
 
 /* 48 ─ Retry 이후 Free Chat (M22) */
 {
-  id:'fp2_retry_free_chat', slide:62, section:'Further Practice 2', title:'Retry_FP2', cut:'M22 Free Chat', layout:'reading',
+  id:'fp2_retry_free_chat', page:65, slide:62, section:'Further Practice 2', title:'Skill2_FP2_Main_Question_오답_경로_Retry_이후_Free_Chat', cut:'M22 Free Chat', layout:'reading',
   passage:true, freechat:true, fcEndGo:'session_end',   /* 기획서 PAGE 65: Skip/Done → 학습 종료 P67 */
   blocks:[
     { t:'lio', html:"Not quite, but you got this! The correct answer is: a girl who discovers the animals and wonders of tide pools, because it covers all about Maya's experiences and observations.", tts:true, kr:true },
@@ -1542,7 +1542,7 @@ const SCREENS = [
 
 /* 49 ─ 최종 학습 후 추가 학습 / 종료 선택 (Pilot) */
 {
-  id:'post_skill_pick', slide:63, section:'Skill Selection', title:'Skill1/2_FP2_이후_학습_종료_추가_학습_자유_선택', layout:'quickexit',
+  id:'post_skill_pick', page:66, slide:63, section:'Skill Selection', title:'Skill1/2_FP2_이후_학습_종료_추가_학습_자유_선택', layout:'quickexit',
   bg:'intro_fp2.png',
   qeSeq:[
     { side:'left',  html:'You did it, <b class="nm">Maya</b>! Want to practice another skill?' },
@@ -1559,7 +1559,7 @@ const SCREENS = [
    'Exit' 클릭으로 전체 학습이 끝난다.
    ⚠ 문구는 초안이다(목업이 이미지). */
 {
-  id:'session_end', slide:64, section:'Skill Selection', title:'Skill1/2_FP2_학습_종료_화면', layout:'quickexit',
+  id:'session_end', page:67, slide:64, section:'Skill Selection', title:'Skill1/2_FP2_학습_종료_화면', layout:'quickexit',
   bg:'intro_fp2.png', styleAs:'post_skill_pick',   /* slide 63 과 같은 디자인 */
   // 기획서 PAGE 67 : 말풍선 하나
   qeSeq:[
