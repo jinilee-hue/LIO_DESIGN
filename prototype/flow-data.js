@@ -1412,8 +1412,8 @@ const SCREENS = [
 
 /* 45 ─ FP2 Free Chat (M22) */
 {
-  id:'fp2_free_chat', slide:59, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'Retry 정답 이후', layout:'reading',
-  passage:true, freechat:true,
+  id:'fp2_free_chat', slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'Retry 정답 이후', layout:'reading',
+  passage:true, freechat:true, fcEndGo:'post_skill_pick',   /* 기획서: Skip/Done → 학습 종료 P66 */
   blocks:[
     { t:'lio', html:'You said that you like new places. Where do you want to explore next?', tts:true, kr:true },
     { t:'user', html:'…land', fc:'turn1' },
@@ -1427,8 +1427,8 @@ const SCREENS = [
 
 /* 45 ─ FP2 Free Chat (M22) · 와이어는 M22 1경로 — cut 라벨로만 진입 맥락 구분 */
 {
-  id:'fp2_free_chat_2', slide:59, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'ET 정답 이후', layout:'reading',
-  passage:true, freechat:true,
+  id:'fp2_free_chat_2', slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'ET 정답 이후', layout:'reading',
+  passage:true, freechat:true, fcEndGo:'post_skill_pick',   /* 기획서: Skip/Done → 학습 종료 P66 */
   blocks:[
     { t:'lio', html:'You finished Further Practice 2! Want to chat a little before we wrap up?', tts:true, kr:true },
     { t:'lio', html:'You said that you like new places. Where do you want to explore next?', tts:true, kr:true },
@@ -1460,8 +1460,8 @@ const SCREENS = [
 
 /* 45 ─ FP2 ET 2차 오답 이후 M22 */
 {
-  id:'fp2_free_chat_3', slide:59, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'ET 2차 오답 이후', layout:'reading',
-  passage:true, freechat:true,
+  id:'fp2_free_chat_3', slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'ET 2차 오답 이후', layout:'reading',
+  passage:true, freechat:true, fcEndGo:'post_skill_pick',   /* 기획서: Skip/Done → 학습 종료 P66 */
   blocks:[
     { t:'lio', html:'You finished the Skill Practice! Great work today! 🔊', tts:true, kr:true },
     { t:'lio', html:'You said that you like new places. Where do you want to explore next?', tts:true, kr:true },
@@ -1476,11 +1476,11 @@ const SCREENS = [
 
 /* 46 ─ FP2 Quick Exit 게이트 */
 {
-  id:'quick_exit', slide:60, section:'Further Practice 2', title:'FP2_오답경로_진입_전_Quick_Exit_게이트', layout:'quickexit',
+  id:'quick_exit', slide:60, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_오답_경로_진입_전_Quick_Exit', layout:'quickexit',
   bg:'intro_qe.png',
+  // 기획서 PAGE 63 문구 그대로 (한 말풍선)
   qeSeq:[
-    { side:'left',  html:'What should we do?' },
-    { side:'right', html:'Pick whichever<br>feels better.' },
+    { side:'left',  html:'No worries! This one was a bit tricky. Would you like to see the answer now, or should we look at it together?' },
   ],
   cards:[
     { title:'Just show me<br>the answer', tone:'plain', go:'fp2_et_wrong2' },
@@ -1518,7 +1518,7 @@ const SCREENS = [
 /* 48 ─ Retry 이후 Free Chat (M22) */
 {
   id:'fp2_retry_free_chat', slide:62, section:'Further Practice 2', title:'Retry_FP2', cut:'M22 Free Chat', layout:'reading',
-  passage:true, freechat:true,
+  passage:true, freechat:true, fcEndGo:'post_skill_pick',   /* 기획서: Skip/Done → 학습 종료 P66 */
   blocks:[
     { t:'lio', html:"Not quite, but you got this! The correct answer is: a girl who discovers the animals and wonders of tide pools, because it covers all about Maya's experiences and observations.", tts:true, kr:true },
     { t:'lio', html:'You finished the Skill Practice! Great work today! 🔊', tts:true, kr:true },

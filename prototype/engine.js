@@ -1326,6 +1326,9 @@
       reveal('end');
       if (inputWrap) inputWrap.classList.add('fc-gone');
       if (float) float.classList.add('fc-gone');
+      // 기획서: 'Skip/Done' → 학습 종료 화면으로 전환. 마무리 멘트를 잠깐 보여준 뒤 이동한다.
+      const gi = scr.fcEndGo ? SCREENS.findIndex(x => x.id === scr.fcEndGo) : -1;
+      if (gi >= 0) later(() => goTo(gi), 1400);
     };
     const enterFree = () => {
       if (phase !== 'ask') return;
