@@ -465,6 +465,8 @@ const SCREENS = [
     { t:'lio', html:'Try looking where Maya visits and discovers new things. Try again. Tap the sentence that best supports the main idea.', tts:true, kr:true },
     { t:'lio', html:'Not quite, but good try! The evidence is highlighted in the passage. It shows how Maya\'s visit helped her discover many wonders in the tide pools.', tts:true, kr:true },
     { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', reveal:true }] },   // 우측 끝 · 탭하면 전략 표출
+    // 전략 박스를 여는 멘트 — slide 18·20 과 같은 문구. 전략과 함께 나타난다
+    { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time.", tts:true, kr:true, hidden:true },
     { t:'strategy', hidden:true },   // Next 누르기 전엔 숨김
     // 전략 박스 밑 Next : slide 37 Pre-Retry 로 점프. hidden 이라 전략과 함께 나타난다
     // (위 reveal 버튼이 .reveal-hidden 을 전부 걷어낸다)
@@ -1424,6 +1426,8 @@ const SCREENS = [
     { t:'lio', html:'Try looking where Maya visits and discovers new things. Try again. Tap the sentence that best supports the main idea.', tts:true, kr:true },
     { t:'lio', html:"Not quite, but good try! The evidence is highlighted in the passage. It shows how Maya's visit helped her discover many wonders in the tide pools.", tts:true, kr:true },
     { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', reveal:true }] },
+    // 전략 박스를 여는 멘트 — slide 21·55·57 과 같은 문구. 전략과 함께 나타난다
+    { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used — save it for next time.", tts:true, kr:true, hidden:true },
     { t:'strategy', hidden:true },
     // 전략이 열린 뒤 진행할 버튼. 위 reveal 버튼이 이것도 함께 연다.
     { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary', go:'fp2_free_chat_3' }] },
