@@ -1556,20 +1556,21 @@ const SCREENS = [
    ⚠ 문구는 초안이다(목업이 이미지). */
 {
   id:'session_end', slide:64, section:'Skill Selection', title:'Skill1/2_FP2_학습_종료_화면', layout:'quickexit',
-  bg:'intro_fp2.png',
+  bg:'intro_fp2.png', styleAs:'post_skill_pick',   /* slide 63 과 같은 디자인 */
+  // 기획서 PAGE 67 : 말풍선 하나
   qeSeq:[
-    { side:'left',  html:'Great work today, <b class="nm">Maya</b>! You finished everything.' },
-    { side:'right', html:'See you next time — tap <b>Exit</b> when you are ready to go.' },
+    { side:'left', html:'This is so much fun!<br>You did great today. See you next time!' },
   ],
-  // img 를 쓰면 그 이미지의 글자('Finish')가 그대로 나온다 → 텍스트 버튼으로 둔다
+  // slide 63 과 같은 디자인. B 는 이미지 버튼의 그림을 숨기고 CSS 로 라벨을 넣으므로
+  // img 를 줘도 'Finish' 글자가 보이지 않는다(theme-b 가 'Exit' 로 덮는다).
   actions:[
-    { html:'Exit', style:'primary', chevron:true, act:'exitSession' },
+    { html:'Exit', img:'ui/btn_finish.png', act:'exitSession' },
   ],
   spec:['학습 세션 종료',
         "Free Chat 두 번째 대화 종료 'Done' 클릭 후 종료 화면",
         '학생이 추가 두 번째 skill 학습을 진행한 경우에도 이 화면으로 종료',
         "'Exit' 클릭 후 전체 학습 종료",
-        '※ 기획서 목업이 이미지라 화면 문구는 초안이다 — 검토 필요'],
+        '문구는 기획서 화면(PAGE 67) 원문'],
 },
 
 ];

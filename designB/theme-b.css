@@ -1557,4 +1557,28 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   .quiz-rain{animation:bRainIn .2s both, bRainOut .3s 2.2s both}
   .quiz-rain::before,.quiz-rain::after{animation:none}
 }
+
+/* ── slide 64 학습 종료 화면 ───────────────────────────────────────────────
+   디자인은 slide 63(추가 학습 선택)을 styleAs 로 그대로 빌려 쓰고, 여기서 두 가지만 덮는다.
+   1) 버튼이 하나뿐이라 63 의 :first-child/:last-child 라벨이 둘 다 걸린다 → 'Exit' 로.
+   2) LIO 를 slide 5 의 손 흔드는 스프라이트로. 시트가 달라(421×505 vs 412×548) 렌더 높이가
+      같아지도록 폭을 다시 잡았다 — 34.82%×(548/412)=46.31% 높이 → 46.31%×(421/505)=38.61% 폭.
+      애니메이션은 slide 5 와 같은 0.90s · 12프레임 · alternate. */
+/* 버튼은 slide 5 의 'Let's Go!' 와 같은 톤 — 흰 알약 + 파란 글자 + 파란 원형 셰브론.
+   63 의 라벨/배경 규칙과 같은 형태(특정도 동일)로 두고 파일 뒤쪽에 둬서 순서로 이긴다.
+   버튼이 하나뿐이라 flex:1 로 가로가 꽉 차므로 폭도 알약처럼 줄인다. */
+.scr-session_end .qe-imgbtn:last-child{
+  color:var(--primary);
+  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='30' fill='%23155DFC'/%3E%3Cpath d='M25.5 19.5L36 30L25.5 40.5' stroke='white' stroke-width='5.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right clamp(8px,1cqw,13px) center;
+  background-size:var(--cta-chev) var(--cta-chev);
+  flex:0 0 auto;min-width:clamp(180px,26cqw,340px)}
+.scr-session_end .qe-imgbtn:last-child::before{content:"Exit";color:var(--primary)}
+.scr-session_end .qe-actions{justify-content:flex-end}
+.scr-session_end .qe-scrim{
+  width:38.61%;aspect-ratio:421/505;
+  background:url("../IMAGE/b/lio_intro_wave.webp") no-repeat 0% 0 / 1200% 100%;
+  animation:bLioWaveEnd .90s steps(12,jump-none) infinite alternate}
+@keyframes bLioWaveEnd{from{background-position:0% 0} to{background-position:100% 0}}
+@media (prefers-reduced-motion:reduce){
+  .scr-session_end .qe-scrim{animation:none}
 }

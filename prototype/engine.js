@@ -773,7 +773,9 @@
       default:          body = layoutReading(scr);
     }
     const showNav = (scr.layout === 'topic'); // Figma B 하단 pill 네비 (토픽 화면 등)
-    stage.innerHTML = `<div class="device layout-${scr.layout} scr-${scr.id} section-${(scr.section||'').split(' ')[0]||'none'}">
+    // styleAs : 다른 화면과 같은 테마 규칙을 쓰고 싶을 때 그 화면의 scr- 클래스를 함께 붙인다.
+    // (테마 CSS 의 선택자를 건드리지 않고 디자인만 빌린다)
+    stage.innerHTML = `<div class="device layout-${scr.layout} scr-${scr.id}${scr.styleAs ? ' scr-' + scr.styleAs : ''} section-${(scr.section||'').split(' ')[0]||'none'}">
         ${headerHTML(scr)}
         <div class="screen">${body}</div>
         ${showNav ? bottomNav() : ''}
