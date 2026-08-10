@@ -1168,9 +1168,10 @@
         for (let n = grid.nextElementSibling; n && !n.classList.contains('emoji-grid'); n = n.nextElementSibling) {
           n.classList.remove('reveal-hidden');
         }
-        if (correct) {                                              // 정답 → 파티클 + 효과음
+        if (correct) {                        // 정답 → 고른 자리 파티클 + 전체 confetti + 효과음
           const r = op.getBoundingClientRect();
           burstParticles(r.left + r.width / 2, r.top + r.height / 2);
+          spawnConfetti();                    // 기획서: 정답 → 🎉 confetti (다른 채점 화면과 동일하게)
           sfxFound();
         } else {
           sfxWrong();
@@ -1631,7 +1632,10 @@
         if (right) {
           body.dataset.solved = '1';
           card.classList.add('correct');
-          const r = card.getBoundingClientRect(); burstParticles(r.left + r.width / 2, r.top + r.height / 2); sfxFound();
+          const r = card.getBoundingClientRect();
+          burstParticles(r.left + r.width / 2, r.top + r.height / 2);
+          spawnConfetti();                    // 기획서: 정답 → 🎉 confetti
+          sfxFound();
           fb.innerHTML = lioBubble('Yes! You found it! 🎉 🔊');
           bindKr(fb);
           later(() => {
