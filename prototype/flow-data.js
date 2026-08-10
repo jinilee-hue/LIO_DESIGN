@@ -1200,7 +1200,8 @@ const SCREENS = [
 /* 38 ─ Walk the Passage */
 {
   id:'walk_passage', slide:49, section:'Further Practice 2', title:'FP2_Main Question_정답경로_C', cut:'Walk the Passage', layout:'reading',
-  passage:true, listen:true, walk:true,
+  // 기획서 P52 : 마지막 문단 후 'Next' → ET / 'I have a question' → 문장 탭 활동(P53)
+  passage:true, listen:true, walk:true, walkNextGo:'fp2_et', walkQGo:'walk_q',
   walkParas:[
     { label:'Paragraph 1', text:'Paragraph 1 introduces Maya and her class trip. Maya visits the ocean to explore tide pools for the first time.', simple:'In short: Maya goes to the ocean to see tide pools for the first time.' },
     { label:'Paragraph 2', text:'Paragraph 2 describes the living things Maya found — a sea star clinging to a rock, a hermit crab, and small fish.', simple:'In short: Maya finds a sea star, a hermit crab, and small fish.' },
@@ -1240,7 +1241,7 @@ const SCREENS = [
     { t:'lio', html:'Is there a sentence you want me to explain? Tap it in the passage — you can also tap any blue or dotted word.', tts:true, kr:true },
     { t:'buttons', items:[
       { html:'Tap a sentence', style:'primary', act:'yes' },
-      { html:"I'm done asking ▶", style:'navy' },
+      { html:"I'm done asking ▶", style:'navy', go:'walk_q_last' }   /* 기획서 P53 → P55 */,
     ]},
   ],
   spec:["'I have a question' 클릭 시 해당 문단 내 문장 단위로 클릭 가능",
@@ -1327,6 +1328,14 @@ const SCREENS = [
   id:'fp2_et', slide:54, section:'Further Practice 2', title:'FP2_Main Question_정답경로_A/ET', layout:'reading',
   passage:true, etMode:true,   /* 사전 하이라이트 없음 · 문장 탭 시에만 하이라이트 */
   blocks:[
+    // 기획서 P57 : 옵션 목록에서 A 를 고른 상태 + 진입 멘트 뒤에 ET 가 시작된다
+     { t:'menu', kr:true, items:[
+      { bImg:'skill_main_ideas.png', html:"I'm ready! Let's go!", state:'sel' },
+      { bImg:'skill_recalling_facts_1.png', html:'I want to check some words.', go:'find_flip' },
+      { bImg:'skill_literary_genres.png', html:'Walk me through the passage.', go:'walk_passage' },
+      { bImg:'skill_making_inferences.png', html:'I need something else.', go:'something_else' },
+    ]},
+    { t:'lio', html:"Great! You're ready to dive into the Evidence Tap with confidence!", tts:true, kr:true },
     { t:'label', html:'Evidence Tap' },
     { t:'lio', html:'Now, tap the sentence in the passage that best supports the main idea.', tts:true, kr:true },
   ],
@@ -1339,6 +1348,9 @@ const SCREENS = [
   passage:true, hl:{ p1:'green', p2:'green', p5:'green', p14:'green', p15:'green', p16:'green' },
   blocks:[
     { t:'label', html:'Evidence Tap' },
+    // 기획서 P58 : 문제 제시 → (1차 오답 힌트) → 정답 멘트 순서
+    { t:'lio', html:'Now, tap the sentence in the passage that best supports the main idea.', tts:true, kr:true },
+    { t:'lio', html:"That's not quite the main focus. Look near the start of her trip. Try again. Tap the sentence that best supports the main idea.", tts:true, kr:true },
     { t:'lio', html:"Great choice! The evidence shows Maya's discoveries in the tide pools connect perfectly with the main idea of discovering animals and wonders.", tts:true, kr:true },
     { t:'lio', html:"Great job working through that on your own! Here's the strategy you just used—save it for next time.", tts:true, kr:true },
     { t:'strategy' },

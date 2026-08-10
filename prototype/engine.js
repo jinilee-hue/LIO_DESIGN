@@ -1884,9 +1884,19 @@
         const b = ic.closest('.bubble'); const en = b && b.querySelector('.tx-en');
         speak((en ? en.textContent : (b ? b.textContent : '')).replace(/KR/g, ''), null, () => {});
       }));
-      area.querySelector('.walk-next').onclick = () => { if (!last) { cur++; renderPara(); } else goNext(); };
+      // 마지막 문단 이후의 'Next' 는 기획서상 ET 로 간다(walkNextGo). 지정이 없으면 다음 화면.
+      area.querySelector('.walk-next').onclick = () => {
+        if (!last) { cur++; renderPara(); return; }
+        const gi = scr.walkNextGo ? SCREENS.findIndex(x => x.id === scr.walkNextGo) : -1;
+        if (gi >= 0) goTo(gi); else goNext();
+      };
       area.querySelector('.walk-simpler').onclick = () => { const r = area.querySelector('.walk-recap'); if (r) r.classList.remove('reveal-hidden'); };
-      area.querySelector('.walk-q').onclick = () => showToast("Tap a sentence you don't understand in the passage.", stage.querySelector('.passage-scroll'));
+      // 'I have a question' → 문장 탭 활동 화면으로(walkQGo). 전에는 토스트만 띄우는 스텁이었다.
+      area.querySelector('.walk-q').onclick = () => {
+        const gi = scr.walkQGo ? SCREENS.findIndex(x => x.id === scr.walkQGo) : -1;
+        if (gi >= 0) { goTo(gi); return; }
+        showToast("Tap a sentence you don't understand in the passage.", stage.querySelector('.passage-scroll'));
+      };
       area.scrollIntoView({ behavior:'smooth', block:'nearest' });
       speak(p.text, null, () => {});
     };
