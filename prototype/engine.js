@@ -823,7 +823,8 @@
     if (toKr) { en.setAttribute('hidden', ''); kr.removeAttribute('hidden'); }
     else { kr.setAttribute('hidden', ''); en.removeAttribute('hidden'); }
     btn.classList.toggle('on', toKr);
-    btn.textContent = toKr ? 'EN' : 'KR';   // 한국어 표시 중엔 버튼이 EN
+    // 기획서 PAGE 14 : 'KR' → 한국어 표출 동시 '닫기' 버튼 전환 · '닫기' → 영어로 전환
+    btn.textContent = toKr ? '닫기' : 'KR';
     btn.setAttribute('aria-pressed', toKr ? 'true' : 'false');
   }
   function bindKr(root) {
@@ -1700,10 +1701,11 @@
     };
 
     function finish() {
-      body.innerHTML = lioBubble('You solved every clue! Amazing detective work! 🎉 🔊') +
-        `<div class="btnrow"><button class="btn primary" data-advance>Next ${PLAY}</button></div>`;
+      // 기획서 PAGE 27 : 마지막 Round 이후 '별도 버튼 생성 없음' — LIO 멘트 후 Explore Words 로 넘어간다.
+      body.innerHTML = lioBubble('You solved every clue! Amazing detective work! 🎉 🔊');
       bindKr(body);
-      const adv = body.querySelector('[data-advance]'); if (adv) adv.addEventListener('click', goNext);
+      body.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      later(goNext, 2200);
     }
 
     renderClue();
@@ -2234,7 +2236,7 @@
     const tts = pop.querySelector('.tts-ic');
     if (tts) tts.onclick = () => speak(k ? k.w : raw, null, () => {});
     const krBtn = pop.querySelector('.wp-kr'), exEl = pop.querySelector('.wp-ex');
-    if (krBtn && exEl) { let kr = false; krBtn.onclick = () => { kr = !kr; exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en; krBtn.classList.toggle('on', kr); krBtn.textContent = kr ? 'EN' : 'KR'; }; }
+    if (krBtn && exEl) { let kr = false; krBtn.onclick = () => { kr = !kr; exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en; krBtn.classList.toggle('on', kr); krBtn.textContent = kr ? '닫기' : 'KR'; }; }   /* 기획서 PAGE 14 */
     if (k) speak(k.w, null, () => {});
   }
 
