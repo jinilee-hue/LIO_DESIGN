@@ -1492,7 +1492,7 @@ const SCREENS = [
     { side:'left',  html:'No worries! This one was a bit tricky. Would you like to see the answer now, or should we look at it together?' },
   ],
   cards:[
-    { title:'Just show me<br>the answer', tone:'plain', go:'fp2_et_wrong2' },
+    { title:'Just show me<br>the answer', tone:'plain', go:'fp2_retry' },
     { title:"Let's find out<br>why!", tone:'primary', go:'fp2_retry' },
   ],
   spec:['적용 조건: FP2 오답 & FP1도 오답 (이미 scaffolding 1회 받은 학생), M17 직후','말풍선 좌→우 순차 (Slide7과 동일 꼬리)','Quick Exit 1) "정답 바로 확인": M016C Answer Reveal → CA 마무리 멘트 → 전략 카드 → M22','2) "왜 틀렸는지 공부": M18/M19 표준 오답 흐름 진행 … M22 진행 후 학습 종료'],
