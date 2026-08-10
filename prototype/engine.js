@@ -916,6 +916,22 @@
       }
     }
 
+    // 채점 결과에 따라 '그 문제 뒤' 의 블록만 표출한다.
+    //   data-interest="correct" / "wrong" : 결과가 맞는 것만
+    //   data-interest="next"              : 결과와 무관하게 (Next 버튼 등)
+    //   표시가 없는 숨김 블록              : 건드리지 않는다 — 그건 Next(reveal) 가 여는 몫이다
+    //                                      (안 그러면 다음 문제의 라벨·질문이 미리 열린다)
+    // 다음 문제(.choices/.emoji-grid) 전에서 멈춘다 — 한 화면에 문제가 둘일 때(slide 36 의
+    // S1·S3) 앞 문제 채점이 뒤 문제의 멘트까지 열어버리지 않게.
+    function revealAfterGrade(grp, kind) {
+      for (let n = grp.nextElementSibling; n; n = n.nextElementSibling) {
+        if (n.classList.contains('choices') || n.classList.contains('emoji-grid')) break;
+        const tag = n.dataset ? n.dataset.interest : '';
+        if (!tag || (tag !== kind && tag !== 'next')) continue;
+        n.classList.remove('reveal-hidden');
+      }
+    }
+
     // choices : 채점 전 선택 토글 (multi=복수, 그 외=단일선택). 이미 채점(correct/wrong)된 건 잠금.
     // instant-grade : 클릭 즉시 채점 + 정답 시 전체 confetti
     stage.querySelectorAll('.choice').forEach(c => {
@@ -933,6 +949,7 @@
           });
           if (isCorrect) { sfxFound(); spawnConfetti(); }
           else sfxWrong();
+          revealAfterGrade(grp, isCorrect ? 'correct' : 'wrong');
           return;
         }
         const multi = grp && (grp.classList.contains('multi') || grp.classList.contains('reason'));
@@ -1021,7 +1038,8 @@
           const was = n.classList.contains('reveal-hidden') || n.classList.contains('reveal2-hidden');
           n.classList.remove('reveal-hidden', 'reveal2-hidden');
           if (was) hids.push(n);
-          if (n.classList.contains('emoji-grid')) break;
+          // 다음 문제까지만 연다(문제 자체는 포함). 그 문제의 피드백은 답을 골라야 나온다.
+          if (n.classList.contains('emoji-grid') || n.classList.contains('choices')) break;
         }
         if (hids.length) hids[hids.length - 1].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         if (row) row.style.display = 'none';
