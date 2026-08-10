@@ -954,7 +954,9 @@
         if (isCorrect) c.classList.add('correct');
         else if (sel) { c.classList.add('wrong'); anyWrong = true; }
       });
-      if (!anyWrong) sfxFound();
+      // 기획서: 복수 정답 화면도 '정답 → 🎉 confetti + correct reaction'. 여기만 빠져 있어
+      // 정답을 맞혀도 파티클 없이 효과음만 났다.
+      if (!anyWrong) { sfxFound(); spawnConfetti(); }
       else sfxWrong();
       stage.querySelectorAll('.reveal-hidden').forEach(el => el.classList.remove('reveal-hidden'));
       const row = btn.closest('.btnrow'); if (row) row.style.display = 'none';
