@@ -901,6 +901,9 @@
     if (THEME === 'B' && scr.layout === 'skill' && !scr.skillSelected && !scr.skillPick) {
       buildSkillLanesB();   // 컬럼 단위 세로 무한 스크롤
       bindSkillPickB();
+      // 최초 진입만 자동 제안. 'Let's do another one!' 로 온 경우는 학생이 직접 고른다.
+      if (!skillManualPick) autoPickSkillB();
+      skillManualPick = false;
     }
 
     // Word Check : 우측 chip은 처음엔 숨기고, 왼쪽 단어가 날아가 박힐 때 나타남
@@ -1168,6 +1171,7 @@
 
     // Another skill → Skill Intro (PPTX 7)
     stage.querySelectorAll('[data-act="goSkill"]').forEach(b => b.addEventListener('click', () => {
+      skillManualPick = true;   // 재진입 — 자동 제안 대신 학생이 직접 고른다
       const i = SCREENS.findIndex(x => x.id === 'skill');
       if (i >= 0) goTo(i);
     }));
@@ -2079,6 +2083,7 @@
   const B_CARD_GAP = 2.2;                                            // .b-lane-set gap / padding-bottom
   const B_CARD_PITCH = B_CARD_H + B_CARD_GAP;                        // 22.0
   const B_LANE_H = 68;                                               // .b-lane 높이(cqw) — theme-b.css 와 동기
+  let skillManualPick = false;   // true 면 스킬 화면에서 자동 제안을 건너뛴다
   function buildSkillLanesB() {
     const stage = document.getElementById('stage');
     const grid = stage.querySelector('.skillscreen .skill-grid');
@@ -2132,8 +2137,17 @@
       if (!card || !grid.contains(card) || ss.classList.contains('selected')) return;
       const i = Number(card.getAttribute('data-skill'));
       if (!Number.isFinite(i) || i < 0 || i >= F.SKILLS.length) return;
+      const iconSrc = (card.querySelector('.sc-icon img') || {}).getAttribute?.('src') || '';
+      selectSkillB(ss, grid, i, iconSrc, scB);
+    });
+  }
+
+  /* 스킬 하나가 정해진 화면(Figma B_Skill_selected 114:1305)을 만든다.
+     클릭으로도, 자동 제안으로도 같은 결과를 쓴다. */
+  function selectSkillB(ss, grid, i, iconSrc, scB) {
+    {
       const pick = F.SKILLS[i];
-      const iconSrc = (card.querySelector('.sc-icon img') || {}).getAttribute?.('src') || skillIcon(pick);
+      iconSrc = iconSrc || skillIcon(pick);
       ss.classList.add('selected');
       grid.classList.add('dim');
       // Figma B_Skill_selected (114:1305) : "I found\n  your skills!"
@@ -2156,7 +2170,29 @@
         ev.stopPropagation();
         if (ss.isConnected) fadeAdvance();
       });
-    });
+    }
+  }
+
+  /* 최초 진입 : AI 가 스킬을 고르는 연출. 룰렛 틱 소리를 내며 돌다가 오늘의 스킬에서 멈춘다.
+     slide 63 'Let's do another one!' 로 다시 들어온 경우에는 학생이 직접 고르므로 돌리지 않는다
+     (goSkill 핸들러가 skillManualPick 을 세운다). */
+  function autoPickSkillB() {
+    const stage = document.getElementById('stage');
+    const ss = stage.querySelector('.skillscreen');
+    const grid = ss && ss.querySelector('.skill-grid');
+    if (!ss || !grid || ss.classList.contains('selected')) return;
+    const scB = { 0:'#3593FF', 1:'#00BE5F', 2:'#FF9C7E', 3:'#FFC72F', 4:'#F46169',
+                  5:'#B078FF', 6:'#748CFF', 7:'#FF974C', 8:'#FF7CCF', 9:'#4FC73F' };
+    let n = 0;
+    const spin = () => {
+      if (!ss.isConnected || ss.classList.contains('selected')) return;   // 도중에 눌렀으면 멈춘다
+      sfxTick();
+      if (++n < 14) { later(spin, 110 + n * 9); return; }                 // 점점 느려지며 멈춘다
+      const idx = Math.max(0, F.SKILLS.findIndex(s => s.today));
+      const card = grid.querySelector(`.skill-card[data-skill="${idx}"] .sc-icon img`);
+      selectSkillB(ss, grid, idx, card ? card.getAttribute('src') : '', scB);
+    };
+    later(spin, 900);   // 레인이 도는 모습을 잠깐 보여준 뒤 시작
   }
 
   function showSkillFound() {
