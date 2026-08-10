@@ -461,7 +461,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* slide 14 (FP1 Intro) 는 문장이 길어 기본 영역(top 32.9%)에서는 6줄이 되어 버튼
    (상단 y535px = 69.7%)과 겹친다 → 이 화면만 영역을 올리고 글자를 0.9배로 줄인다. */
 .scr-fp1_intro .introseq .ib-layer{top:24%}
-.scr-fp1_intro .introseq .ib-bubble{font-size:calc(var(--fz-introtxt) * .9)}
+/* intro 본문 크기는 전 화면 공통(--fz-introtxt). 예전엔 이 화면만 0.9배로 줄였는데
+   문구가 6줄이라 CTA 를 침범했기 때문이었다. 지금 문구는 원래 크기로도 들어간다. */
 .introseq .introseq-scrim{display:none}
 /* 좌상단 로고를 배경 스택에서 떼어 별도 레이어로 둔다 (::before 는 배경·물결·마스코트).
    slide 5 는 대형 로고가 우측 중앙에 있고, slide 6 에서 좌상단으로 축소·이동한다.
