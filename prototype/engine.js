@@ -1002,8 +1002,13 @@
       w.addEventListener('click', () => w.classList.toggle('flipped')));
 
     // passage sentence tap (evidence)
-    stage.querySelectorAll('.sent.tappable').forEach(s =>
-      s.addEventListener('click', () => s.classList.toggle('tapped')));
+    // etAnswers 가 있으면 실제 채점을 한다(wireEvidenceTap). 없으면 예전처럼 표시만 토글.
+    if (!(scr.etMode && scr.etAnswers)) {
+      stage.querySelectorAll('.sent.tappable').forEach(s =>
+        s.addEventListener('click', () => s.classList.toggle('tapped')));
+    } else {
+      wireEvidenceTap(scr);
+    }
 
     // Listen ↔ Stop 토글 : 재생 중엔 Stop, 끝나면/누르면 다시 Listen (기획서 스펙)
     const setListen = (b) => { b.classList.remove('playing'); b.innerHTML = `<img class="ls-ic" src="${IMG}ui/spk_listen.svg" alt="">Listen`; };
@@ -1690,6 +1695,42 @@
     }
 
     renderClue();
+  }
+
+  /* ── ET(Evidence Tap) 채점 ────────────────────────────────────────────────
+     기획서 : 문장 탭 → 정답이면 근거 문장 공개 + 'Next' / 오답이면 그 문장을 붉게 표시했다가
+     사라지고 retry, 2회 오답이면 정답 공개 + 'Next'.
+     결과별 멘트는 블록의 interest 로 고른다 — correct / wrong / reveal, 공통은 next. */
+  function wireEvidenceTap(scr) {
+    const stage = document.getElementById('stage');
+    const answers = new Set(scr.etAnswers || []);
+    const sents = [...stage.querySelectorAll('.passage .sent')];
+    let tries = 0, settled = false;
+
+    // next(=Next 버튼)는 '해결된' 뒤에만 연다. 1차 오답은 재시도해야 하므로 멘트만 연다.
+    const show = (kind, done) => {
+      const sel = done ? `[data-interest="${kind}"], [data-interest="next"]` : `[data-interest="${kind}"]`;
+      stage.querySelectorAll(sel).forEach(el => el.classList.remove('reveal-hidden'));
+    };
+    const revealAnswers = () => sents.forEach(o => { if (answers.has(o.dataset.id)) o.classList.add('hl-green'); });
+
+    sents.forEach(s => s.addEventListener('click', () => {
+      if (settled) return;
+      if (answers.has(s.dataset.id)) {
+        settled = true;
+        s.classList.add('correct');       // B 의 LIO 반응(quiz-reaction.js)이 이 변화를 본다
+        revealAnswers();
+        spawnConfetti(); sfxFound();
+        show('correct', true);
+        return;
+      }
+      tries++;
+      s.classList.add('hl-red', 'wrong');
+      sfxWrong();
+      later(() => s.classList.remove('hl-red', 'wrong'), 1200);   // 기획서: 붉은 표시 이후 사라짐
+      if (tries >= 2) { settled = true; revealAnswers(); show('reveal', true); }
+      else show('wrong', false);
+    }));
   }
 
   /* ── 단락 진행에 따라 지문 하이라이트가 함께 움직인다 ──────────────────────

@@ -969,18 +969,17 @@ const SCREENS = [
 /* 31 ─ Skill Practice S4 (Find the Evidence) */
 {
   id:'skill_s4', slide:40, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동1)', layout:'reading',
-  // 마지막 멘트가 "근거 문장이 초록으로 표시된다" 라 실제 하이라이트가 필요하다(slide 18 과 같은 근거 문장)
-  passage:true, etMode:true, hl:{ p1:'green', p2:'green', p5:'green', p14:'green', p15:'green', p16:'green' },   /* 사전 하이라이트 없음 · 문장을 탭해야 하이라이트 */
+  // 문장을 탭해 채점한다. 근거 문장은 slide 18 과 같다(정답 공개 시 초록으로 표시된다).
+  passage:true, etMode:true, etAnswers:['p1', 'p2', 'p5', 'p14', 'p15', 'p16'],   /* 사전 하이라이트 없음 · 문장을 탭해야 하이라이트 */
   blocks:[
     { t:'label', html:'S4 — Find the Evidence' },
     { t:'lio', html:'Tap one of the evidence sentences that answers the question.', tts:true, kr:true },
-    { t:'lio', html:'That sentence is a detail — look for a sentence that connects directly to what Maya saw or learned overall.', tts:true, kr:true },
-    { t:'lio', html:"Yes! That's one of the evidence sentences! It directly supports the main idea — Maya's discovery of tide pools.", tts:true, kr:true },
+    // 결과별 멘트 — 1차 오답 / 정답 / 2차 오답(정답 공개)
+    { t:'lio', html:'That sentence is a detail — look for a sentence that connects directly to what Maya saw or learned overall.', tts:true, kr:true, hidden:true, interest:'wrong' },
+    { t:'lio', html:"Yes! That's one of the evidence sentences! It directly supports the main idea — Maya's discovery of tide pools.", tts:true, kr:true, hidden:true, interest:'correct' },
+    { t:'lio', html:'Here are the evidence sentences highlighted in green! Each one shows what Maya discovered or learned.', tts:true, kr:true, hidden:true, interest:'reveal' },
     // 기획서: 'Next' → Passage_Clarify(P43). 다음 화면(41 Confirm)은 다른 스킬의 S4 활동2다.
-    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', go:'clarify' }] },
-    { t:'lio', html:'Here are the evidence sentences highlighted in green! Each one shows what Maya discovered or learned.', tts:true, kr:true },
-    // 기획서: 'Next' → Passage_Clarify(P43). 다음 화면(41 Confirm)은 다른 스킬의 S4 활동2다.
-    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', go:'clarify' }] },
+    { t:'buttons', align:'end', hidden:true, interest:'next', items:[{ html:'Next ▶', style:'primary', go:'clarify' }] },
   ],
   spec:["S4 — ET(Evidence Tap) 활동 · 해당 skill 8개(Recalling Facts 3종, Drawing Conclusions, Making Inferences, Cause/Effect, Main Idea, Analyzing Characters)",
         "학생 답안 선택: ET 직접 탭",
@@ -1326,7 +1325,7 @@ const SCREENS = [
 /* 40 ─ FP2 Evidence Tap (문제 제시) */
 {
   id:'fp2_et', slide:54, section:'Further Practice 2', title:'FP2_Main Question_정답경로_A/ET', layout:'reading',
-  passage:true, etMode:true,   /* 사전 하이라이트 없음 · 문장 탭 시에만 하이라이트 */
+  passage:true, etMode:true, etAnswers:['p1', 'p2', 'p5', 'p14', 'p15', 'p16'],   /* 사전 하이라이트 없음 · 문장 탭 시에만 하이라이트 */
   blocks:[
     // 기획서 P57 : 옵션 목록에서 A 를 고른 상태 + 진입 멘트 뒤에 ET 가 시작된다
      { t:'menu', kr:true, items:[
@@ -1338,6 +1337,11 @@ const SCREENS = [
     { t:'lio', html:"Great! You're ready to dive into the Evidence Tap with confidence!", tts:true, kr:true },
     { t:'label', html:'Evidence Tap' },
     { t:'lio', html:'Now, tap the sentence in the passage that best supports the main idea.', tts:true, kr:true },
+    // 결과별 멘트 (기획서 PAGE 58·59·61 의 문구)
+    { t:'lio', html:"That's not quite the main focus. Look near the start of her trip. Try again. Tap the sentence that best supports the main idea.", tts:true, kr:true, hidden:true, interest:'wrong' },
+    { t:'lio', html:"Great choice! The evidence shows Maya's discoveries in the tide pools connect perfectly with the main idea of discovering animals and wonders.", tts:true, kr:true, hidden:true, interest:'correct' },
+    { t:'lio', html:'Not quite, but good try! The evidence is highlighted in the passage. It shows how Maya\'s visit helped her discover many wonders in the tide pools.', tts:true, kr:true, hidden:true, interest:'reveal' },
+    { t:'buttons', align:'end', hidden:true, interest:'next', items:[{ html:'Next ▶', style:'primary' }] },
   ],
   spec:['ET 활동 안내(문제 제시)','4지 선다가 아닌 지문 영역에서 문장 클릭','문장에 커서 이동시 동시 하이라이트 효과'],
 },

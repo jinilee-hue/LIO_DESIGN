@@ -54,7 +54,8 @@
   //   .choice    선택지(2·4지선다, 복수선택 Check 포함)
   //   .emoji-opt 단어 테스트 보기
   //   .det-card  Definition Detective 카드
-  var GRADED = '.choice, .emoji-opt, .det-card';
+  //   .sent      Evidence Tap — 지문 문장을 탭해 채점한다(engine 의 wireEvidenceTap 이 클래스를 붙인다)
+  var GRADED = '.choice, .emoji-opt, .det-card, .passage .sent';
 
   // 한 번 채점하면 여러 요소에 동시에 클래스가 붙는다(고른 것 + 정답). 같은 순간의 변화를
   // 모아 한 번만 반응한다. 하나라도 .wrong 이면 오답으로 본다.
