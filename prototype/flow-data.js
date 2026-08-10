@@ -565,6 +565,7 @@ const SCREENS = [
 {
   id:'wordcheck_a', slide:24, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_word check_정답', layout:'reading',
+  wcResult:'perfect',   /* 기획서 PAGE 25 : 이 화면은 2개 모두 정답 */
   passage:true, focusWord:'tough',   // 지문에서 해당 단어만 포커스
   blocks:[
     { t:'lio', html:"Let's warm up with a couple of key words!", tts:true, kr:true },
@@ -603,6 +604,7 @@ const SCREENS = [
   id:'wordcheck_b', slide:25, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_1_A/B/C_선택_필수_활동_word check_오답',
   layout:'reading',
+  wcResult:'partial',   /* 기획서 PAGE 26 : 1개만 정답 또는 모두 오답 */
   passage:true, focusWord:'spotted',   // 지문에서 해당 단어만 포커스
   blocks:[
     // ── 문제 1 : spotted (오답 → 바로 정답 제시)
@@ -637,6 +639,8 @@ const SCREENS = [
 /* 21 ─ Word Peek / Teach (PPTX 21) */
 {
   id:'wordpeek', slide:26, section:'Further Practice 1', title:'FP1_Main_Question_오답경로_word check_이후_Teach(공통)', layout:'teach',
+  // 기획서 PAGE 25 : 마지막 카드 완료 후 'Next' → 만점이면 Explore Words, 아니면 Game.
+  teachGo:{ perfect:'explore_words' },
   passage:true,
   lioLine:"Here are the key words. Tap any card — I'll read the word and show what it means. 🔊",
   // 완료 시 말풍선은 두지 않는다 — 카드 6개가 모두 완료 색으로 바뀌고 'Next' 가 나오는 것으로

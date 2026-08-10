@@ -1255,6 +1255,7 @@
     if (scr.walk)                   wireWalk(scr);
     if (scr.clarify)                wireClarify(scr);
     if (scr.walkPara)               wireWalkPara();
+    if (scr.wcResult)               wordCheckResult = scr.wcResult;   // 지나온 Word Check 결과 기억
     if (scr.freechat)               wireFreeChat(scr);
   }
 
@@ -1541,7 +1542,12 @@
         speak((en ? en.textContent : (b ? b.textContent : '')).replace(/KR/g, ''), null, () => {});
       }));
       const adv = doneBox.querySelector('[data-advance]');
-      if (adv) adv.addEventListener('click', goNext);
+      if (adv) adv.addEventListener('click', () => {
+        // 기획서 PAGE 25 : Word Check 만점이면 Explore Words, 1개 이상 오답이면 Game.
+        const id = scr.teachGo && scr.teachGo[wordCheckResult];
+        const i = id ? SCREENS.findIndex(x => x.id === id) : -1;
+        if (i >= 0) goTo(i); else goNext();
+      });
       const more = doneBox.querySelector('[data-tapmore]');
       if (more) more.addEventListener('click', () => more.closest('.btnrow').scrollIntoView({ behavior:'smooth' }));
       doneBox.scrollIntoView({ behavior:'smooth', block:'nearest' });
@@ -2087,6 +2093,9 @@
   const B_CARD_PITCH = B_CARD_H + B_CARD_GAP;                        // 22.0
   const B_LANE_H = 68;                                               // .b-lane 높이(cqw) — theme-b.css 와 동기
   let skillManualPick = false;   // true 면 스킬 화면에서 자동 제안을 건너뛴다
+  // 마지막으로 지나온 Word Check 결과('perfect' = 2개 모두 정답 / 'partial' = 1개 이상 오답).
+  // 기획서 PAGE 25 : Teach 의 'Next' 가 이 결과로 갈린다 — 만점이면 Explore Words, 아니면 Game.
+  let wordCheckResult = 'partial';
   function buildSkillLanesB() {
     const stage = document.getElementById('stage');
     const grid = stage.querySelector('.skillscreen .skill-grid');
