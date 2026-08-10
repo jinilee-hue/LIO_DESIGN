@@ -232,6 +232,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 선택 상태 색 통일 : 단어 카드(.tcard.cur, base.css)가 주황(#F08A24)인데 선택지만 파랑
    (--primary)이라 B 안에서 색이 섞여 있었다. 주황으로 맞춘다. */
 .choice.sel{border-color:#F08A24;box-shadow:0 0 0 3px rgba(240,138,36,.28)}
+/* 메뉴형 보기(Entry Method·Something else 등)도 같은 주황으로. base 는 파란 배경+테두리다. */
+.menu-item.sel{background:#fff7ee;border-color:#F08A24;box-shadow:0 0 0 3px rgba(240,138,36,.28)}
 .msg .bubble{border-radius:18px}
 .msg.lio .bubble{background:#eef2f8;border:none;color:#0a0a0a}
 /* retry 말풍선(slide 19·46)도 일반 말풍선과 같은 색.
