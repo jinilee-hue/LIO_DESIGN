@@ -1063,7 +1063,8 @@ const SCREENS = [
     { t:'lio', html:"Do you have anything you don't understand? Tap the sentence.", tts:true, kr:true },
     { t:'buttons', items:[
       { html:"Yes, I'll tap it.", style:'primary', act:'yes' },
-      { html:"No, let's move on! ▶", style:'navy' },
+      // 활동을 진행하지 않은 경우 → Pre-retry(slide 44). 배열 순서에 기대지 않고 명시한다
+      { html:"No, let's move on! ▶", style:'navy', go:'pre_retry' },
     ]},
     { t:'user', html:'Tap a sentence in the passage above!', side:'sys', hidden:true },
     { t:'lio', html:'A hermit crab moves with its borrowed shell on the sand.', tts:true, kr:true, stage2:true },
