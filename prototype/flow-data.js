@@ -1193,7 +1193,7 @@ const SCREENS = [
   label:'Find & Flip',
   lioLine:"Find each word in the passage, then tap it to flip the card and see what it means! 🔊",
   doneLio:['You found them all! Great job! 🔊','Want to explore more words? Blue words are our key words. Dotted words are other words you can tap too! 🔊'],
-  buttons:[{ html:'Tap a word! 👆', style:'green', hint:true },{ html:"I'm done! Let's go ▶", style:'navy' }],
+  buttons:[{ html:'Tap a word! 👆', style:'green', hint:true },{ html:"I'm done! Let's go ▶", style:'navy', go:'fp2_et' }   /* 기획서: → ET(P57) */],
   spec:['단어카드 + 본문 키워드 동시 탭 가능 (본문 핵심 키워드 카드 초기엔 뒤집힌 상태)','본문에서 단어 탭 → 카드 flip + 설명 카드(뜻·예문 · Teach UI와 동일, Got it/Not sure 없음)','단어가 속한 문장 노란 하이라이트 + TTS 읽기','6개 완료 → 🎉 confetti','"더 알고 싶은 단어?" 질문 후 본문 자유 탐색 · "I\'m done!" 클릭 → ET'],
 },
 

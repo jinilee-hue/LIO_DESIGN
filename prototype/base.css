@@ -683,7 +683,9 @@ body{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
   padding:8px;text-align:center;border-radius:14px;line-height:1.25;font-family:'Inter',sans-serif}
 .ff-front{background:#fffaf0;border:1.5px solid #ecddc0}
-.ff-front .ff-emo{font-size:24px}
+/* 카드 뒤집힌 뒷면의 이모지도 같은 크기여야 한다. 앞면에만 걸려 있어서 뒷면 이모지가
+   .ff-back 의 본문 크기(13~16px)를 상속해 아주 작게 나왔다. */
+.ff-face .ff-emo{font-size:24px}
 .ff-front b{font-size:var(--fz-opt);color:#3a4560}
 .ff-back{background:#1E2A4A;color:#fff;transform:rotateY(180deg);font-size:clamp(13px,1.45cqw,16px);padding:10px 11px;line-height:1.35}
 .ff-back .ff-def{display:block}

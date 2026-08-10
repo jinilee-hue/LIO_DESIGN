@@ -78,7 +78,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .actcard .ac-title{font-weight:800}
 .msgcard p{font-size:var(--fz-bubble)}
 .think-bubble,.mi-ic,.eo-ic,.tcard .tc-emoji,.td-ic,
-.ff-front .ff-emo,.msg .avatar.grad{font-size:var(--fz-emoji)}
+.ff-face .ff-emo,.msg .avatar.grad{font-size:var(--fz-emoji)}
 
 /* 단어 팝업 · 단어 카드 */
 .word-popup .wp-word,.td-w{font-size:var(--fz-title-md)}

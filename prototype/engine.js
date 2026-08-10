@@ -648,7 +648,7 @@
        </div>`).join('');
     const done = (scr.doneLio || []).map(d => lioBubble(d)).join('');
     const btns = (scr.buttons || []).map(b =>
-      `<button class="btn ${b.style || 'primary'}${btnLong(b.html)}" ${b.hint ? '' : 'data-advance'}>${stripEmoji(b.html).replace(/▶/g, PLAY)}</button>`).join('');
+      `<button class="btn ${b.style || 'primary'}${btnLong(b.html)}"${b.go ? ` data-go="${b.go}"` : ''} ${(b.hint || b.go) ? '' : 'data-advance'}>${stripEmoji(b.html).replace(/▶/g, PLAY)}</button>`).join('');
     return `<div class="findflip reading">
         ${explorePassageHTML()}
         <div class="activity"><div class="activity-scroll">
@@ -1834,6 +1834,15 @@
     stage.querySelectorAll('.passage .xword').forEach(el => el.addEventListener('click', () => {
       el.classList.add('picked'); showWordPopup(el.dataset.w);
     }));
+
+    // 기획서 1-3 : 'Tap a word!' → 학습 방법 안내(토스트) 후 두 버튼을 하나로 줄인다.
+    // 단어 탭(핵심어·점선 단어) 자체는 위에서 이미 열려 있다.
+    // .btnrow 는 .explore-done 의 '형제' 다(자식이 아니다) — 선택자를 그에 맞춘다
+    const hintBtn = stage.querySelector('.findflip .btnrow .btn:not([data-advance]):not([data-go])');
+    if (hintBtn) hintBtn.addEventListener('click', () => {
+      showToast('👆 Tap any blue word or dotted word in the passage!', stage.querySelector('.passage-scroll'));
+      hintBtn.remove();   // 안내를 봤으면 'I'm done! Let's go' 만 남는다
+    });
   }
 
   /* ================= Walk the Passage (기획서) : 단계별 진행 ================= */
