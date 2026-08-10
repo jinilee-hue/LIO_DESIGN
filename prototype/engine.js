@@ -823,8 +823,9 @@
     if (toKr) { en.setAttribute('hidden', ''); kr.removeAttribute('hidden'); }
     else { kr.setAttribute('hidden', ''); en.removeAttribute('hidden'); }
     btn.classList.toggle('on', toKr);
-    // 기획서 PAGE 14 : 'KR' → 한국어 표출 동시 '닫기' 버튼 전환 · '닫기' → 영어로 전환
-    btn.textContent = toKr ? '닫기' : 'KR';
+    // 한국어 표시 중엔 버튼이 EN (기획서 문구는 '닫기' 지만, 다시 영어로 돌아가는 토글이라
+    //  EN 이 동작을 더 정확히 알려준다 — 확인 후 EN 으로 유지하기로 했다)
+    btn.textContent = toKr ? 'EN' : 'KR';
     btn.setAttribute('aria-pressed', toKr ? 'true' : 'false');
   }
   function bindKr(root) {
@@ -2236,7 +2237,7 @@
     const tts = pop.querySelector('.tts-ic');
     if (tts) tts.onclick = () => speak(k ? k.w : raw, null, () => {});
     const krBtn = pop.querySelector('.wp-kr'), exEl = pop.querySelector('.wp-ex');
-    if (krBtn && exEl) { let kr = false; krBtn.onclick = () => { kr = !kr; exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en; krBtn.classList.toggle('on', kr); krBtn.textContent = kr ? '닫기' : 'KR'; }; }   /* 기획서 PAGE 14 */
+    if (krBtn && exEl) { let kr = false; krBtn.onclick = () => { kr = !kr; exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en; krBtn.classList.toggle('on', kr); krBtn.textContent = kr ? 'EN' : 'KR'; }; }
     if (k) speak(k.w, null, () => {});
   }
 
