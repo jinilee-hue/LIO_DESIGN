@@ -1137,11 +1137,14 @@
       });
     });
 
-    // Retry 후 "I'm done!" → 학습 종료 멘트 표출
+    // Retry 후 "I'm done!" → 마무리 멘트를 보여준 뒤 학습 종료 화면(기획서 PAGE 64 3항 = P67).
+    // 그 화면이 없으면 예전처럼 멘트만 표출한다.
     stage.querySelectorAll('[data-act="sessionEnd"]').forEach(b => b.addEventListener('click', () => {
       stage.querySelectorAll('.reveal-hidden').forEach(el => el.classList.remove('reveal-hidden'));
       const row = b.closest('.btnrow'); if (row) row.style.display = 'none';
       sfxFound();
+      const i = SCREENS.findIndex(x => x.id === 'session_end');
+      if (i >= 0) later(() => goTo(i), 1400);
     }));
 
     // Pilot Skill Pick / Session: Finish → 세션 종료 안내

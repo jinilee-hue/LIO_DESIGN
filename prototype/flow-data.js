@@ -1497,16 +1497,20 @@ const SCREENS = [
     { t:'label', html:'Retry — Main Question' },
     { t:'lio', html:'Let us try the question: What is A Day at the Tide Pools mostly about?', tts:true, kr:true },
     { t:'lio', html:'Choose the best answer.', tts:true, kr:true },
-    { t:'choices', kr:true, items:[
+    { t:'choices', kr:true, instantGrade:true, items:[
       { k:'A', html:CHOICES[0].html, state:'correct' },
       { k:'B', html:CHOICES[1].html },
       { k:'C', html:CHOICES[2].html, state:'wrong' },
       { k:'D', html:CHOICES[3].html },
     ]},
-    { t:'lio', html:"Not quite, but you got this! The correct answer is: a girl who discovers the animals and wonders of tide pools, because it covers all about Maya's experiences and observations.", tts:true, kr:true },
-    { t:'lio', html:"Here's a Skill Tip: choose the answer that covers Maya's whole experience — not just one moment.", tts:true, kr:true },
-    { t:'lio', html:'You finished the Skill Practice! Great work today! 🔊', tts:true, kr:true },
-    { t:'buttons', align:'end', nowrap:true, items:[
+    // 기획서 PAGE 64 : 정답 → confetti + praise + 'Next' → Free Chat /
+    //                  오답 → 정답 공개 + "Let's talk!" · "I'm done!"
+    { t:'lio', html:'Well done! That answer covers the whole passage — you found the main idea.', tts:true, kr:true, hidden:true, interest:'correct' },
+    { t:'lio', html:"Not quite, but you got this! The correct answer is: a girl who discovers the animals and wonders of tide pools, because it covers all about Maya's experiences and observations.", tts:true, kr:true , hidden:true, interest:'wrong' },
+    { t:'lio', html:"Here's a Skill Tip: choose the answer that covers Maya's whole experience — not just one moment.", tts:true, kr:true , hidden:true, interest:'wrong' },
+    { t:'lio', html:'You finished the Skill Practice! Great work today! 🔊', tts:true, kr:true , hidden:true, interest:'next' },
+    { t:'buttons', align:'end', hidden:true, interest:'correct', items:[{ html:'Next ▶', style:'green' }] },
+    { t:'buttons', align:'end', nowrap:true, hidden:true, interest:'wrong', items:[
       { html:"Let's talk! 💬", style:'green' },
       { html:"I'm done! 👋", style:'navy', act:'sessionEnd' },
     ]},
@@ -1518,7 +1522,7 @@ const SCREENS = [
 /* 48 ─ Retry 이후 Free Chat (M22) */
 {
   id:'fp2_retry_free_chat', slide:62, section:'Further Practice 2', title:'Retry_FP2', cut:'M22 Free Chat', layout:'reading',
-  passage:true, freechat:true, fcEndGo:'post_skill_pick',   /* 기획서: Skip/Done → 학습 종료 P66 */
+  passage:true, freechat:true, fcEndGo:'session_end',   /* 기획서 PAGE 65: Skip/Done → 학습 종료 P67 */
   blocks:[
     { t:'lio', html:"Not quite, but you got this! The correct answer is: a girl who discovers the animals and wonders of tide pools, because it covers all about Maya's experiences and observations.", tts:true, kr:true },
     { t:'lio', html:'You finished the Skill Practice! Great work today! 🔊', tts:true, kr:true },
@@ -1534,15 +1538,15 @@ const SCREENS = [
 
 /* 49 ─ 최종 학습 후 추가 학습 / 종료 선택 (Pilot) */
 {
-  id:'post_skill_pick', slide:63, section:'Skill Selection', title:'FP2_최종_학습_종료_추가_학습_자유_선택', layout:'quickexit',
+  id:'post_skill_pick', slide:63, section:'Skill Selection', title:'Skill1/2_FP2_이후_학습_종료_추가_학습_자유_선택', layout:'quickexit',
   bg:'intro_fp2.png',
   qeSeq:[
     { side:'left',  html:'You did it, <b class="nm">Maya</b>! Want to practice another skill?' },
     { side:'right', html:"Tap <b>Another skill</b> to keep going, or <b>Finish</b> if you're ready to wrap up for today!" },
   ],
   actions:[
-    { html:'Another skill', img:'ui/btn_another_skill.png', act:'goSkill' },
-    { html:'Finish', img:'ui/btn_finish.png', act:'finishSession' },
+    { html:"Let's do another one!", img:'ui/btn_another_skill.png', act:'goSkill' },
+    { html:"I'm done for today!", img:'ui/btn_finish.png', act:'finishSession' },
   ],
   spec:['최종 학습 후 추가 학습 자유 선택 (Pilot 한정)','말풍선 순차 등장 후 CTA','Another skill → Skill Intro(SLIDE 7)','Finish → 전체 세션 종료'],
 },
