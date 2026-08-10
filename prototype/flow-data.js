@@ -786,7 +786,7 @@ const SCREENS = [
       { html:'Not really… 😊', style:'navy', act:'interestNo' },
       { html:'I want to tell you more! ✏️', style:'green', act:'yes', toast:'Type anything you want to share — English or Korean!' },
     ]},
-    { t:'input', placeholder:'Tell me more…', send:true, hidden:true },
+    { t:'input', placeholder:'Tell me more…', mic:true, hidden:true },   /* Send + 마이크 */
     { t:'user', html:'Yes, I do!', hidden:true, interest:'yes' },
     { t:'lio', html:'Exploring places is exciting and fun! Keep being curious about the world. 🔊', tts:true, kr:true, hidden:true, interest:'yes' },
     { t:'user', html:'Not really…', hidden:true, interest:'no' },
@@ -1261,7 +1261,7 @@ const SCREENS = [
       { bImg:'skill_making_inferences.png', html:'I need something else.', state:'sel' },
     ]},
     { t:'lio', html:'Type or talk to me — tell me what you need! If English is hard, you can write in Korean too. 🔊', tts:true, kr:true },
-    { t:'input', placeholder:'Type what you need… (English or Korean)', send:true },
+    { t:'input', placeholder:'Type what you need… (English or Korean)', mic:true },   /* Send + 마이크 */
     { t:'user', html:'Maya는 무엇을 했어?', hidden:true },
     { t:'lio', html:"Maya discovered amazing things at the tide pools! Let's see what the key words are or walk through the passage together. 🔊", tts:true, kr:true, hidden:true },
     { t:'menu', kr:true, hidden:true, items:[

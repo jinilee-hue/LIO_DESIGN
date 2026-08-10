@@ -12,8 +12,8 @@
 
    오버레이는 .device 안에 넣어야 프로토타입 프레임 안에서만 뜬다. 재생이 끝나면
    animationend 로 스스로 제거한다 — 남겨두면 다음 화면에서 클릭을 가로챈다.
-   ⚠ instantGrade 는 flow-data 에서 slide 16(fp1_mq_correct)만 쓴다. 다른 화면에도 붙으면
-     여기도 함께 동작하므로, 화면을 한정하고 싶으면 SCREEN_IDS 를 확인하도록 고쳐야 한다. */
+   채점이 일어나는 모든 화면에서 동작한다 — 선택지(.choice) · 단어 테스트(.emoji-opt) ·
+   Definition Detective(.det-card). 특정 화면만 빼려면 show() 앞에서 화면 id 를 확인하면 된다. */
 (function () {
   'use strict';
   if (window.LIO_THEME !== 'B') return;
@@ -50,22 +50,37 @@
     setTimeout(kill, DUR + 600);
   }
 
-  function watch(grp) {
-    if (grp.dataset.reactionWatched) return;
-    grp.dataset.reactionWatched = '1';
-    var mo = new MutationObserver(function () {
-      if (!grp.querySelector('.choice.correct, .choice.wrong')) return;
-      mo.disconnect();
-      show(grp.querySelector('.choice.wrong') ? 'x' : 'o');
-    });
-    mo.observe(grp, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  // 채점이 일어나는 요소들. 여기에 .correct / .wrong 이 '새로' 붙는 순간이 채점 시점이다.
+  //   .choice    선택지(2·4지선다, 복수선택 Check 포함)
+  //   .emoji-opt 단어 테스트 보기
+  //   .det-card  Definition Detective 카드
+  var GRADED = '.choice, .emoji-opt, .det-card';
+
+  // 한 번 채점하면 여러 요소에 동시에 클래스가 붙는다(고른 것 + 정답). 같은 순간의 변화를
+  // 모아 한 번만 반응한다. 하나라도 .wrong 이면 오답으로 본다.
+  var pending = null;
+  function queue(el) {
+    if (!pending) pending = { wrong: false, t: setTimeout(fire, 60) };
+    if (el.classList.contains('wrong')) pending.wrong = true;
+  }
+  function fire() {
+    var p = pending; pending = null;
+    if (!p) return;
+    show(p.wrong ? 'x' : 'o');
   }
 
-  // 화면이 갈릴 때마다 새 .choices.instant-grade 를 찾아 감시를 건다
-  function scan() {
-    document.querySelectorAll('#stage .choices.instant-grade').forEach(watch);
-  }
-  new MutationObserver(scan).observe(document.getElementById('stage') || document.body,
-    { childList: true, subtree: true });
-  scan();
+  // 정적으로 미리 칠해진 상태(flow-data 의 state:'correct')는 렌더 시점부터 붙어 있으므로
+  // '변화' 가 아니고, 아래 관찰자에 걸리지 않는다 — 화면에 들어가자마자 터지지 않는다.
+  var mo = new MutationObserver(function (recs) {
+    recs.forEach(function (r) {
+      var el = r.target;
+      if (!el.matches || !el.matches(GRADED)) return;
+      if (!el.classList.contains('correct') && !el.classList.contains('wrong')) return;
+      var was = r.oldValue || '';
+      if (/\b(correct|wrong)\b/.test(was)) return;   // 이미 채점돼 있던 것
+      queue(el);
+    });
+  });
+  var stage = document.getElementById('stage') || document.body;
+  mo.observe(stage, { subtree: true, attributes: true, attributeFilter: ['class'], attributeOldValue: true });
 })();
