@@ -975,7 +975,12 @@
       // 정답을 맞혀도 파티클 없이 효과음만 났다.
       if (!anyWrong) { sfxFound(); spawnConfetti(); }
       else sfxWrong();
-      stage.querySelectorAll('.reveal-hidden').forEach(el => el.classList.remove('reveal-hidden'));
+      // 결과별 멘트를 쓰는 화면이면 그 분기만, 아니면 예전처럼 뒤쪽 전체를 연다.
+      if (stage.querySelector('[data-interest="correct"], [data-interest="wrong"]')) {
+        revealAfterGrade(grp, anyWrong ? 'wrong' : 'correct');
+      } else {
+        stage.querySelectorAll('.reveal-hidden').forEach(el => el.classList.remove('reveal-hidden'));
+      }
       const row = btn.closest('.btnrow'); if (row) row.style.display = 'none';
     }));
 
