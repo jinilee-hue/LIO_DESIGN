@@ -354,7 +354,7 @@
             : (LI.bulb);
           return `<button type="button" class="strat-item" data-strat="${i}"><span class="si-ic">${ic}</span><span class="si-tx">${it.html}</span></button>`;
         }).join('');
-        return `<div class="strategy${b.hidden ? ' reveal-hidden' : ''}"><div class="strat-title">${F.STRATEGY.title}</div>${items}</div>`;
+        return `<div class="strategy${b.hidden ? ' reveal-hidden' : ''}"${interestAttr(b)}><div class="strat-title">${F.STRATEGY.title}</div>${items}</div>`;
       }
       case 'chip':
         return `<div class="wordchip${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}">${b.html}</div>`;

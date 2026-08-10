@@ -969,15 +969,18 @@ const SCREENS = [
 /* 31 ─ Skill Practice S4 (Find the Evidence) */
 {
   id:'skill_s4', slide:40, section:'Further Practice 1', title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동1)', layout:'reading',
-  passage:true, etMode:true,   /* 사전 하이라이트 없음 · 문장을 탭해야 하이라이트 */
+  // 마지막 멘트가 "근거 문장이 초록으로 표시된다" 라 실제 하이라이트가 필요하다(slide 18 과 같은 근거 문장)
+  passage:true, etMode:true, hl:{ p1:'green', p2:'green', p5:'green', p14:'green', p15:'green', p16:'green' },   /* 사전 하이라이트 없음 · 문장을 탭해야 하이라이트 */
   blocks:[
     { t:'label', html:'S4 — Find the Evidence' },
     { t:'lio', html:'Tap one of the evidence sentences that answers the question.', tts:true, kr:true },
     { t:'lio', html:'That sentence is a detail — look for a sentence that connects directly to what Maya saw or learned overall.', tts:true, kr:true },
     { t:'lio', html:"Yes! That's one of the evidence sentences! It directly supports the main idea — Maya's discovery of tide pools.", tts:true, kr:true },
-    { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
+    // 기획서: 'Next' → Passage_Clarify(P43). 다음 화면(41 Confirm)은 다른 스킬의 S4 활동2다.
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', go:'clarify' }] },
     { t:'lio', html:'Here are the evidence sentences highlighted in green! Each one shows what Maya discovered or learned.', tts:true, kr:true },
-    { t:'buttons', items:[{ html:'Next ▶', style:'primary' }] },
+    // 기획서: 'Next' → Passage_Clarify(P43). 다음 화면(41 Confirm)은 다른 스킬의 S4 활동2다.
+    { t:'buttons', align:'end', items:[{ html:'Next ▶', style:'primary', go:'clarify' }] },
   ],
   spec:["S4 — ET(Evidence Tap) 활동 · 해당 skill 8개(Recalling Facts 3종, Drawing Conclusions, Making Inferences, Cause/Effect, Main Idea, Analyzing Characters)",
         "학생 답안 선택: ET 직접 탭",
@@ -1081,6 +1084,8 @@ const SCREENS = [
       { html:"No, let's go! ▶", style:'navy' },
     ]},
     { t:'input', placeholder:'Ask anything about the passage…', mic:true, hidden:true },
+    // 기획서 3) 'Next' 클릭 → Retry. 질문하기를 고른 뒤에도 다음으로 갈 수 있어야 한다.
+    { t:'buttons', align:'end', hidden:true, items:[{ html:'Next ▶', style:'primary', go:'fp1_retry' }] },
   ],
   spec:["Pre-retry — 'Passage Clarify' 에서 'No, let's move on' 을 누른 경우 진입",
         "Q&A 두 가지 옵션",
@@ -1096,17 +1101,20 @@ const SCREENS = [
     { t:'label', html:'Retry — Main Question' },
     { t:'lio', html:'Let us try the question: What is A Day at the Tide Pools mostly about?', tts:true, kr:true },
     { t:'lio', html:'Choose the best answer.', tts:true, kr:true },
-    { t:'choices', kr:true, items:[
+    { t:'choices', kr:true, instantGrade:true, items:[
       { k:'A', html:CHOICES[0].html, state:'correct' },
       { k:'B', html:CHOICES[1].html },
       { k:'C', html:CHOICES[2].html, state:'wrong' },
       { k:'D', html:CHOICES[3].html },
     ]},
-    { t:'lio', html:'Not quite, but you got this! The correct answer is: a girl who discovers the animals and wonders of tide pools, because it covers all about Maya\'s experiences and observations.', tts:true, kr:true },
-    { t:'lio', html:"Here's a Skill Tip: look for the idea that covers the WHOLE story — not just one detail.", tts:true, kr:true },
-    { t:'lio', html:"Great job working through that! Here's the strategy you can save for next time.", tts:true, kr:true },
-    { t:'strategy' },
-    { t:'buttons', items:[{ html:'Continue to Further Practice 2 ▶', style:'green' }] },
+    // 기획서: 정답 → confetti + praise + strategy → 'Next' / 오답 → 정답 공개 + strategy → 'Got it'
+    { t:'lio', html:'You got it! That answer covers the whole story — the main idea.', tts:true, kr:true, hidden:true, interest:'correct' },
+    { t:'lio', html:'Not quite, but you got this! The correct answer is: a girl who discovers the animals and wonders of tide pools, because it covers all about Maya\'s experiences and observations.', tts:true, kr:true , hidden:true, interest:'wrong' },
+    { t:'lio', html:"Here's a Skill Tip: look for the idea that covers the WHOLE story — not just one detail.", tts:true, kr:true , hidden:true, interest:'wrong' },
+    { t:'lio', html:"Great job working through that! Here's the strategy you can save for next time.", tts:true, kr:true , hidden:true, interest:'next' },
+    { t:'strategy', hidden:true, interest:'next' },
+    { t:'buttons', align:'end', hidden:true, interest:'correct', items:[{ html:'Next ▶', style:'green' }] },
+    { t:'buttons', align:'end', hidden:true, interest:'wrong', items:[{ html:'Got it ▶', style:'green' }] },
   ],
   spec:["Retry — Main Question 재출제 (문제 + 보기, 선지 개수는 학생 수준에 따라 다름)",
         "정답: 🎉 confetti + correct reaction + brief praise + strategy cue 표출 → 'Next' → FP2_Intro",
