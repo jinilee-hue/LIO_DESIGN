@@ -253,7 +253,9 @@
       if (focus) return (w.toLowerCase() === focus) ? `<b class="kw kw-focus">${w}</b>` : w;
       return `<b class="kw">${w}</b>`;
     });
-    let paras = F.PASSAGE.paras.map((para, pi) => {
+    // 화면이 다른 지문을 쓸 수 있다(passageRef). 기본은 본 지문.
+    const SRC = (scr.passageRef && F[scr.passageRef]) || F.PASSAGE;
+    let paras = SRC.paras.map((para, pi) => {
       const sents = para.map(s => {
         const cls = ['sent'];
         if (hl[s.id]) cls.push('hl-' + hl[s.id]);
@@ -739,7 +741,7 @@
         </div>
         <span class="hd-pill">STEP 2 Skill Core</span>
         <span class="hd-divider"></span>
-        <span class="hd-skill">Determining Main Ideas</span>
+        <span class="hd-skill">${scr.skillName || 'Determining Main Ideas'}</span>
         <span class="hd-title">${scr.section || ''}</span>
       </header>`;
   }
@@ -1201,8 +1203,10 @@
         }
       }));
 
-    // 지문 핵심단어 탭 → 하단 어휘 카드 팝업 (기획서 스펙) — explore/teach/findflip/clarify는 자체 핸들러 사용
-    if (scr.layout !== 'explore' && scr.layout !== 'teach' && scr.layout !== 'findflip' && !scr.clarify)
+    // 지문 핵심단어 탭 → 하단 어휘 카드 팝업 (기획서 스펙) — explore/teach/findflip 은 자체 핸들러 사용.
+    // clarify 화면도 기획서상 '지문 내 단어 클릭 → 뜻+예문 TTS' 가 있어야 한다. 전에는 제외돼
+    // 있었는데 wireClarify 에 단어 핸들러가 없어 실제로는 아무 동작도 하지 않았다.
+    if (scr.layout !== 'explore' && scr.layout !== 'teach' && scr.layout !== 'findflip')
       stage.querySelectorAll('.passage .kw').forEach(el =>
         el.addEventListener('click', (e) => { e.stopPropagation(); showWordPopup(el.textContent.trim()); }));
 
@@ -1404,7 +1408,9 @@
 
     sents.forEach(s => s.addEventListener('click', () => {
       if (!enabled) return;
-      sents.forEach(o => o.classList.remove('tapped'));
+      // 기획서 PAGE 42 : 다른 문장을 탭하면 하이라이트가 '누적' 된다. 누적하지 않는 화면은
+      // 앞 문장 표시를 지운다(기존 동작).
+      if (!scr.clarifyAccum) sents.forEach(o => o.classList.remove('tapped'));
       s.classList.add('tapped');                                        // 선택 문장 하이라이트
       enabled = false;
       const txt = s.textContent.replace(/\s+/g, ' ').trim();

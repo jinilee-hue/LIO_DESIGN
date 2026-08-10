@@ -234,6 +234,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .choice.sel{border-color:#F08A24;box-shadow:0 0 0 3px rgba(240,138,36,.28)}
 /* 메뉴형 보기(Entry Method·Something else 등)도 같은 주황으로. base 는 파란 배경+테두리다. */
 .menu-item.sel{background:#fff7ee;border-color:#F08A24;box-shadow:0 0 0 3px rgba(240,138,36,.28)}
+/* 기획서: 문장은 클릭 전 파란색 → 클릭 이후 초록색으로 전환된다.
+   base 의 .sent.tapped 는 파랑(#cfe0ff)이라 '전환' 이 드러나지 않았다. */
+.sent.clarify-live{background:#e6eefb}
+.sent.tapped{background:#d9f2e4}
 .msg .bubble{border-radius:18px}
 .msg.lio .bubble{background:#eef2f8;border:none;color:#0a0a0a}
 /* retry 말풍선(slide 19·46)도 일반 말풍선과 같은 색.

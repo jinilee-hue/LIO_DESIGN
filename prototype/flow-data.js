@@ -16,6 +16,40 @@
 
 // 지문 "A Day at the Tide Pools" — 문장 단위 id 부여 (하이라이트/커서 제어용)
 // kw() : 핵심단어(파란 밑줄), s()/문단 구조는 engine 이 렌더
+/* 보조 지문 — 기획서 PAGE 41·42(S4 Confirm)가 쓰는 지문.
+   Confirm 활동은 Identifying Literary Genres / Inferring Author's Purpose 두 스킬에서만
+   나오고, 기획서도 이 지문으로 그린다. 문장 id 는 f1.. 로 본 지문(p1..)과 구분한다. */
+const PASSAGE_FARM = {
+  title: 'A Trip to the Farm',
+  paras: [
+    [
+      { id:'f1', html:'Mia and her dad went to a <kw>farm</kw>.' },
+      { id:'f2', html:'It was her first time there.' },
+      { id:'f3', html:'She saw big red <kw>barns</kw> and green <kw>fields</kw>.' },
+    ],
+    [
+      { id:'f4', html:'A <kw>farmer</kw> met them at the <kw>gate</kw>.' },
+      { id:'f5', html:'She showed them the animals.' },
+      { id:'f6', html:'Mia saw cows, pigs, and chickens.' },
+      { id:'f7', html:'The chickens were loud!' },
+    ],
+    [
+      { id:'f8', html:'Then the farmer took them to the <kw>garden</kw>.' },
+      { id:'f9', html:'She let Mia pick a <kw>carrot</kw>.' },
+      { id:'f10', html:'Mia pulled hard and it came out.' },
+      { id:'f11', html:'She was so happy.' },
+    ],
+    [
+      { id:'f12', html:'On the way home, Mia held the carrot.' },
+      { id:'f13', html:'&ldquo;I learned something new today,&rdquo; she said.' },
+      { id:'f14', html:'Dad smiled.' },
+      { id:'f15', html:'&ldquo;Farms are where our food grows,&rdquo; he said.' },
+      { id:'f16', html:'Mia looked at the carrot.' },
+      { id:'f17', html:'She could not wait to eat it.' },
+    ],
+  ],
+};
+
 const PASSAGE = {
   title: 'A Day at the Tide Pools',
   paras: [
@@ -109,6 +143,15 @@ const EXPLORE_EXTRA = [
   { w:'dragged',  def:'Pulled along with force.',                              kr:'힘껏 끌고 갔다' },
   { w:'borrowed', def:'Temporarily used something that belongs to someone else.', kr:'남의 것을 잠시 빌렸다' },
   { w:'small',    def:'Not big; easy to hold.',                                kr:'크지 않은; 작은' },
+  /* 보조 지문(A Trip to the Farm)의 탭 가능한 단어들. 기획서 화면의 carrot 팝업과 같은 형식.
+     ⚠ carrot 외 뜻은 기획서에 없어 같은 형식으로 쓴 초안이다. */
+  { w:'farm',   emoji:'🚜', def:'A place where people grow food and keep animals.', ex:'Mia and her dad went to a farm.',        kr:'농장' },
+  { w:'barns',  emoji:'🏚️', def:'Big farm buildings that keep animals and hay.',    ex:'She saw big red barns and green fields.', kr:'헛간' },
+  { w:'fields', emoji:'🌾', def:'Wide open land where plants grow.',                ex:'She saw big red barns and green fields.', kr:'들판' },
+  { w:'farmer', emoji:'👩\u200d🌾', def:'A person who works on a farm.',               ex:'A farmer met them at the gate.',         kr:'농부' },
+  { w:'gate',   emoji:'🚪', def:'A door in a fence that you open to go in.',        ex:'A farmer met them at the gate.',         kr:'문' },
+  { w:'garden', emoji:'🌱', def:'A place where vegetables or flowers are grown.',   ex:'Then the farmer took them to the garden.', kr:'텃밭' },
+  { w:'carrot', emoji:'🥕', def:'An orange vegetable that grows in the ground.',    ex:'She let Mia pick a carrot.',             kr:'당근' },
 ];
 
 /* ---------- 화면 정의 (LIO_Step2_Flow_Wireframe_v1.1.pptx slides 5 → 49) ----------
@@ -953,19 +996,16 @@ const SCREENS = [
   id:'skill_s4_confirm', slide:41, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동2)',
   cut:'S4 Confirm', layout:'reading',
-  passage:true, clarify:true,
+  // Confirm 은 Literary Genres / Author's Purpose 스킬의 활동이라 기획서도 다른 지문을 쓴다
+  passage:true, passageRef:'PASSAGE_FARM', skillName:'Identifying Literary Genres',
+  clarify:true, clarifyAccum:true,   /* 탭한 문장 하이라이트 누적 */ hl:{ f1:'green' },
   blocks:[
     { t:'label', html:'S4 — Confirm' },
-    { t:'lio', html:'This one has no right or wrong answer. Tap a sentence that tells you what kind of writing this is, and I will explain it.', tts:true, kr:true },
+    { t:'lio', html:'Good work! Now, find a sentence that gives you a clue about the type of writing. Tap it!', tts:true, kr:true },
+    { t:'lio', html:'Yes! "Mia and her dad" are characters — people in this text. Characters are a clue that shows the type of writing.', tts:true, kr:true },
     { t:'buttons', items:[
-      { html:'Tap another sentence', style:'primary', act:'yes' },
-      { html:"I'm ready! ▶", style:'navy' },
-    ]},
-    { t:'user', html:'Tap a sentence in the passage above!', side:'sys', hidden:true },
-    { t:'lio', html:'Good choice. This sentence tells a story about what one person did on one day — that is a sign of a narrative, not a report.', tts:true, kr:true, stage2:true },
-    { t:'buttons', stage2:true, items:[
-      { html:'Tap another sentence', style:'primary', act:'another' },
-      { html:"I'm ready! ▶", style:'navy' },
+      { html:'Tap another sentence 👆', style:'dark', act:'another' },
+      { html:"I'm ready! ▶", style:'navy', go:'clarify' },
     ]},
   ],
   spec:['S4 — Confirm 활동 · 해당 skill 2개 (Identifying Literary Genres, Inferring Author\'s Purpose)',
@@ -982,20 +1022,16 @@ const SCREENS = [
   id:'skill_s4_confirm_more', slide:42, section:'Further Practice 1',
   title:'Skill1/2_FP1/2_Main_Question_오답경로_Scaffolding_3_Skill_Practice(S4_활동2)',
   cut:'S4 Confirm · 누적', layout:'reading',
-  passage:true, clarify:true, hl:{ p1:'green', p16:'green' },
+  passage:true, passageRef:'PASSAGE_FARM', skillName:'Identifying Literary Genres',
+  clarify:true, clarifyAccum:true,   /* 탭한 문장 하이라이트 누적 */ hl:{ f1:'green', f8:'green' },   // 처음 탭한 문장 유지 + 다음 문장 누적
   blocks:[
     { t:'label', html:'S4 — Confirm' },
-    { t:'lio', html:'Good choice. This sentence tells a story about what one person did on one day — that is a sign of a narrative, not a report.', tts:true, kr:true },
-    { t:'lio', html:'This one helps too. It tells us how Maya felt at the end, and stories often close with a feeling.', tts:true, kr:true },
+    { t:'lio', html:'Good work! Now, find a sentence that gives you a clue about the type of writing. Tap it!', tts:true, kr:true },
+    { t:'lio', html:'Yes! "Mia and her dad" are characters — people in this text. Characters are a clue that shows the type of writing.', tts:true, kr:true },
+    { t:'lio', html:'Yes! Moving to the garden is a new scene. Following characters to new places is a clue about the type of writing.', tts:true, kr:true },
     { t:'buttons', items:[
-      { html:'Tap another sentence', style:'primary', act:'yes' },
-      { html:"I'm ready! ▶", style:'navy' },
-    ]},
-    { t:'user', html:'Tap a sentence in the passage above!', side:'sys', hidden:true },
-    { t:'lio', html:'Nice — that sentence describes what Maya saw. Together these sentences show this is a story told in order.', tts:true, kr:true, stage2:true },
-    { t:'buttons', stage2:true, items:[
-      { html:'Tap another sentence', style:'primary', act:'another' },
-      { html:"I'm ready! ▶", style:'navy' },
+      { html:'Tap another sentence 👆', style:'dark', act:'another' },
+      { html:"I'm ready! ▶", style:'navy', go:'clarify' },
     ]},
   ],
   spec:['S4 — Confirm 활동 예외 학습 플로우',
@@ -1503,4 +1539,4 @@ const SCREENS = [
 ];
 
 /* 전역 노출 */
-window.LIO_FLOW = { PASSAGE, MAIN_Q, CHOICES, STRATEGY, SKILLS, TOPICS, KEYWORDS, EXPLORE_EXTRA, SCREENS };
+window.LIO_FLOW = { PASSAGE, PASSAGE_FARM, MAIN_Q, CHOICES, STRATEGY, SKILLS, TOPICS, KEYWORDS, EXPLORE_EXTRA, SCREENS };
