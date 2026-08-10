@@ -177,7 +177,7 @@ const SCREENS = [
 
 /* 6 ─ Greeting / A_Intro_cut2 (일러스트 + 순차 말풍선 + TTS) */
 {
-  id:'greeting', page:5, slide:6, section:'Greeting', title:'LIO · STEP2 Skill Core', cut:'cut2', layout:'center',
+  id:'greeting', page:5, slide:6, section:'Greeting', title:'STEP2_Greeting', cut:'cut2', layout:'center',
   mascot:'lio2.png',
   // Design B(센터 카드)용 메시지
   message:[
@@ -203,7 +203,7 @@ const SCREENS = [
 
 /* 6b ─ A_Intro_cut3 (일러스트 + 순차 말풍선 + TTS) — Design A 전용 */
 {
-  id:'greeting_cut3', page:5, slide:6, section:'Greeting', title:'LIO · STEP2 Skill Core', cut:'cut3', layout:'center',
+  id:'greeting_cut3', page:5, slide:6, section:'Greeting', title:'STEP2_Greeting', cut:'cut3', layout:'center',
   message:[],
   introSeq:{
     image:'intro2.png',   // A_Intro_cut3 배경 (도서관 — cut2와 동일)
@@ -327,7 +327,7 @@ const SCREENS = [
    ※ 이 문구는 원래 game 화면의 transition 배열에 있었지만, layoutGame 이 A/B 모두 조기
      반환해서 실제로는 렌더되지 않았다(별도 화면으로 분리됨). transition 은 그대로 남겨둔다. */
 {
-  id:'fp1_intro', page:13, slide:14, section:'Further Practice 1', title:'LIO · STEP2 Skill Core', layout:'center',
+  id:'fp1_intro', page:13, slide:14, section:'Further Practice 1', title:'Skill1/2_FP1_Intro', layout:'center',
   mascot:'lio_face2.png', mascotBig:true,
   message:[
     'Great job with the game, <b>Maya</b>!',
