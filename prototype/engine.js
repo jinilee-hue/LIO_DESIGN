@@ -1705,7 +1705,19 @@
     const stage = document.getElementById('stage');
     const answers = new Set(scr.etAnswers || []);
     const sents = [...stage.querySelectorAll('.passage .sent')];
-    let tries = 0, settled = false;
+    // etTries : 이 화면에 오기 전 이미 틀린 횟수(예: 1차 오답 화면에서 재선택하는 경우 1)
+    let tries = scr.etTries || 0, settled = false;
+
+    // etGo : 결과에 따라 다른 화면으로 간다(기획서가 결과를 별도 페이지로 나눈 경우).
+    // 지정이 없으면 같은 화면에서 결과 멘트를 연다.
+    const goResult = (kind) => {
+      const id = scr.etGo && scr.etGo[kind];
+      if (!id) return false;
+      const i = SCREENS.findIndex(x => x.id === id);
+      if (i < 0) return false;
+      later(() => goTo(i), 900);
+      return true;
+    };
 
     // next(=Next 버튼)는 '해결된' 뒤에만 연다. 1차 오답은 재시도해야 하므로 멘트만 연다.
     const show = (kind, done) => {
@@ -1721,15 +1733,17 @@
         s.classList.add('correct');       // B 의 LIO 반응(quiz-reaction.js)이 이 변화를 본다
         revealAnswers();
         spawnConfetti(); sfxFound();
-        show('correct', true);
+        if (!goResult('correct')) show('correct', true);
         return;
       }
       tries++;
       s.classList.add('hl-red', 'wrong');
       sfxWrong();
       later(() => s.classList.remove('hl-red', 'wrong'), 1200);   // 기획서: 붉은 표시 이후 사라짐
-      if (tries >= 2) { settled = true; revealAnswers(); show('reveal', true); }
-      else show('wrong', false);
+      if (tries >= 2) {
+        settled = true; revealAnswers();
+        if (!goResult('wrong')) show('reveal', true);
+      } else show('wrong', false);
     }));
   }
 

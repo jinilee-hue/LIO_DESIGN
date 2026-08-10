@@ -416,7 +416,11 @@ const SCREENS = [
 /* 15 ─ FP1 ET 1차 오답 */
 {
   id:'fp1_et_wrong1', slide:19, section:'Further Practice 1', title:'FP1_Main_Question_정답경로_ET_1차_오답', layout:'reading',
-  passage:true, listen:true, etMode:true, hl:{ p10:'red', p11:'red' },   // 1-4: 붉은 오답 유지 + 지문 재선택(탭 가능)
+  // 기획서와 동일 : 붉은 오답 하이라이트를 유지한 채 지문에서 답을 다시 고를 수 있다.
+  // 이미 1번 틀린 상태(etTries:1) — 결과에 따라 각 결과 화면으로 간다(FP2 slide 56 과 같은 방식).
+  passage:true, listen:true, etMode:true, hl:{ p10:'red', p11:'red' },
+  etAnswers:['p1', 'p2', 'p5', 'p14', 'p15', 'p16'], etTries:1,
+  etGo:{ correct:'fp1_et_retry', wrong:'fp1_et_wrong2' },   // 1-4: 붉은 오답 유지 + 지문 재선택(탭 가능)
   blocks:[
     { t:'q', html:MAIN_Q, kr:true },                                     // 1-1: Main question 정답
     { t:'choices', kr:true, items:[
@@ -1366,7 +1370,11 @@ const SCREENS = [
 /* 42 ─ FP2 ET 1차 오답 */
 {
   id:'fp2_et_wrong1', slide:56, section:'Further Practice 2', title:'FP2_Main Question_정답경로_ET_1차_오답', layout:'reading',
-  passage:true, listen:true, etMode:true, hl:{ p14:'red' },   // 1차 오답: 붉은 하이라이트 유지 + 지문 재선택
+  // 기획서 PAGE 59 4) : 붉은 오답 하이라이트를 유지한 채 지문에서 답을 다시 고를 수 있다.
+  // 이미 1번 틀린 상태(etTries:1)라 다음 선택이 마지막 — 결과에 따라 각 페이지로 간다.
+  passage:true, listen:true, etMode:true, hl:{ p14:'red' },
+  etAnswers:['p1', 'p2', 'p5', 'p14', 'p15', 'p16'], etTries:1,
+  etGo:{ correct:'fp2_et_retry', wrong:'fp2_et_wrong2' },   // 1차 오답: 붉은 하이라이트 유지 + 지문 재선택
   blocks:[
     { t:'q', html:MAIN_Q, kr:true },
     { t:'choices', kr:true, items:[
