@@ -1579,6 +1579,15 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background:url("../IMAGE/b/lio_intro_wave.webp") no-repeat 0% 0 / 1200% 100%;
   animation:bLioWaveEnd .90s steps(12,jump-none) infinite alternate}
 @keyframes bLioWaveEnd{from{background-position:0% 0} to{background-position:100% 0}}
+/* BYE! 말풍선 — Figma #component 의 ic_bye (355:360).
+   내려받은 export 는 파란 배경이 합성돼 있어, 테두리에서 배경색을 따라 채워 바깥만 투명으로
+   만들고 안쪽 원색은 그대로 남겼다(흰색 기준 언믹스만 쓰면 주황 글자가 옅어진다).
+   위치·크기·그림자·둥둥 뜨는 연출은 slide 5 의 HI! 말풍선과 같은 방식. */
+.scr-session_end .qe-scrim::after{content:'';position:absolute;left:84%;top:4%;
+  width:17.5%;aspect-ratio:146/141;
+  background:url("../IMAGE/b/bubble_bye.png") no-repeat center/contain;
+  filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
+  animation:bBubbleFloat 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){
   .scr-session_end .qe-scrim{animation:none}
 }
