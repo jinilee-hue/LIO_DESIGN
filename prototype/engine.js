@@ -1840,7 +1840,15 @@
     // .btnrow 는 .explore-done 의 '형제' 다(자식이 아니다) — 선택자를 그에 맞춘다
     const hintBtn = stage.querySelector('.findflip .btnrow .btn:not([data-advance]):not([data-go])');
     if (hintBtn) hintBtn.addEventListener('click', () => {
-      showToast('👆 Tap any blue word or dotted word in the passage!', stage.querySelector('.passage-scroll'));
+      // 안내는 토스트가 아니라 대화창의 초록 시스템 문구로 띄운다(slide 43 의 .msg.user.usys 와 동일).
+      const done = stage.querySelector('.explore-done');
+      if (done) {
+        const tip = document.createElement('div');
+        tip.className = 'msg user usys';
+        tip.innerHTML = '<div class="bubble">Tap any blue word or dotted word in the passage!</div>';
+        done.appendChild(tip);
+        tip.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
       hintBtn.remove();   // 안내를 봤으면 'I'm done! Let's go' 만 남는다
     });
   }
