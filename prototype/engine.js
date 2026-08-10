@@ -1113,8 +1113,18 @@
     }));
 
     // Pilot Skill Pick / Session: Finish → 세션 종료 안내
+    // Finish → 학습 종료 화면(기획서 P67). 그 화면이 없으면 예전처럼 토스트만 띄운다.
     stage.querySelectorAll('[data-act="finishSession"]').forEach(b => b.addEventListener('click', () => {
+      const i = SCREENS.findIndex(x => x.id === 'session_end');
+      if (i >= 0) { sfxFound(); goTo(i); return; }
       showToast('Session finished. See you next time!', b);
+      b.disabled = true;
+      sfxFound();
+    }));
+
+    // 종료 화면의 Exit → 전체 학습 종료
+    stage.querySelectorAll('[data-act="exitSession"]').forEach(b => b.addEventListener('click', () => {
+      showToast('학습이 종료되었습니다. See you next time!', b);
       b.disabled = true;
       sfxFound();
     }));

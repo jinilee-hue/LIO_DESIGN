@@ -6,7 +6,8 @@
      22 뒤 1화면(Something else 선택) ·
      v1.2 대조로 35 뒤 2화면(S 분리형 단일/복수) · 38 뒤 2화면(S4 Confirm/누적)
      v1.2 대조로 Entry Method C·B 선택 화면 2개 추가
-     → 현재 5~60, 60화면.
+     v1.2 대조로 Walk the Passage 질문 3화면 · 학습 종료 화면 1화면 추가
+     → 현재 5~64, 64화면.
    - 이 파일은 Design A / Design B 두 프로토타입이 공유합니다.
    - 화면 렌더링은 engine.js 가 담당합니다.
    ===================================================================== */
@@ -1175,10 +1176,82 @@ const SCREENS = [
   ],
   spec:['도입: 선택지 버튼 2개 (단어 먼저 확인 / 바로 설명 듣기)','세부: 단어 먼저 확인하기 → 지문 내 단어 탭 → 하단 영어 뜻 TTS','바로 듣기: PARAGRAPH 1 설명 진행','단락별 설명(4단락 반복): 해당 단락 노란 하이라이트 · 핵심 문장→detail 순서','버튼: Next / More simply(1문장 재설명) / I have a question(모르는 문장 탭→설명)','활동 후 ET 진입'],
 },
+/* 44b ─ Walk the Passage · 'I have a question' — 문장을 고르지 않고 마치는 경우
+   (기획서 v1.2 PAGE 53) 첫 단락은 다시 하지 않고 다음 단락으로 넘어간다.
+   ⚠ 문구는 초안이다(목업이 이미지). */
+{
+  id:'walk_q', slide:50, section:'Further Practice 2',
+  title:'Skill1/2_FP2_Main_Question_정답_경로_C_Walk_me_through_the_passage',
+  cut:'I have a question', layout:'reading',
+  passage:true, clarify:true,
+  blocks:[
+    { t:'label', html:'Walk the Passage' },
+    { t:'lio', html:'Paragraph 1 introduces Maya and her class trip to the tide pools.', tts:true, kr:true },
+    { t:'lio', html:'Is there a sentence you want me to explain? Tap it in the passage — you can also tap any blue or dotted word.', tts:true, kr:true },
+    { t:'buttons', items:[
+      { html:'Tap a sentence', style:'primary', act:'yes' },
+      { html:"I'm done asking ▶", style:'navy' },
+    ]},
+  ],
+  spec:["'I have a question' 클릭 시 해당 문단 내 문장 단위로 클릭 가능",
+        '학습 문단 외 다른 문단의 단어도 점선 set 유지',
+        '지문 내 단어(key words/점선 단어) 클릭 → 색상 변화 + 하단 영영 뜻 TTS',
+        "학생이 문장을 고르지 않고 'I'm done asking' 을 누른 경우 — 첫 단락은 재진행하지 않고 다음 단락으로",
+        '※ 기획서 목업이 이미지라 화면 문구는 초안이다 — 검토 필요'],
+},
+
+/* 44c ─ Walk the Passage · 'I have a question' — 문장을 고른 경우
+   (기획서 v1.2 PAGE 54) 클릭 전 파란색, 클릭 후 초록색으로 전환된다.
+   'Another sentence' 로 설명을 더 듣고, 'Next paragraph' 로 다음 문단으로 간다.
+   ⚠ 문구는 초안이다. */
+{
+  id:'walk_q_sent', slide:51, section:'Further Practice 2',
+  title:'Skill1/2_FP2_Main_Question_정답_경로_C_Walk_me_through_the_passage',
+  cut:'I have a question · 문장 선택', layout:'reading',
+  passage:true, clarify:true, hl:{ p3:'green' },
+  blocks:[
+    { t:'label', html:'Walk the Passage' },
+    { t:'lio', html:'Paragraph 1 introduces Maya and her class trip to the tide pools.', tts:true, kr:true },
+    { t:'user', html:'Tap a sentence in the passage above!', side:'sys' },
+    { t:'lio', html:'Good question! A tide pool is a small pool of water that stays behind on the rocks after the ocean water goes back out.', tts:true, kr:true },
+    { t:'buttons', items:[
+      { html:'Another sentence', style:'primary', act:'another' },
+      { html:'Next paragraph ▶', style:'navy' },
+    ]},
+  ],
+  spec:['해당 활동은 FP1 오답경로의 Passage Clarify 와 같다 — 다른 UI, 같은 학습 활동',
+        '클릭 전 문장 색상 파란색 → 클릭 이후 초록색으로 전환',
+        '클릭한 문장 설명 제시',
+        "'Another sentence' → 다른 문장 설명 듣기",
+        "'Next paragraph' → 다음 문단 학습 · 마지막 문단 이후에는 'Next' 로 바뀌어 ET 진입",
+        '※ 기획서 목업이 이미지라 화면 문구는 초안이다 — 검토 필요'],
+},
+
+/* 44d ─ Walk the Passage · 마지막 문단 — 'Next paragraph' 가 'Next' 로 바뀐다
+   (기획서 v1.2 PAGE 55) 이후 ET 로 진입한다.
+   ⚠ 문구는 초안이다. */
+{
+  id:'walk_q_last', slide:52, section:'Further Practice 2',
+  title:'Skill1/2_FP2_Main_Question_정답_경로_C_Walk_me_through_the_passage',
+  cut:'I have a question · 마지막 문단', layout:'reading',
+  passage:true, clarify:true, hl:{ p14:'green', p15:'green', p16:'green' },
+  blocks:[
+    { t:'label', html:'Walk the Passage' },
+    { t:'lio', html:'In the last paragraph Maya writes down everything she observed, and she leaves the shore feeling amazed.', tts:true, kr:true },
+    { t:'lio', html:'That is the whole passage! Ready to find the evidence together?', tts:true, kr:true },
+    { t:'buttons', items:[
+      { html:'Another sentence', style:'primary', act:'another' },
+      { html:'Next ▶', style:'navy', go:'fp2_et' },
+    ]},
+  ],
+  spec:['마지막 문단 활동 후 기존 \'Next paragraph\' 옵션이 \'Next\' 버튼으로 바뀐다',
+        "'Next' 클릭 → Evidence Tap 진입",
+        '※ 기획서 목업이 이미지라 화면 문구는 초안이다 — 검토 필요'],
+},
 
 /* 39 ─ Something else (자유 입력) */
 {
-  id:'something_else', slide:50, section:'Further Practice 2', title:'FP2_Main Question_정답경로_D', cut:'Something else', layout:'reading',
+  id:'something_else', slide:53, section:'Further Practice 2', title:'FP2_Main Question_정답경로_D', cut:'Something else', layout:'reading',
   passage:true, listen:true,
   blocks:[
     { t:'menu', kr:true, items:[
@@ -1201,7 +1274,7 @@ const SCREENS = [
 
 /* 40 ─ FP2 Evidence Tap (문제 제시) */
 {
-  id:'fp2_et', slide:51, section:'Further Practice 2', title:'FP2_Main Question_정답경로_A/ET', layout:'reading',
+  id:'fp2_et', slide:54, section:'Further Practice 2', title:'FP2_Main Question_정답경로_A/ET', layout:'reading',
   passage:true, etMode:true,   /* 사전 하이라이트 없음 · 문장 탭 시에만 하이라이트 */
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -1212,7 +1285,7 @@ const SCREENS = [
 
 /* 41 ─ FP2 Evidence Tap 정답 */
 {
-  id:'fp2_et_correct', slide:52, section:'Further Practice 2', title:'FP2_Main Question_정답경로_ET_정답', layout:'reading',
+  id:'fp2_et_correct', slide:55, section:'Further Practice 2', title:'FP2_Main Question_정답경로_ET_정답', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green', p5:'green', p14:'green', p15:'green', p16:'green' },
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -1226,7 +1299,7 @@ const SCREENS = [
 
 /* 42 ─ FP2 ET 1차 오답 */
 {
-  id:'fp2_et_wrong1', slide:53, section:'Further Practice 2', title:'FP2_Main Question_정답경로_ET_1차_오답', layout:'reading',
+  id:'fp2_et_wrong1', slide:56, section:'Further Practice 2', title:'FP2_Main Question_정답경로_ET_1차_오답', layout:'reading',
   passage:true, listen:true, etMode:true, hl:{ p14:'red' },   // 1차 오답: 붉은 하이라이트 유지 + 지문 재선택
   blocks:[
     { t:'q', html:MAIN_Q, kr:true },
@@ -1246,7 +1319,7 @@ const SCREENS = [
 
 /* 43 ─ FP2 ET retry 이후 정답 → Complete */
 {
-  id:'fp2_et_retry', slide:54, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_1차_오답_Retry_이후_정답', layout:'reading',
+  id:'fp2_et_retry', slide:57, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_1차_오답_Retry_이후_정답', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green' },
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -1261,7 +1334,7 @@ const SCREENS = [
 
 /* 45 ─ FP2 Free Chat (M22) */
 {
-  id:'fp2_free_chat', slide:56, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'Retry 정답 이후', layout:'reading',
+  id:'fp2_free_chat', slide:59, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'Retry 정답 이후', layout:'reading',
   passage:true, freechat:true,
   blocks:[
     { t:'lio', html:'You said that you like new places. Where do you want to explore next?', tts:true, kr:true },
@@ -1277,7 +1350,7 @@ const SCREENS = [
 
 /* 45 ─ FP2 Free Chat (M22) · 와이어는 M22 1경로 — cut 라벨로만 진입 맥락 구분 */
 {
-  id:'fp2_free_chat_2', slide:56, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'ET 정답 이후', layout:'reading',
+  id:'fp2_free_chat_2', slide:59, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'ET 정답 이후', layout:'reading',
   passage:true, freechat:true,
   blocks:[
     { t:'lio', html:'You finished Further Practice 2! Want to chat a little before we wrap up?', tts:true, kr:true },
@@ -1294,7 +1367,7 @@ const SCREENS = [
 
 /* 44 ─ FP2 ET 2차 오답 reveal → Complete */
 {
-  id:'fp2_et_wrong2', slide:55, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_2차_오답', layout:'reading',
+  id:'fp2_et_wrong2', slide:58, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_2차_오답', layout:'reading',
   passage:true, hl:{ p1:'green', p2:'green', p5:'green' },
   blocks:[
     { t:'label', html:'Evidence Tap' },
@@ -1310,7 +1383,7 @@ const SCREENS = [
 
 /* 45 ─ FP2 ET 2차 오답 이후 M22 */
 {
-  id:'fp2_free_chat_3', slide:56, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'ET 2차 오답 이후', layout:'reading',
+  id:'fp2_free_chat_3', slide:59, section:'Further Practice 2', title:'FP2_Main_Question_정답경로_ET_정답_이후_M22', cut:'ET 2차 오답 이후', layout:'reading',
   passage:true, freechat:true,
   blocks:[
     { t:'lio', html:'You finished the Skill Practice! Great work today! 🔊', tts:true, kr:true },
@@ -1327,7 +1400,7 @@ const SCREENS = [
 
 /* 46 ─ FP2 Quick Exit 게이트 */
 {
-  id:'quick_exit', slide:57, section:'Further Practice 2', title:'FP2_오답경로_진입_전_Quick_Exit_게이트', layout:'quickexit',
+  id:'quick_exit', slide:60, section:'Further Practice 2', title:'FP2_오답경로_진입_전_Quick_Exit_게이트', layout:'quickexit',
   bg:'intro_qe.png',
   qeSeq:[
     { side:'left',  html:'What should we do?' },
@@ -1342,7 +1415,7 @@ const SCREENS = [
 
 /* 47 ─ Retry FP2 Main Question */
 {
-  id:'fp2_retry', slide:58, section:'Further Practice 2', title:'Retry_FP2', cut:'Main Question', layout:'reading',
+  id:'fp2_retry', slide:61, section:'Further Practice 2', title:'Retry_FP2', cut:'Main Question', layout:'reading',
   passage:true,
   blocks:[
     { t:'label', html:'Retry — Main Question' },
@@ -1369,7 +1442,7 @@ const SCREENS = [
 
 /* 48 ─ Retry 이후 Free Chat (M22) */
 {
-  id:'fp2_retry_free_chat', slide:59, section:'Further Practice 2', title:'Retry_FP2', cut:'M22 Free Chat', layout:'reading',
+  id:'fp2_retry_free_chat', slide:62, section:'Further Practice 2', title:'Retry_FP2', cut:'M22 Free Chat', layout:'reading',
   passage:true, freechat:true,
   blocks:[
     { t:'lio', html:"Not quite, but you got this! The correct answer is: a girl who discovers the animals and wonders of tide pools, because it covers all about Maya's experiences and observations.", tts:true, kr:true },
@@ -1387,7 +1460,7 @@ const SCREENS = [
 
 /* 49 ─ 최종 학습 후 추가 학습 / 종료 선택 (Pilot) */
 {
-  id:'post_skill_pick', slide:60, section:'Skill Selection', title:'FP2_최종_학습_종료_추가_학습_자유_선택', layout:'quickexit',
+  id:'post_skill_pick', slide:63, section:'Skill Selection', title:'FP2_최종_학습_종료_추가_학습_자유_선택', layout:'quickexit',
   bg:'intro_fp2.png',
   qeSeq:[
     { side:'left',  html:'You did it, <b class="nm">Maya</b>! Want to practice another skill?' },
@@ -1398,6 +1471,27 @@ const SCREENS = [
     { html:'Finish', img:'ui/btn_finish.png', act:'finishSession' },
   ],
   spec:['최종 학습 후 추가 학습 자유 선택 (Pilot 한정)','말풍선 순차 등장 후 CTA','Another skill → Skill Intro(SLIDE 7)','Finish → 전체 세션 종료'],
+},
+/* 50 ─ 학습 세션 종료 화면 (기획서 v1.2 PAGE 67)
+   Free Chat 두 번째 대화에서 'Done' 을 누른 뒤, 또는 추가 skill 학습까지 끝낸 뒤 도달한다.
+   'Exit' 클릭으로 전체 학습이 끝난다.
+   ⚠ 문구는 초안이다(목업이 이미지). */
+{
+  id:'session_end', slide:64, section:'Skill Selection', title:'Skill1/2_FP2_학습_종료_화면', layout:'quickexit',
+  bg:'intro_fp2.png',
+  qeSeq:[
+    { side:'left',  html:'Great work today, <b class="nm">Maya</b>! You finished everything.' },
+    { side:'right', html:'See you next time — tap <b>Exit</b> when you are ready to go.' },
+  ],
+  // img 를 쓰면 그 이미지의 글자('Finish')가 그대로 나온다 → 텍스트 버튼으로 둔다
+  actions:[
+    { html:'Exit', style:'primary', chevron:true, act:'exitSession' },
+  ],
+  spec:['학습 세션 종료',
+        "Free Chat 두 번째 대화 종료 'Done' 클릭 후 종료 화면",
+        '학생이 추가 두 번째 skill 학습을 진행한 경우에도 이 화면으로 종료',
+        "'Exit' 클릭 후 전체 학습 종료",
+        '※ 기획서 목업이 이미지라 화면 문구는 초안이다 — 검토 필요'],
 },
 
 ];
