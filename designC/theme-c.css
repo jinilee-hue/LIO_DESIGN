@@ -1604,6 +1604,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   position:absolute; right:1.14cqw; bottom:.82cqw;   /* 목업 우 18px · 하 13px */
   width:27.12cqw;                                    /* 말풍선 확대 반영 (16.4+11.16-0.44) */
   display:flex; align-items:flex-start;
+  justify-content:flex-end;                          /* LIO 를 오른쪽 끝에 고정 */
   pointer-events:none;                               /* 클릭을 가로채지 않는다 */
   z-index:6;
 }
@@ -1629,9 +1630,11 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   border-left:1.14cqw solid #1C4BD6;                 /* 가로 18px */
   border-right:0;
 }
+/* 사라져도 자리는 그대로 둔다 — DOM 에서 지우거나 display:none 을 주면
+   flex 가 줄어들며 LIO 가 왼쪽으로 밀린다. */
 .c16-cheer .c16-bubble.c16-gone{
-  opacity:0; transform:translateY(-.4cqw) scale(.96);
-  transition:opacity .45s ease, transform .45s ease;
+  opacity:0; visibility:hidden; transform:translateY(-.4cqw) scale(.96);
+  transition:opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
 }
 @keyframes c16BubbleIn{
   from{ opacity:0; transform:translateY(.5cqw) scale(.92) }

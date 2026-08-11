@@ -45,11 +45,12 @@
   /* 다 읽으면(또는 읽을 수 없으면) 말풍선을 지운다 */
   function speakThenHide(bubble) {
     var done = false;
+    // DOM 에서 지우지 않는다 — 지우면 flex 가 줄어들며 LIO 가 왼쪽으로 밀린다.
+    // .c16-gone 이 opacity + visibility 로만 감추므로 LIO 위치는 그대로다.
     function hide() {
       if (done || !bubble.isConnected) return;
       done = true;
       bubble.classList.add('c16-gone');
-      setTimeout(function () { if (bubble.isConnected) bubble.remove(); }, 500);
     }
     // 발화 시간을 예측할 수 없는 환경(음성 없음 · 헤드리스)을 위한 안전장치
     var fallback = Math.max(2200, TEXT.split(/\s+/).length * 380 + 1400);
