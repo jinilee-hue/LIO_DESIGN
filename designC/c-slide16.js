@@ -26,7 +26,7 @@
   var HTML =
     '<div class="c16-cheer" aria-hidden="true">' +
       '<div class="c16-bubble">You did great!<br>Let\'s go next step!</div>' +
-      '<img class="c16-lio" src="../IMAGE/c/lio_c16.png" alt="">' +
+      '<div class="c16-lio"></div>' +          // 16프레임 스프라이트 (theme-c.css)
     '</div>';
 
   /* engine.js 의 pickVoice() 와 같은 우선순위 — 기계음 대신 자연스러운 음성 */
@@ -67,11 +67,29 @@
     } catch (e) { /* 안전장치 타이머가 처리한다 */ }
   }
 
+  /* C 에서는 빼는 대화 말풍선.
+     칭찬은 아래 LIO 말풍선이 대신하므로 중복이다. flow-data.js 는 A · B 와 공용이라
+     거기서 지우면 세 시안 모두 사라진다 — 그래서 C 에서만 DOM 에서 걷어낸다. */
+  var DROP = [/You found the main idea/i, /Choose what you'?d like to do next/i];
+
+  function dropMessages(dev) {
+    var msgs = dev.querySelectorAll('.activity-scroll .msg');
+    for (var i = 0; i < msgs.length; i++) {
+      var b = msgs[i].querySelector('.bubble');
+      if (!b) continue;
+      var txt = b.textContent || '';
+      for (var j = 0; j < DROP.length; j++) {
+        if (DROP[j].test(txt)) { msgs[i].remove(); break; }
+      }
+    }
+  }
+
   function mount() {
     var dev = document.querySelector('#stage .device.' + SCREEN);
     if (!dev) return;
     var host = dev.querySelector('.reading');
     if (!host || host.querySelector('.c16-cheer')) return;
+    dropMessages(dev);
     host.insertAdjacentHTML('beforeend', HTML);
     var bubble = host.querySelector('.c16-bubble');
     if (bubble) setTimeout(function () { speakThenHide(bubble); }, LEAD);
