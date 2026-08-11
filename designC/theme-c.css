@@ -1619,7 +1619,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   border-radius:1.5cqw;                              /* 목업 10px → 더 둥글게 */
   /* 살짝 투명하게 — 아래 대화가 비친다. 꼬리(::after)의 opacity 와 값을 맞춰야
      이음새에서 색이 갈리지 않는다. */
-  background:rgba(28,75,214,.88); color:#fff;        /* 목업 #1C4BD6 + 투명도 */
+  background:rgba(30,42,74,.88); color:#fff;         /* 진한 남색 — base 의 .btn.navy 기준색 #1E2A4A */
   font-family:var(--font-body),'Inter',sans-serif;
   font-size:clamp(15px,1.75cqw,25px); font-weight:600; line-height:1.35;
   letter-spacing:-.01em;
@@ -1634,7 +1634,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   margin-left:0;                                     /* 투명하면 겹친 부분이 진하게 보인다 */
   opacity:.88;                                       /* 본체 배경 알파와 동일 */
   background:no-repeat center/100% 100%
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 25'%3E%3Cpath d='M0 2.5 Q0 0 2.2 1.1 L15.6 8.3 Q19.5 10.6 15.6 13 L2.2 21.4 Q0 22.6 0 20.1 Z' fill='%231C4BD6'/%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 25'%3E%3Cpath d='M0 2.5 Q0 0 2.2 1.1 L15.6 8.3 Q19.5 10.6 15.6 13 L2.2 21.4 Q0 22.6 0 20.1 Z' fill='%231E2A4A'/%3E%3C/svg%3E");
 }
 /* 사라져도 자리는 그대로 둔다 — DOM 에서 지우거나 display:none 을 주면
    flex 가 줄어들며 LIO 가 왼쪽으로 밀린다. */
