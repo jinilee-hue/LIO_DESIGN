@@ -2,10 +2,11 @@
    기획: Figma C_SLIDE16 (node 384:322) — 우측 활동 영역 하단 오른쪽에 LIO 가 서고
    파란 말풍선으로 안내한다. 안내가 대화창 말풍선을 대신하므로 원래 대화는 걷어낸다.
 
-   C 는 slide 15 와 16 을 한 화면으로 합쳤다(c-flow.js 가 16 을 빼고 15 에 즉시채점을
-   켠다). 그래서 한 화면에서 두 단계로 말한다.
-     1) 진입   지문 듣는 방법을 안내
-     2) 채점 후 정/오답 반응이 끝나면 칭찬 → Pre-retry 로 자동 진행
+   화면마다 말풍선을 순차로 띄운다. 한 개가 다 읽히면 사라지고 다음 것이 뜬다.
+     slide 15  진입 : 지문 듣는 방법 → 학생이 풀기 → 채점 : 결과 멘트 → Pre-retry
+               (C 는 15 와 16 을 한 화면으로 합쳤다 — c-flow.js)
+     slide 17  진입 : STRATEGY FOR MAIN IDEA 3단계를 순차로 설명
+               (원래 18 의 전략 박스를 여기로 옮겼다. 18 의 박스는 theme-c 에서 감춘다)
 
    공용 engine.js / flow-data.js / base.css 는 손대지 않는다. designC/index.html
    에서만 로드하므로 A · B 에는 영향이 없다 (designC/README.md 의 격리 규칙).
@@ -25,33 +26,51 @@
   'use strict';
 
   var LEAD = 450;        // 말풍선이 뜬 뒤 읽기 시작까지(ms)
-  var REACT_WAIT = 400;  // 채점 후 이 시간 안에 반응이 안 뜨면 그냥 안내로
-  var GAP = 260;         // 반응이 사라진 뒤 안내까지의 숨돌림
-  var cheerText = '';    // 지금 말풍선이 담고 있는 문구 (정/오답에 따라 달라진다)
+  var REACT_WAIT = 400;  // 채점 후 이 시간 안에 반응이 안 뜨면 그냥 멘트로
+  var GAP = 260;         // 반응이 사라진 뒤 멘트까지의 숨돌림
+  var STEP_GAP = 420;    // 말풍선 하나가 사라지고 다음 것이 뜨기까지
 
-  var SCREEN = 'scr-fp1_mq';        // slide 15 (기획서 PAGE 14) — 16 을 여기 합쳤다
-
-  // 말풍선이 대신하는 대화 (flow-data 는 A · B 공용이라 DOM 에서만 걷어낸다)
-  var DROP = [/press the Listen button/i];
-
-  // 순서대로 말한다. on:'enter' 는 진입 직후, on:'grade' 는 채점·반응이 끝난 뒤.
-  var STEPS = [
+  var CONFIG = [
     {
-      on: 'enter',
-      // 원문은 "If you want to listen, press the Listen button next to each paragraph." 인데
+      screen: 'scr-fp1_mq',                        // slide 15 (PAGE 14) — 16 을 합쳤다
+      drop: [/press the Listen button/i],          // 말풍선이 대신하는 대화
+      // 원문 "If you want to listen, press the Listen button next to each paragraph." 를
       // 글자 크기를 줄이지 않고 두 줄에 담기게 뜻만 남겨 줄였다.
-      html: 'Press Listen to hear<br>each paragraph.',
-      text: 'Press Listen to hear each paragraph.',
+      enter: [
+        { html: 'Press Listen to hear<br>each paragraph.',
+          text: 'Press Listen to hear each paragraph.' },
+      ],
+      grade: [
+        { html: "You did great!<br>Let's go next step!",
+          text: "You did great! Let's go next step!",
+          // 15·16 을 합치면서 한 화면이 정답·오답을 모두 받는다 — 오답에 칭찬이 나가면
+          // 안 되므로 결과별로 문구를 나눈다(원래 16 은 정답경로 전용이었다).
+          wrongHtml: "Nice try!<br>Let's look at it together.",
+          wrongText: "Nice try! Let's look at it together." },
+      ],
+      go: 'pre_retry',                             // 원래 slide 16 의 Next 와 같은 목적지
     },
     {
-      on: 'grade',
-      html: "You did great!<br>Let's go next step!",
-      text: "You did great! Let's go next step!",
-      // 15·16 을 합치면서 한 화면이 정답·오답을 모두 받는다. 오답에 칭찬이 나가면
-      // 안 되므로 결과별로 문구를 나눈다(원래 16 은 정답경로 전용이었다).
-      wrongHtml: "Nice try!<br>Let's look at it together.",
-      wrongText: "Nice try! Let's look at it together.",
-      go: 'pre_retry',               // 원래 slide 16 의 Next 와 같은 목적지
+      // slide 18 : 전략 박스는 17 로 옮겼으므로 그것을 여는 멘트도 걷어낸다
+      // (박스 자체는 theme-c.css 에서 감춘다)
+      screen: 'scr-fp1_et_correct',                // slide 18 (PAGE 17)
+      drop: [/strategy you just used/i],
+    },
+    {
+      screen: 'scr-fp1_et',                        // slide 17 (PAGE 16) Evidence Tap 안내
+      // 원래 slide 18 의 STRATEGY FOR MAIN IDEA 박스를 LIO 설명으로 옮겼다.
+      // 3번 항목의 원문은 'Ask "What big idea covers ALL the key details?" — that is
+      // the main idea.' 인데 말풍선 두 줄에 맞게 뜻만 남겨 줄였다.
+      enter: [
+        { html: 'Here is the strategy<br>for the main idea.',
+          text: 'Here is the strategy for the main idea.' },
+        { html: '1. Find the topic<br>or main character.',
+          text: 'One. Find the topic or main character.' },
+        { html: '2. Find the<br>key details.',
+          text: 'Two. Find the key details.' },
+        { html: '3. Ask what big idea<br>covers ALL the details.',
+          text: 'Three. Ask what big idea covers all the details. That is the main idea.' },
+      ],
     },
   ];
 
@@ -68,7 +87,7 @@
     return en[0] || null;
   }
 
-  /* 안내가 끝나면 지정한 화면으로 넘어간다 (go 가 없으면 그대로 머문다) */
+  /* 지정한 화면으로 넘어간다 (go 가 없으면 그대로 머문다) */
   function advance(go) {
     if (!go) return;
     setTimeout(function () {
@@ -76,49 +95,52 @@
       if (!E || !F) return;
       var i = F.SCREENS.findIndex(function (x) { return x.id === go; });
       if (i >= 0) E.goTo(i);
-    }, 520);                                     // 말풍선이 사라지는 전환(.45s)을 기다린다
+    }, 520);                                       // 말풍선이 사라지는 전환(.45s)을 기다린다
   }
 
-  /* 다 읽으면(또는 읽을 수 없으면) 말풍선을 감추고 LIO 를 멈춘다 */
-  function speakThenHide(cfg, bubble, lio) {
+  /* 말풍선 하나 : 띄우고 읽고 감춘다. 끝나면 next() */
+  function sayOne(step, bubble, lio, wrong, next) {
+    if (!bubble || !bubble.isConnected) return;
+    var say = (wrong && step.wrongText) ? step.wrongText : step.text;
+    bubble.innerHTML = (wrong && step.wrongHtml) ? step.wrongHtml : step.html;
+    // 다시 띄울 때 등장 애니메이션이 재생되도록 클래스를 떼고 리플로우를 한 번 일으킨다
+    bubble.classList.remove('c16-gone', 'c16-in');
+    void bubble.offsetWidth;
+    bubble.classList.add('c16-in');
+    if (lio) lio.classList.remove('c16-still');    // 말하기 시작
+
     var done = false;
-    // 말풍선을 DOM 에서 지우지 않는다 — 지우면 flex 가 줄어들며 LIO 가 밀린다.
-    // .c16-gone 이 opacity + visibility 로만 감추므로 LIO 위치는 그대로다.
-    function hide() {
+    function finish() {
       if (done || !bubble.isConnected) return;
       done = true;
       bubble.classList.add('c16-gone');
-      if (lio) lio.classList.add('c16-still');   // 말하기 멈춤 (입 다문 프레임에서 정지)
-      advance(cfg.go);
+      if (lio) lio.classList.add('c16-still');     // 입 다문 프레임에서 정지
+      setTimeout(next, STEP_GAP);
     }
     // 발화 시간을 예측할 수 없는 환경(음성 없음 · 헤드리스)을 위한 안전장치
-    var say = cheerText || cfg.text;
     var fallback = Math.max(2200, say.split(/\s+/).length * 380 + 1400);
-    var timer = setTimeout(hide, fallback);
+    var timer = setTimeout(finish, fallback);
 
-    if (!window.speechSynthesis) return;
-    try {
-      var u = new SpeechSynthesisUtterance(say);
-      u.lang = 'en-US'; u.pitch = 1.25; u.rate = 0.92; u.volume = 1;
-      u.voice = pickVoice();
-      u.onend = function () { clearTimeout(timer); hide(); };
-      u.onerror = function () { clearTimeout(timer); hide(); };
-      window.speechSynthesis.speak(u);
-    } catch (e) { /* 안전장치 타이머가 처리한다 */ }
+    setTimeout(function () {
+      if (!window.speechSynthesis) return;
+      try {
+        var u = new SpeechSynthesisUtterance(say);
+        u.lang = 'en-US'; u.pitch = 1.25; u.rate = 0.92; u.volume = 1;
+        u.voice = pickVoice();
+        u.onend = function () { clearTimeout(timer); finish(); };
+        u.onerror = function () { clearTimeout(timer); finish(); };
+        window.speechSynthesis.speak(u);
+      } catch (e) { /* 안전장치 타이머가 처리한다 */ }
+    }, LEAD);
   }
 
-  /* 말풍선을 띄우고 LIO 를 움직이며 안내를 읽는다 */
-  function cheer(cfg, bubble, lio, wrong) {
-    if (!bubble || !bubble.isConnected) return;
-    // 오답 문구가 정의된 단계는 결과에 따라 갈라 쓴다
-    cheerText = (wrong && cfg.wrongText) ? cfg.wrongText : cfg.text;
-    bubble.innerHTML = (wrong && cfg.wrongHtml) ? cfg.wrongHtml : cfg.html;
-    bubble.classList.remove('c16-gone', 'c16-in');
-    void bubble.offsetWidth;                      // 등장 애니메이션을 다시 재생시킨다
-    bubble.classList.remove('c16-gone');
-    bubble.classList.add('c16-in');               // 등장 애니메이션 (theme-c.css)
-    if (lio) lio.classList.remove('c16-still');   // 말하기 시작
-    setTimeout(function () { speakThenHide(cfg, bubble, lio); }, LEAD);
+  /* 말풍선 여러 개를 순서대로 */
+  function sayAll(steps, bubble, lio, wrong, done) {
+    var i = 0;
+    (function step() {
+      if (i >= steps.length) { if (done) done(); return; }
+      sayOne(steps[i++], bubble, lio, wrong, step);
+    })();
   }
 
   /* 말풍선이 대신하는 대화를 걷어낸다 (flow-data 는 A · B 공용이라 DOM 에서만) */
@@ -150,7 +172,7 @@
         if (/\b(correct|wrong)\b/.test(recs[i].oldValue || '')) continue;
         fired = true;
         mo.disconnect();
-        // 채점 결과 : 오답을 고르면 engine 이 고른 보기에 .wrong 을 붙인다
+        // 오답을 고르면 engine 이 고른 보기에 .wrong 을 붙인다
         // (정답 보기에도 .correct 를 함께 붙이므로 .wrong 존재로 판정한다)
         var wrong = !!dev.querySelector('.choice.wrong');
         afterReaction(dev, function () { run(wrong); });
@@ -173,7 +195,7 @@
       setTimeout(run, GAP);
     });
     mo.observe(dev, { attributes: true, attributeFilter: ['class'] });
-    setTimeout(function () {                      // 반응이 시작되지 않는 경우의 보험
+    setTimeout(function () {                       // 반응이 시작되지 않는 경우의 보험
       if (started || dev.classList.contains('c16-react')) return;
       mo.disconnect();
       run();
@@ -181,27 +203,35 @@
   }
 
   function mount() {
-    var dev = document.querySelector('#stage .device.' + SCREEN);
-    if (!dev) return;
-    var host = dev.querySelector('.reading');
-    if (!host || host.querySelector('.c16-cheer')) return;
+    for (var k = 0; k < CONFIG.length; k++) {
+      var cfg = CONFIG[k];
+      var dev = document.querySelector('#stage .device.' + cfg.screen);
+      if (!dev) continue;
+      var host = dev.querySelector('.reading');
+      if (!host || host.querySelector('.c16-cheer')) return;
 
-    dropMessages(dev, DROP);
-    // 말풍선은 자리를 차지한 채 감춰 둔다(c16-gone) — 나중에 넣으면 flex 가 늘며
-    // LIO 가 밀린다. LIO 는 정지 상태(c16-still)로 시작해 말할 때만 움직인다.
-    host.insertAdjacentHTML('beforeend',
-      '<div class="c16-cheer" aria-hidden="true">' +
-        '<div class="c16-bubble c16-gone"></div>' +
-        '<div class="c16-lio c16-still"></div>' +
-      '</div>');
+      dropMessages(dev, cfg.drop);
+      // 말풍선은 자리를 차지한 채 감춰 둔다(c16-gone) — 나중에 넣으면 flex 가 늘며
+      // LIO 가 밀린다. LIO 는 정지 상태(c16-still)로 시작해 말할 때만 움직인다.
+      host.insertAdjacentHTML('beforeend',
+        '<div class="c16-cheer" aria-hidden="true">' +
+          '<div class="c16-bubble c16-gone"></div>' +
+          '<div class="c16-lio c16-still"></div>' +
+        '</div>');
 
-    var bubble = host.querySelector('.c16-bubble');
-    var lio = host.querySelector('.c16-lio');
-    var enter = STEPS.filter(function (x) { return x.on === 'enter'; })[0];
-    var grade = STEPS.filter(function (x) { return x.on === 'grade'; })[0];
-
-    if (enter) setTimeout(function () { cheer(enter, bubble, lio); }, 700);
-    if (grade) watchGrade(dev, function (wrong) { cheer(grade, bubble, lio, wrong); });
+      var bubble = host.querySelector('.c16-bubble');
+      var lio = host.querySelector('.c16-lio');
+      var c = cfg;
+      if (c.enter && c.enter.length) {
+        setTimeout(function () { sayAll(c.enter, bubble, lio, false, null); }, 700);
+      }
+      if (c.grade && c.grade.length) {
+        watchGrade(dev, function (wrong) {
+          sayAll(c.grade, bubble, lio, wrong, function () { advance(c.go); });
+        });
+      }
+      return;
+    }
   }
 
   // engine 은 화면을 옮길 때 #stage 의 내용을 새로 그린다 — 그 시점마다 다시 붙인다.

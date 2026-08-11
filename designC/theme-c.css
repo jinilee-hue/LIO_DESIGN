@@ -1799,3 +1799,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    재생 중 버튼이 사방 2px 씩(총 4px) 커 보인다. 안쪽 링으로 바꿔 크기를 같게 둔다. */
 .listen-btn.playing{ box-shadow:inset 0 0 0 2px rgba(15,109,97,.35) }
 
+
+/* slide 18 : STRATEGY FOR MAIN IDEA 박스는 slide 17 에서 LIO 가 말풍선으로 설명한다
+   (c-lio-guide.js). 여기서는 감춘다 — flow-data 는 A · B 공용이라 지우지 않는다.
+   박스를 여는 멘트도 함께 의미가 없어져 스크립트에서 걷어낸다. */
+.scr-fp1_et_correct .strategy{ display:none }
