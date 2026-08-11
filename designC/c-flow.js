@@ -20,12 +20,16 @@
 
   // 뺄 화면 (원래 slide 번호 — 기획서 PAGE)
   var DROP = [
+    'plan',                //  9 (PAGE  8) 전체 활동 Intro
     'skill_video_intro',   // 10 (PAGE  9) Skill Video Intro
     'skill_video',         // 11 (PAGE 10) Skill Video
     'game_intro',          // 12 (PAGE 11) Game Intro
     'game',                // 13 (PAGE 12) Game
     'fp1_intro',           // 14 (PAGE 13) FP1 Intro
   ];
+  // plan 을 뺀 이유 : 안내 문구가 "watch a video → play a game → read & practice" 로
+  // 지운 활동들을 가리켜 흐름과 맞지 않았다. (engine 의 INTRO_BGM_IDS 에 'plan' 이
+  // 들어 있지만 화면이 없으면 그 항목이 매칭되지 않을 뿐이라 문제되지 않는다)
 
   var F = window.LIO_FLOW;
   if (!F || !F.SCREENS) return;
