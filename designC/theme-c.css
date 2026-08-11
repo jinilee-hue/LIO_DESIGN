@@ -1770,7 +1770,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    markup 은 engine.js 의 `<button class="listen-btn"><img class="ls-ic">Listen</button>` 로
    'Listen' 이 요소로 감싸여 있지 않은 순수 텍스트 노드다. 자식 선택자로는 못 숨기므로
    버튼의 font-size 를 0 으로 만들어 지운다. 아이콘 크기는 px 로 지정돼 있어 영향받지 않는다.
-   공용 base.css 를 고치면 A · B 도 바뀌므로 C 에서만 덮는다. */
+   공용 base.css 를 고치면 A 까지 바뀌므로 C 에서만 덮는다(B 는 theme-b.css 에 같은 규칙). */
 .listen-btn{
   /* font-size:0 으로 텍스트를 지우면 인라인 요소의 베이스라인이 무너져 버튼이
      아래로 내려간다. inline-flex 로 아이콘을 가운데 두고, 버튼 자체를
