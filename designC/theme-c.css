@@ -1617,7 +1617,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   margin-top:.51cqw;                                 /* 목업: LIO 보다 8px 아래 */
   padding:.65cqw 1.35cqw;
   border-radius:1.5cqw;                              /* 목업 10px → 더 둥글게 */
-  background:#1C4BD6; color:#fff;                    /* 목업에서 추출한 색 */
+  /* 살짝 투명하게 — 아래 대화가 비친다. 꼬리(::after)의 opacity 와 값을 맞춰야
+     이음새에서 색이 갈리지 않는다. */
+  background:rgba(28,75,214,.88); color:#fff;        /* 목업 #1C4BD6 + 투명도 */
   font-family:var(--font-body),'Inter',sans-serif;
   font-size:clamp(15px,1.75cqw,25px); font-weight:600; line-height:1.35;
   letter-spacing:-.01em;
@@ -1629,7 +1631,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   content:''; position:absolute; top:50%; left:100%;
   transform:translateY(-50%);
   width:1.4cqw; height:1.75cqw;
-  margin-left:-.06cqw;                               /* 본체와 이음새를 겹쳐 가린다 */
+  margin-left:0;                                     /* 투명하면 겹친 부분이 진하게 보인다 */
+  opacity:.88;                                       /* 본체 배경 알파와 동일 */
   background:no-repeat center/100% 100%
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 25'%3E%3Cpath d='M0 2.5 Q0 0 2.2 1.1 L15.6 8.3 Q19.5 10.6 15.6 13 L2.2 21.4 Q0 22.6 0 20.1 Z' fill='%231C4BD6'/%3E%3C/svg%3E");
 }
@@ -1677,3 +1680,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   .c16-cheer .c16-bubble.c16-gone{ transition:none }
   .c16-cheer .c16-lio{ animation:none }
 }
+
+/* slide 16 Next 버튼은 가운데. flow-data 의 align:'end' 는 A · B 와 공용이라
+   거기서 바꾸면 세 시안 모두 바뀐다 — C 에서 CSS 로만 덮는다.
+   base.css 의 .reading .activity .btnrow{justify-content:flex-end} (0,3,0) 를
+   이기려면 화면 클래스를 앞에 붙여 (0,4,0) 으로 만들어야 한다. */
+.scr-fp1_mq_correct .reading .activity .btnrow{ justify-content:center }
