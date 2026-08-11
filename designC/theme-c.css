@@ -1610,8 +1610,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 }
 .c16-cheer .c16-bubble{
   position:relative;
-  /* 떴다가(c16BubbleIn) TTS 로 읽고 사라진다(.c16-gone) — c-slide16.js 가 붙인다 */
-  animation:c16BubbleIn .34s cubic-bezier(.2,1.3,.4,1) both;
+  /* 처음엔 .c16-gone 으로 감춰 두고, 채점이 끝나면 c-slide16.js 가 .c16-in 을 붙여
+     띄운다. 등장 애니메이션을 이 규칙에 두면 화면에 들어갈 때 한 번 소모돼 버린다. */
   flex:0 0 19.8cqw;                                  /* 목업 210px → 글자 확대에 맞춰 넓힘 */
   box-sizing:border-box;
   margin-top:.51cqw;                                 /* 목업: LIO 보다 8px 아래 */
@@ -1639,9 +1639,11 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 사라져도 자리는 그대로 둔다 — DOM 에서 지우거나 display:none 을 주면
    flex 가 줄어들며 LIO 가 왼쪽으로 밀린다. */
 .c16-cheer .c16-bubble.c16-gone{
+  animation:none;
   opacity:0; visibility:hidden; transform:translateY(-.4cqw) scale(.96);
   transition:opacity .45s ease, transform .45s ease, visibility 0s linear .45s;
 }
+.c16-cheer .c16-bubble.c16-in{ animation:c16BubbleIn .34s cubic-bezier(.2,1.3,.4,1) both }
 @keyframes c16BubbleIn{
   from{ opacity:0; transform:translateY(.5cqw) scale(.92) }
   to  { opacity:1; transform:none }
@@ -1686,3 +1688,41 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    base.css 의 .reading .activity .btnrow{justify-content:flex-end} (0,3,0) 를
    이기려면 화면 클래스를 앞에 붙여 (0,4,0) 으로 만들어야 한다. */
 .scr-fp1_mq_correct .reading .activity .btnrow{ justify-content:center }
+/* Next 버튼은 쓰지 않는다 — 안내를 다 들으면 c-slide16.js 가 자동으로 넘긴다.
+   flow-data 의 버튼 정의는 A · B 공용이라 지우지 않고 C 에서만 감춘다.
+   (위 가운데 정렬은 버튼을 다시 살릴 때를 위해 남겨 둔다) */
+.scr-fp1_mq_correct .reading .activity .btnrow{ display:none }
+
+/* ── slide 16 정/오답 반응을 하단 LIO 자리·크기로 ──────────────────────────
+   기본(.quiz-reaction)은 화면 가운데 높이 62%(=42.15cqw)로 크게 뜬다.
+   C 의 slide 16 은 하단 LIO 가 반응하는 형태라, 그 박스에 맞춘다.
+   실측(device 기준) : LIO 폭 11.72cqw · 높이 14.66cqw · right .49cqw · bottom .82cqw
+
+   기본 bQuizIn/bQuizOut 은 transform 에 translate(-50%,-50%) 를 물고 있어
+   그대로 쓰면 다시 가운데로 끌려간다 — 확대/축소만 하는 키프레임으로 갈아낀다.
+   프레임 재생(bQuizFrame)과 quiz-x 의 alternate 방향은 그대로 쓴다. */
+.scr-fp1_mq_correct .quiz-reaction{
+  left:auto; top:auto;
+  right:.49cqw; bottom:.82cqw;
+  height:14.66cqw; width:auto;
+  transform:none; transform-origin:bottom center;
+  animation-name:c16QuizIn,bQuizFrame,c16QuizOut;
+  /* 작아진 만큼 그림자도 줄인다 */
+  filter:drop-shadow(0 clamp(3px,.5cqw,8px) clamp(6px,1cqw,14px) rgba(6,18,52,.30));
+}
+@keyframes c16QuizIn{
+  from{ opacity:0; transform:scale(.55) }
+  to  { opacity:1; transform:none }
+}
+@keyframes c16QuizOut{
+  from{ opacity:1; transform:none }
+  to  { opacity:0; transform:scale(.82) }
+}
+/* 오답(quiz_x)은 웅크린 자세라 비율이 가로로 넓다(556/516=1.078). 정답(quiz_o 436/572)
+   과 같은 높이를 주면 폭이 15.8cqw 로 서 있는 LIO(11.72cqw)보다 커 보인다.
+   높이를 14.66 → 11.7cqw 로 줄여 폭이 12.6cqw 가 되게 맞춘다. */
+.scr-fp1_mq_correct .quiz-reaction.quiz-x{ height:11.7cqw }
+
+/* 반응이 재생되는 동안에는 서 있는 LIO·말풍선을 감춘다 — 같은 자리에 겹치기 때문.
+   visibility 라 레이아웃은 그대로다(quiz-reaction.js 가 .c16-react 를 토글한다). */
+.scr-fp1_mq_correct.c16-react .c16-cheer{ visibility:hidden }

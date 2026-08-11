@@ -36,6 +36,9 @@
     var el = document.createElement('div');
     el.className = 'quiz-reaction quiz-' + kind;   // quiz-o | quiz-x
     dev.appendChild(el);
+    // slide 16(C)은 반응이 하단 LIO 자리에서 재생된다 — 서 있는 LIO 와 겹치므로
+    // 재생 중에는 그쪽을 감춘다. 다른 화면에서는 이 클래스를 쓰는 규칙이 없다.
+    dev.classList.add('c16-react');
     // 애니메이션이 끝나면 스스로 사라진다 (animationend 가 안 오는 환경 대비 타이머도 둔다)
     var done = false;
     function kill() {
@@ -43,9 +46,11 @@
       done = true;
       el.remove();
       if (rain) rain.remove();
+      dev.classList.remove('c16-react');
     }
     el.addEventListener('animationend', function (e) {
-      if (e.animationName === 'bQuizOut') kill();
+      // slide 16(C)은 하단 LIO 자리에서 재생돼 out 애니메이션 이름이 다르다(theme-c.css)
+      if (e.animationName === 'bQuizOut' || e.animationName === 'c16QuizOut') kill();
     });
     setTimeout(kill, DUR + 600);
   }
