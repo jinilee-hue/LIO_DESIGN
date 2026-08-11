@@ -1772,10 +1772,26 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    버튼의 font-size 를 0 으로 만들어 지운다. 아이콘 크기는 px 로 지정돼 있어 영향받지 않는다.
    공용 base.css 를 고치면 A · B 도 바뀌므로 C 에서만 덮는다. */
 .listen-btn{
+  /* font-size:0 으로 텍스트를 지우면 인라인 요소의 베이스라인이 무너져 버튼이
+     아래로 내려간다. inline-flex 로 아이콘을 가운데 두고, 버튼 자체를
+     vertical-align:middle 로 주변 텍스트 줄 중앙에 맞춘다. */
+  display:inline-flex; align-items:center; justify-content:center;
+  vertical-align:middle;
   font-size:0; line-height:0;
-  padding:.34cqw; border-radius:50%;
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  padding:0; border-radius:50%;
 }
 .listen-btn .ls-ic{
-  width:clamp(16px,1.7cqw,26px); height:clamp(16px,1.7cqw,26px);
-  margin-right:0; vertical-align:middle;
+  width:clamp(20px,2.2cqw,32px); height:clamp(20px,2.2cqw,32px);
+  margin-right:0; display:block;
 }
+/* 재생 중에는 markup 이 `<span class="ls-stop"></span>Stop` 으로 바뀐다(engine.js).
+   base 의 .ls-stop 은 9px 사각형에 margin-right:5px 라, flex 중앙 정렬에서 그 여백만큼
+   왼쪽으로 밀리고 스피커 아이콘(26px)에 비해 너무 작다. 여백을 없애고 키운다. */
+.listen-btn .ls-stop{
+  width:clamp(12px,1.3cqw,19px); height:clamp(12px,1.3cqw,19px);
+  margin-right:0; border-radius:22%; flex:0 0 auto;
+}
+/* base 의 .listen-btn.playing 은 바깥쪽 2px 링(box-shadow:0 0 0 2px)이라
+   재생 중 버튼이 사방 2px 씩(총 4px) 커 보인다. 안쪽 링으로 바꿔 크기를 같게 둔다. */
+.listen-btn.playing{ box-shadow:inset 0 0 0 2px rgba(15,109,97,.35) }
