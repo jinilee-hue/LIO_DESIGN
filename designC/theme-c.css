@@ -1665,6 +1665,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   transform:scaleX(-1);
 }
 @keyframes c16Talk{ from{ background-position:0 50% } to{ background-position:100% 50% } }
+/* 말풍선이 사라지면 말하기를 멈춘다. 멈추는 프레임은 16개 중 입이 가장 닫힌 12번
+   (입 픽셀 3021 · 가장 벌어진 6번은 6469) — 12/15 = 80%.
+   animation-play-state:paused 로 그 자리에 세우면 입을 벌린 채 굳을 수 있다. */
+.c16-cheer .c16-lio.c16-still{
+  animation:none;
+  background-position:80% 50%;
+}
 @media (prefers-reduced-motion:reduce){
   .c16-cheer .c16-bubble{ animation:none }
   .c16-cheer .c16-bubble.c16-gone{ transition:none }

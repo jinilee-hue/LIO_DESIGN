@@ -42,15 +42,16 @@
     return en[0] || null;
   }
 
-  /* 다 읽으면(또는 읽을 수 없으면) 말풍선을 지운다 */
-  function speakThenHide(bubble) {
+  /* 다 읽으면(또는 읽을 수 없으면) 말풍선을 감추고 LIO 도 멈춘다 */
+  function speakThenHide(bubble, lio) {
     var done = false;
-    // DOM 에서 지우지 않는다 — 지우면 flex 가 줄어들며 LIO 가 왼쪽으로 밀린다.
+    // 말풍선을 DOM 에서 지우지 않는다 — 지우면 flex 가 줄어들며 LIO 가 왼쪽으로 밀린다.
     // .c16-gone 이 opacity + visibility 로만 감추므로 LIO 위치는 그대로다.
     function hide() {
       if (done || !bubble.isConnected) return;
       done = true;
       bubble.classList.add('c16-gone');
+      if (lio) lio.classList.add('c16-still');   // 말하기 멈춤 (입 다문 프레임에서 정지)
     }
     // 발화 시간을 예측할 수 없는 환경(음성 없음 · 헤드리스)을 위한 안전장치
     var fallback = Math.max(2200, TEXT.split(/\s+/).length * 380 + 1400);
@@ -92,7 +93,8 @@
     dropMessages(dev);
     host.insertAdjacentHTML('beforeend', HTML);
     var bubble = host.querySelector('.c16-bubble');
-    if (bubble) setTimeout(function () { speakThenHide(bubble); }, LEAD);
+    var lio = host.querySelector('.c16-lio');
+    if (bubble) setTimeout(function () { speakThenHide(bubble, lio); }, LEAD);
   }
 
   // engine 은 화면을 옮길 때 #stage 의 내용을 새로 그린다 — 그 시점마다 다시 붙인다.
