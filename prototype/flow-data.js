@@ -237,7 +237,7 @@ const SCREENS = [
   id:'plan', page:8, slide:9, section:'Intro', title:'Skill1/2_Warming_Up_전체_활동_Intro', layout:'center',
   mascot:'lio_face2.png', mascotBig:true,
   message:[
-    'Here\'s how today will go: <b class="nm">watch a video</b> → <b class="nm">play a game</b> → <b class="nm">read &amp; practice</b>',
+    'Here\'s how today will go: First, <b class="nm">watch a video</b>. Next, <b class="nm">play a game</b>. Then, <b class="nm">read and practice</b>.',
     "Ready? Let's get started!",
   ],
   buttons:[{ html:"Let's play! ▶", style:'primary' }],
@@ -245,8 +245,10 @@ const SCREENS = [
   introSeq:{
     image:'intro4.png',
     fadeIn:true,
-    bubbles:[  // Figma A_Game Intro 원문 그대로
-      { side:'left',  text:'Here\'s how today will go:<br><b class="nm">watch a video</b> → <b class="nm">play a game</b> → <b class="nm">read &amp; practice</b>' },
+    // ⚠ 원래는 Figma A_Game Intro 원문 그대로였는데, 첫 말풍선 문구는 요청대로
+    //   화살표 나열 → 문장형("First, … Next, … Then, …")으로 바꿨다.
+    bubbles:[
+      { side:'left',  text:'Here\'s how today will go:<br>First, <b class="nm">watch a video</b>. Next, <b class="nm">play a game</b>. Then, <b class="nm">read and practice</b>.' },
       { side:'right', text:"Ready? Let's get started!" },
     ],
     cta:"Let's play!", ctaImg:'ui/btn_letsplay.png',   // Figma 버튼 원본
