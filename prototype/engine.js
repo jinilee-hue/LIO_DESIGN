@@ -828,17 +828,17 @@
     const en = root.querySelector('.tx-en'), kr = root.querySelector('.tx-kr');
     if (!en || !kr) return;
     const toKr = kr.hasAttribute('hidden');
-    /* slide 15(fp1_mq) 는 영문을 그대로 두고 한글을 아래에 덧붙인다 — 나머지 화면은
-       기존대로 영문↔한글 교체다. B 계열만(C 도 LIO_THEME='B') 적용해 A 는 건드리지 않는다.
-       한글을 별 줄로 보이게 하는 것은 theme-b.css 의 .scr-fp1_mq .tx-kr 규칙이다. */
-    const dev = btn.closest('.device');
-    const keepEn = THEME === 'B' && dev && dev.classList.contains('scr-fp1_mq');
+    /* 영문을 그대로 두고 한글을 아래에 덧붙인다(전체 화면). 버튼은 '닫기' 가 되어
+       누르면 한글만 사라지고 영문이 남는다.
+       B 계열만(C 도 LIO_THEME='B') 적용해 A 는 기존 영문↔한글 교체 그대로다.
+       한글을 별 줄로 보이게 하는 것은 theme-b.css 의 .tx-kr 규칙이다. */
+    const keepEn = THEME === 'B';
     if (toKr) { if (!keepEn) en.setAttribute('hidden', ''); kr.removeAttribute('hidden'); }
     else { kr.setAttribute('hidden', ''); en.removeAttribute('hidden'); }
     btn.classList.toggle('on', toKr);
-    // 한국어 표시 중엔 버튼이 EN (기획서 문구는 '닫기' 지만, 다시 영어로 돌아가는 토글이라
-    //  EN 이 동작을 더 정확히 알려준다 — 확인 후 EN 으로 유지하기로 했다)
-    btn.textContent = toKr ? 'EN' : 'KR';
+    // 한국어가 보이는 동안의 라벨. B 는 영문을 남긴 채 한글만 덧붙이므로 기획서대로 '닫기'
+    // (누르면 한글이 닫힌다). A 는 영문↔한글 교체라 'EN' 이 동작을 정확히 알려준다.
+    btn.textContent = toKr ? (keepEn ? '닫기' : 'EN') : 'KR';
     btn.setAttribute('aria-pressed', toKr ? 'true' : 'false');
   }
   function bindKr(root) {
@@ -2272,7 +2272,28 @@
     const tts = pop.querySelector('.tts-ic');
     if (tts) tts.onclick = () => speak(k ? k.w : raw, null, () => {});
     const krBtn = pop.querySelector('.wp-kr'), exEl = pop.querySelector('.wp-ex');
-    if (krBtn && exEl) { let kr = false; krBtn.onclick = () => { kr = !kr; exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en; krBtn.classList.toggle('on', kr); krBtn.textContent = kr ? 'EN' : 'KR'; }; }
+    /* 단어 팝업의 예문도 본문 토글과 같은 방식으로 — B 는 영문을 남기고 한글을 아래에
+       덧붙이고(.tx-kr 이 theme-b 에서 블록), 버튼은 '닫기'. A 는 기존 교체 그대로. */
+    if (krBtn && exEl) {
+      let kr = false;
+      krBtn.onclick = () => {
+        kr = !kr;
+        krBtn.classList.toggle('on', kr);
+        if (THEME === 'B') {
+          exEl.textContent = exEl.dataset.en;
+          if (kr) {
+            const line = document.createElement('span');
+            line.className = 'tx-kr';
+            line.textContent = exEl.dataset.kr;
+            exEl.appendChild(line);
+          }
+          krBtn.textContent = kr ? '닫기' : 'KR';
+        } else {
+          exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en;
+          krBtn.textContent = kr ? 'EN' : 'KR';
+        }
+      };
+    }
     if (k) speak(k.w, null, () => {});
   }
 
