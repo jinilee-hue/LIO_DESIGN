@@ -344,7 +344,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-greeting .introseq .introseq-scrim::after,
 .scr-greeting_cut3 .introseq .introseq-scrim::after{content:'';position:absolute;
   left:85.87%;top:13.81%;width:16.54%;aspect-ratio:97/94;
-  background:url("../IMAGE/b/bubble_go.png") no-repeat center/contain;
+  background:url("../IMAGE/b/bubble_go.png?v=20260812") no-repeat center/contain;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   animation:bBubbleFloat 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){
@@ -1237,7 +1237,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    폭은 커밋본과 같은 화면 폭 6.32%. */
 .splash .splash-inner::after{content:'';position:absolute;left:88%;top:6%;
   width:16.74%;aspect-ratio:97/94;opacity:0;
-  background:url("../IMAGE/b/bubble_hi.png") no-repeat center/contain;
+  background:url("../IMAGE/b/bubble_hi.png?v=20260812") no-repeat center/contain;
   /* 에셋에 그림자가 구워져 있지 않다(반투명 픽셀 0) — 떠 있는 느낌이 안 나므로 넣는다.
      box-shadow 는 사각 박스를 따라가므로 알파 모양을 따르는 drop-shadow 를 쓴다. */
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
@@ -1462,7 +1462,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    (프레임 97×94, 크기는 Figma 기준 97/1577 = 6.15cqw) */
 .skillscreen:not(.selected) .think-bubble{position:absolute;top:23%;left:38%;right:auto;
   width:clamp(44px,6.15cqw,92px);height:auto;aspect-ratio:97/94;
-  background:url("../IMAGE/b/ic_question.png") no-repeat center / contain;
+  background:url("../IMAGE/b/ic_question.png?v=20260812") no-repeat center / contain;
   border-radius:0;box-shadow:none;font-size:0;color:transparent;z-index:6;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   /* slide 7 의 LIO 옆 ? 말풍선은 쓰지 않는다 (요청). 위치·크기 값은 기록으로 남겨 둔다 —
@@ -1594,7 +1594,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    위치·크기·그림자·둥둥 뜨는 연출은 slide 5 의 HI! 말풍선과 같은 방식. */
 .scr-session_end .qe-scrim::after{content:'';position:absolute;left:84%;top:4%;
   width:17.5%;aspect-ratio:97/94;
-  background:url("../IMAGE/b/bubble_bye.png") no-repeat center/contain;
+  background:url("../IMAGE/b/bubble_bye.png?v=20260812") no-repeat center/contain;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   animation:bBubbleFloat 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){
@@ -1753,3 +1753,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    display:none 을 주면 .msg 가 flex 라 말풍선이 왼쪽으로 붙어 위 줄과 어긋난다 —
    자리는 남기고 visibility 로만 감춘다. */
 .msg.lio.lio-dup > .avatar{ visibility:hidden }
+
+/* 단어 팝업에서 예문 줄을 뺀다(요청). KR 버튼은 그 예문의 언어를 바꾸는 버튼이라
+   (engine 의 wp-kr 핸들러가 .wp-ex 를 갈아끼운다) 예문이 없으면 할 일이 없어 함께 감춘다.
+   markup 은 공용 engine.js 라 지우지 않고 여기서 감추기만 한다 — A 는 그대로다.
+   지문 하단 어휘 카드(.td-w 계열)의 예문은 건드리지 않는다. */
+.word-popup .wp-ex,
+.word-popup .wp-kr{ display:none }
