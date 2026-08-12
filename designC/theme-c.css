@@ -928,7 +928,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    헤드라인 "I found your skills!" x 5~29% · y 47.0~56.6% (마스코트 왼쪽)
    마스코트는 그 오른쪽에서 화면 하단까지 */
 .skillscreen.selected .skillsel-card,
-.skillscreen.found .skillsel-card{position:absolute;left:calc(64.75% + 60px);top:49.25%;
+.skillscreen.found .skillsel-card{position:absolute;left:51.55%;top:49.25%;
   transform:translate(-50%,-50%);z-index:3;pointer-events:none;
   width:32.9%;aspect-ratio:519/638;border-radius:26px;background:var(--scB,#3593FF);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2%;
@@ -951,7 +951,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    사자 머리-발이 534/562 라 height 69.07% 로 올려 기존 lio6.png 와 같은 504px 로 맞춘다.
    src 교체가 안 되는 것은 .skill-mascot 과 같은 사정 — content 로 비트맵을 지운다. */
 .skillscreen.selected .skillsel-mascot,
-.skillscreen.found .skillsel-mascot{position:absolute;left:calc(26% - 30px);top:49.25%;bottom:auto;
+.skillscreen.found .skillsel-mascot{position:absolute;left:5.2%;top:49.25%;bottom:auto;
   /* 사자 머리-발 504px — 같은 slide 7 의 탐색 상태(.skill-mascot)와 같은 크기.
      기존 정지 에셋의 머리에 맞춰 74.48% 로 키웠던 것을 되돌렸다. */
   height:69.07%;width:auto;aspect-ratio:468/562;z-index:4;pointer-events:none;
@@ -968,7 +968,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* 헤드라인은 마스코트 왼쪽에 놓고 위로 올린다 (기존엔 마스코트에 가려 잘렸다) */
 /* Figma 114:1305 "I found\n  your skills!" — 2줄, 둘째 줄 들여쓰기 */
 .skillscreen.selected .skill-headline,
-.skillscreen.found .skill-headline{position:absolute;left:5%;top:46.5%;
+.skillscreen.found .skill-headline{position:absolute;left:71%;top:46.5%;
   max-width:26%;text-align:left;z-index:6;line-height:1.15}
 .skillscreen.selected .skill-headline-l2,
 .skillscreen.found .skill-headline-l2{display:inline-block;margin-left:1.2em}
@@ -978,7 +978,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillfound-overlay{position:absolute;inset:0;z-index:5;pointer-events:none}
 .skillscreen.selected .skillsel-go,
 .skillscreen.found .skillsel-go{
-  position:absolute;left:6.9%;bottom:21.1%;z-index:7;pointer-events:auto;cursor:pointer;
+  position:absolute;left:71%;bottom:21.1%;z-index:7;pointer-events:auto;cursor:pointer;
   width:21.6%;height:9.3%;min-height:0;
   padding:0 calc(var(--cta-chev) + clamp(8px,1cqw,13px)) 0 clamp(8px,1cqw,13px);
   box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;border:none;
@@ -1459,7 +1459,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background:url("../IMAGE/b/ic_question.png") no-repeat center / contain;
   border-radius:0;box-shadow:none;font-size:0;color:transparent;z-index:6;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
-  display:block;padding:0;
+  /* slide 7 의 LIO 옆 ? 말풍선은 쓰지 않는다 (B 와 동일). 위치·크기 값은 기록으로 남겨 둔다 —
+     별도 규칙으로 display:none 을 앞에 두면 여기 있는 display 에 덮이므로 이 값을 바꾼다. */
+  display:none;padding:0;
   /* slide 5 의 HI! · slide 6 의 GO 말풍선과 같이 둥둥 뜨게 (같은 키프레임 재사용) */
   animation:bBubbleFloat 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){
@@ -1804,3 +1806,204 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    (c-lio-guide.js). 여기서는 감춘다 — flow-data 는 A · B 공용이라 지우지 않는다.
    박스를 여는 멘트도 함께 의미가 없어져 스크립트에서 걷어낸다. */
 .scr-fp1_et_correct .strategy{ display:none }
+
+/* ── Listen 버튼 : 텍스트 없이 아이콘만 크게 ────────────────────────────────
+   markup 은 engine.js 의 `<button class="listen-btn"><img class="ls-ic">Listen</button>` 로
+   'Listen' 이 요소로 감싸여 있지 않은 순수 텍스트 노드다. 자식 선택자로는 못 숨기므로
+   버튼의 font-size 를 0 으로 만들어 지운다. 아이콘 크기는 px 로 지정돼 있어 영향받지 않는다.
+   공용 base.css 를 고치면 A 까지 바뀌므로 C 에서만 덮는다(B 는 theme-b.css 에 같은 규칙). */
+.listen-btn{
+  /* font-size:0 으로 텍스트를 지우면 인라인 요소의 베이스라인이 무너져 버튼이
+     아래로 내려간다. inline-flex 로 아이콘을 가운데 두고, 버튼 자체를
+     vertical-align:middle 로 주변 텍스트 줄 중앙에 맞춘다. */
+  display:inline-flex; align-items:center; justify-content:center;
+  vertical-align:middle;
+  font-size:0; line-height:0;
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  padding:0; border-radius:50%;
+}
+.listen-btn .ls-ic{
+  width:clamp(20px,2.2cqw,32px); height:clamp(20px,2.2cqw,32px);
+  margin-right:0; display:block;
+}
+/* 재생 중에는 markup 이 `<span class="ls-stop"></span>Stop` 으로 바뀐다(engine.js).
+   base 의 .ls-stop 은 9px 사각형에 margin-right:5px 라, flex 중앙 정렬에서 그 여백만큼
+   왼쪽으로 밀리고 스피커 아이콘(26px)에 비해 너무 작다. 여백을 없애고 키운다. */
+.listen-btn .ls-stop{
+  width:clamp(12px,1.3cqw,19px); height:clamp(12px,1.3cqw,19px);
+  margin-right:0; border-radius:22%; flex:0 0 auto;
+}
+/* base 의 .listen-btn.playing 은 바깥쪽 2px 링(box-shadow:0 0 0 2px)이라
+   재생 중 버튼이 사방 2px 씩(총 4px) 커 보인다. 안쪽 링으로 바꿔 크기를 같게 둔다. */
+.listen-btn.playing{ box-shadow:inset 0 0 0 2px rgba(15,109,97,.35) }
+
+/* KR 을 누르면 영문을 남기고 그 아래에 한글을 붙인다(engine 의 keepEn · 전체 화면).
+   .tx-kr 은 원래 인라인이라 같은 줄에 이어 붙으므로 블록으로 떼어낸다. */
+.tx-kr:not([hidden]){
+  display:block;
+  margin-top:.28em;
+  color:#41527a;                 /* 영문보다 한 톤 눌러 구분 */
+  /* 한글은 영문보다 정확히 2px 작게. 비율(.94em)로 두면 부모 글자 크기(말풍선 18.6 ·
+     문제 19.4 · 보기 17.7px)마다 차이가 달라진다 — calc 로 고정한다. */
+  font-size:calc(1em - 2px);
+  line-height:1.35;
+}
+/* 한글 줄 끝의 닫기(X) — '닫기' 텍스트 버튼을 대신한다(engine 의 addKrClose).
+   한글 요소 안에 들어가므로 문장 끝에 자연스럽게 따라붙는다. */
+/* .kr 은 author 규칙에 display 가 있어 hidden 속성의 UA display:none 이 밀린다.
+   병기 중에는 KR 버튼을 감춰야 하므로 명시적으로 이긴다. */
+.kr[hidden]{ display:none !important }
+.tx-kr .tx-kr-x{
+  display:inline-flex; align-items:center; justify-content:center;
+  /* Listen 버튼과 같은 크기 — 같은 clamp 값을 쓴다(.listen-btn 참고). */
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  flex:0 0 auto; margin-left:clamp(4px,.5cqw,8px);
+  /* 한글 텍스트 줄과 세로 중앙을 맞춘다. 고정 오프셋은 글자 크기가 바뀌면 어긋나므로
+     middle 로 둔다 — 주변 텍스트의 중앙선에 붙는다. */
+  vertical-align:middle;
+  white-space:nowrap;
+  padding:0; border:none; border-radius:50%;
+  /* X 는 글리프(✕) 대신 SVG 로 그린다 — 굵기(stroke-width)와 둥근 끝(linecap:round)을
+     폰트에 맡기지 않고 직접 정한다. 글리프는 font-size:0 으로 감춘다(aria-label 로 읽힌다). */
+  background:#dfe6f3 no-repeat center / 46% 46%
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg stroke='%2341527a' stroke-width='3.6' stroke-linecap='round'%3E%3Cpath d='M6 6 L18 18'/%3E%3Cpath d='M18 6 L6 18'/%3E%3C/g%3E%3C/svg%3E");
+  color:#41527a; font-size:clamp(15px,1.6cqw,23px); line-height:1; cursor:pointer;
+  /* middle 은 라틴 x-height 중앙에 맞추는데 한글 글자는 그보다 살짝 위가 시각적 중앙이다.
+     실측 1.5~1.8px 낮게 앉아 그만큼 올린다(em 이라 글자 크기에 따라 같이 움직인다). */
+  position:relative; top:-.07em;
+  transition:background-color .15s;
+}
+.tx-kr .tx-kr-x:hover{ background-color:#cfd8ea }
+.tx-kr .tx-kr-x:focus-visible{ outline:2px solid var(--primary); outline-offset:1px }
+/* 대화창의 스피커·KR 을 지문 Listen 버튼과 같은 원형 버튼으로 통일한다.
+   기준(.listen-btn) : 지름 clamp(30px,3.2cqw,46px) · 배경 #e6f4f1 · 글자 #0f6d61 · 테두리 없음
+   스피커는 <img> 라 padding 으로 원 안에 아이콘을 앉힌다(아이콘은 26px 로 Listen 과 같다). */
+.activity .tts-ic{
+  /* 대화창은 spk_bubble.svg(검정), 지문은 spk_listen.svg(청록)를 쓴다. 둘 다 파랑으로
+     맞추려고 같은 그림의 파란 버전(spk_listen_blue.svg)으로 갈아 끼운다 — img 의 src 는
+     공용 engine 이 정하므로 content 로 그려지는 이미지만 바꾼다(A 는 그대로다). */
+  content:url("../IMAGE/ui/spk_listen_blue.svg");
+  box-sizing:border-box;
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  padding:clamp(5px,.5cqw,7px);
+  background:#e6f4f1; border-radius:50%;
+  flex:0 0 auto; margin-left:clamp(3px,.4cqw,6px);
+  vertical-align:middle; cursor:pointer;
+  /* 닫기 X 와 같은 보정 — middle 은 라틴 x-height 중앙에 맞아 한글 옆에서는 1.5px 낮게
+     앉는다. em 이라 글자 크기와 함께 움직인다(img 는 부모 font-size 를 물려받는다). */
+  position:relative; top:-.07em;
+}
+.activity .kr{
+  box-sizing:border-box;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  padding:0; margin-left:clamp(3px,.4cqw,6px);
+  background:#e6f4f1; border:none; border-radius:50%;
+  color:#0f6d61; font-weight:700;
+  font-size:clamp(11px,1.15cqw,17px); line-height:1;
+  vertical-align:middle;
+  /* 스피커·X 와 같은 보정 — middle 만으로는 글자 잉크 중앙보다 1.7px 낮게 앉는다.
+     KR 은 자체 글자 크기가 작아(약 13.6px) 같은 .07em 이면 보정이 부족하다.
+     스피커와 같은 실제 픽셀(약 1.4px)이 되도록 .10em 을 쓴다. */
+  position:relative; top:-.10em;
+}
+.activity .kr.on{ background:#0f6d61; color:#fff }
+
+/* Listen · 대화창 스피커 · KR 버튼 색 — #e6f4f1 은 말풍선 배경(#f0f3fb)과 명도가 비슷해
+   묻힌다. 배경을 한 단계 진하게 하고 테두리를 넣어 또렷하게 한다.
+   아이콘은 <img>(SVG 파일)라 CSS color 가 듣지 않으므로 배경·테두리로 대비를 만든다.
+   세 버튼을 함께 바꿔 앞서 맞춘 통일을 유지한다. */
+.listen-btn,
+.activity .tts-ic,
+.activity .kr{
+  background:#dde7ff;
+  border:1.5px solid #8aa9ee;
+  box-sizing:border-box;
+}
+.activity .kr{ color:#1b49c0; font-weight:800 }
+.listen-btn{ color:#1b49c0 }          /* base 의 .ls-stop 은 currentColor 라 정지 사각형도 따라온다 */
+.listen-btn:hover,
+.activity .tts-ic:hover,
+.activity .kr:hover{ background:#cbdaff }
+/* 재생(정지 버튼) 상태는 KR 닫기 X 와 같은 색으로 — 배경 #dfe6f3 · 표시 #41527a.
+   .ls-stop 은 base 에서 background:currentColor 라 color 만 주면 사각형도 따라온다. */
+.listen-btn.playing,
+.activity .tts-ic.playing,
+.word-popup .wp-word .tts-ic.playing{
+  background:#dfe6f3;
+  border-color:transparent;      /* X 는 테두리가 없다 — 있으면 서로 달라 보인다 */
+  color:#41527a;
+  box-shadow:none;
+}
+/* 스피커의 정지 아이콘 — 지문 .ls-stop 과 같은 둥근 사각형(색은 X 와 동일 #41527a) */
+.activity .tts-ic.playing,
+.word-popup .wp-word .tts-ic.playing{
+  content:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6.5' y='6.5' width='11' height='11' rx='2.6' fill='%2341527a'/%3E%3C/svg%3E");
+}
+/* 아이콘도 파랑으로 — 원본 SVG 는 stroke #0F6D61 이라 같은 그림의 파란 버전을 쓴다 */
+.listen-btn .ls-ic{ content:url("../IMAGE/ui/spk_listen_blue.svg") }
+/* LIO 말풍선이 연달아 나오면 첫 줄만 아바타를 보여준다.
+   .lio-dup 은 engine 의 dedupeLioAvatars 가 붙인다 — 사이에 숨은 말풍선이 끼어 있어
+   CSS 인접 선택자(+)로는 잘못 잡힌다(실측 33곳).
+   display:none 을 주면 .msg 가 flex 라 말풍선이 왼쪽으로 붙어 위 줄과 어긋난다 —
+   자리는 남기고 visibility 로만 감춘다. */
+.msg.lio.lio-dup > .avatar{ visibility:hidden }
+
+/* 단어 팝업에서 예문 줄을 뺀다(요청). KR 은 예문 대신 '뜻' 의 한글을 병기하는 버튼이
+   되었다(engine 의 wp-kr 핸들러 · 대화창과 같은 방식).
+   markup 은 공용 engine.js 라 지우지 않고 여기서 감추기만 한다 — A 는 그대로다.
+   지문 하단 어휘 카드(.td-w 계열)의 예문은 건드리지 않는다. */
+.word-popup .wp-ex{ display:none }
+
+/* 팝업의 Listen · KR 도 대화창과 같은 원형 버튼으로. 팝업 배경이 어두워 같은 파랑을
+   그대로 쓰면 잘 보인다(배경 #dde7ff · 테두리 #8aa9ee). 스피커 아이콘도 파란 버전으로. */
+.word-popup .tts-ic{
+  content:url("../IMAGE/ui/spk_listen_blue.svg");
+  box-sizing:border-box;
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  padding:clamp(5px,.5cqw,7px);
+  background:#dde7ff; border:1.5px solid #8aa9ee; border-radius:50%;
+  flex:0 0 auto; margin-left:clamp(3px,.4cqw,6px);
+  vertical-align:middle; cursor:pointer;
+  position:relative; top:-.07em;
+}
+/* base 의 .word-popup .wp-word .tts-ic{filter:invert(1) brightness(2)} 가 더 구체적이라
+   파란 버튼이 반전돼 노랗게 나온다 — 같은 경로로 덮어 KR 과 같은 색을 지킨다. */
+.word-popup .wp-word .tts-ic{ filter:none }
+.word-popup .wp-kr{
+  box-sizing:border-box;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  padding:0; margin-left:0;                      /* 단어 줄의 flex gap 이 간격을 준다 */
+  background:#dde7ff; border:1.5px solid #8aa9ee; border-radius:50%;
+  color:#1b49c0; font-weight:800;
+  font-size:clamp(11px,1.15cqw,17px); line-height:1;
+  vertical-align:middle; cursor:pointer;
+  position:relative; top:-.10em;
+}
+.word-popup .tts-ic:hover,
+.word-popup .wp-kr:hover{ background:#cbdaff }
+.word-popup .wp-kr[hidden]{ display:none !important }
+/* 뜻 아래 한글 병기 — 팝업은 배경이 어두워 밝은 색으로 */
+.word-popup .wp-def .tx-kr{ color:#cdd8f0 }
+/* 단어 팝업을 2열 그리드로 — 1열은 이모지, 2열은 단어·뜻·KR.
+   이모지를 단어 안에 두면 뜻 줄의 왼쪽이 이모지 폭만큼 어긋난다.
+   .wp-close 는 absolute 라 그리드에 끼지 않는다.
+   이모지가 없는 단어는 1열이 0폭이 되고 gap 도 이모지의 margin 이라 함께 사라진다. */
+.word-popup{ display:grid; grid-template-columns:auto 1fr; align-content:start }
+.word-popup > .wp-emo{
+  /* 단어 + 뜻 두 줄을 합친 높이의 가운데에 놓는다 (두 행을 걸치므로 center 로 충분하다) */
+  grid-column:1; grid-row:1 / span 2; align-self:center;
+  margin-right:.5em; font-size:2.1em; line-height:1.05;
+}
+.word-popup .wp-word,
+.word-popup .wp-def,
+.word-popup .wp-ex{ grid-column:2 }
+/* 단어 줄(.wp-word)은 flex + align-items:center 라 버튼을 flex 가 정렬한다.
+   텍스트 옆에 놓일 때 쓰던 상대 이동값(top)이 남아 있으면 두 버튼이 서로 어긋난다
+   (실측 4.72px). 여기서는 0 으로 두고, 간격도 다른 버튼들과 같은 값으로 맞춘다. */
+.word-popup .wp-word{ gap:clamp(3px,.4cqw,6px) }
+/* base 의 .wp-kr{margin-top:9px} 이 남아 있으면 flex 중앙 정렬에서 그 절반(4.5px)만큼
+   내려간다 — 여백을 모두 0 으로 두고 간격은 .wp-word 의 gap 에 맡긴다. */
+.word-popup .wp-word .tts-ic,
+.word-popup .wp-word .wp-kr{ top:0; margin:0; vertical-align:baseline }
