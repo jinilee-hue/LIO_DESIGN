@@ -1966,9 +1966,17 @@
          </div>`;
       bindKr(defBox);
       const tts = defBox.querySelector('.tts-ic');
-      if (tts) tts.onclick = () => (THEME === 'B' ? sayChain([k.w, k.def]) : speak(k.w, null, () => {}));
+      if (tts) tts.onclick = () => {
+        if (THEME !== 'B') { speak(k.w, null, () => {}); return; }
+        const el = passageWordEl(k.w.toLowerCase());
+        sayChain([k.w, k.def, el ? sentText(el) : '']);   // 단어 → 뜻 → 지문 문장
+      };
       defBox.scrollIntoView({ behavior:'smooth', block:'nearest' });
     };
+
+    /* 지문에서 그 단어가 있는 요소를 찾는다 — 카드를 탭했을 때도 문장을 읽어주려면 필요하다. */
+    const passageWordEl = (w) => [...stage.querySelectorAll('.passage b.kw')]
+      .find(e => e.textContent.trim().toLowerCase().replace(/[^a-z]/g, '') === w);
 
     /* 여러 문구를 순서대로 읽는다 — 하나가 끝나면 잠깐 쉬고 다음. */
     const sayChain = (parts) => {
@@ -1992,9 +2000,17 @@
         if (THEME === 'B' && k) sayChain([k.w, k.def, sentText(fromPassageEl)]);
         else speak(sentText(fromPassageEl) || w, null, () => {});
       } else if (k) {
-        // 카드를 탭한 경우엔 지문 문장을 특정할 수 없어 단어 → 뜻 까지만
-        if (THEME === 'B') sayChain([k.w, k.def]);
-        else speak(k.w, null, () => {});
+        /* 카드를 탭해도 지문에서 같은 단어를 찾아 그 문장까지 읽는다 —
+           읽어주는 문장을 눈으로도 찾을 수 있게 지문 쪽 하이라이트도 함께 옮긴다. */
+        const el = passageWordEl(w);
+        if (THEME === 'B') {
+          if (el) {
+            const sent = el.closest('.sent');
+            stage.querySelectorAll('.passage .sent.hl-yellow').forEach(x => x.classList.remove('hl-yellow'));
+            if (sent) sent.classList.add('hl-yellow');
+          }
+          sayChain([k.w, k.def, el ? sentText(el) : '']);
+        } else speak(k.w, null, () => {});
       }
       if (card && !card.classList.contains('flip')) {
         card.classList.add('flip');
