@@ -110,7 +110,8 @@
     try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch(e){}
     if(_curAudio){ _curAudio.pause(); _curAudio.currentTime=0; _curAudio=null; }
   }
-  function speak(text, audioUrl, onEnd){
+  /* rate : 넘기지 않으면 기본 0.92 그대로. 인트로(B)만 조금 빠르게 읽히려고 받는다. */
+  function speak(text, audioUrl, onEnd, rate){
     stopSpeak();
     if (audioUrl){
       _curAudio = new Audio(audioUrl);
@@ -124,13 +125,13 @@
     if(!_voices.length) loadVoices();
     const u = new SpeechSynthesisUtterance(clean);
     // 부드럽고 또렷한 톤: 과한 피치는 깨져서 살짝만 높임(아이 느낌) + 조금 느리게
-    u.lang = 'en-US'; u.pitch = 1.25; u.rate = 0.92; u.volume = 1;
+    u.lang = 'en-US'; u.pitch = 1.25; u.rate = rate || 0.92; u.volume = 1;
     u.voice = pickVoice();
     let done = false;
     const finish = () => { if (done) return; done = true; onEnd && onEnd(); };
     u.onend = finish; u.onerror = finish;
     // 안전장치: TTS 종료 이벤트가 안 오는 환경(헤드리스/음성 없음)에서도 다음으로 진행
-    later(finish, Math.max(2000, clean.split(/\s+/).length * 380 + 1600));
+    later(finish, Math.max(2000, clean.split(/\s+/).length * 380 / (rate || 0.92) * 0.92 + 1600));
     try{ window.speechSynthesis.speak(u); }catch(e){ finish(); }
   }
   // 자연스러운(뉴럴) 영어 음성 우선 선택 — 딱딱한 기본 음성 회피
@@ -2028,24 +2029,33 @@
     const nextBtn = stage.querySelector('.introseq-next');
     const replay = stage.querySelector('.introseq-replay');
     const data = scr.introSeq.bubbles;
+    /* B 는 인트로를 조금 빠르게 넘긴다 — 말풍선 간격을 줄이고 TTS 도 조금 빠르게 읽는다.
+       A 는 기존 값 그대로다(rate 를 넘기지 않으면 speak 이 0.92 를 쓴다). */
+    const fast = THEME === 'B';
+    const T_START = fast ? 420 : 700;   // 페이드인 후 첫 말풍선까지
+    const T_HOLD  = fast ? 300 : 550;   // 다 읽고 말풍선을 남겨두는 시간
+    const T_GAP   = fast ? 220 : 400;   // 다음 말풍선까지
+    const RATE    = fast ? 1.1 : 0;     // 0 이면 speak 의 기본값
     let i = 0;
     function step() {
       if (i >= bubs.length) {
         // cut2 → cut3 : 같은 배경이므로 페이드 없이 즉시 전환(말풍선만 교체)
-        if (scr.introSeq.autoNext) { later(goNext, 450); }
+        if (scr.introSeq.autoNext) { later(goNext, fast ? 300 : 450); }
         else if (nextBtn) { nextBtn.style.display = ''; }
         return;
       }
       const b = bubs[i];
       b.classList.add('show');
+      // B : 읽기 시작하는 순간 CTA 도 함께 보여준다 (A 는 마지막 말풍선까지 기다린다)
+      if (fast && nextBtn && nextBtn.style.display === 'none') nextBtn.style.display = '';
       speak(data[i].text, data[i].audio, () => {
         later(() => {
           b.classList.remove('show'); b.classList.add('done');
-          i++; later(step, 400);
-        }, 550);
-      });
+          i++; later(step, T_GAP);
+        }, T_HOLD);
+      }, RATE || undefined);
     }
-    later(step, 700); // 페이드인 이후 시작
+    later(step, T_START); // 페이드인 이후 시작
     if (replay) replay.onclick = () => {
       stopSpeak(); clearTimers(); i = 0;
       bubs.forEach(b => b.classList.remove('show', 'done'));

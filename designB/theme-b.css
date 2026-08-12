@@ -343,7 +343,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    위치는 cut2 에서의 좌표를 호스트 기준으로 환산한 값이라 원래 자리와 같다. */
 .scr-greeting .introseq .introseq-scrim::after,
 .scr-greeting_cut3 .introseq .introseq-scrim::after{content:'';position:absolute;
-  left:85.87%;top:13.81%;width:16.54%;aspect-ratio:146/142;
+  left:85.87%;top:13.81%;width:16.54%;aspect-ratio:97/94;
   background:url("../IMAGE/b/bubble_go.png") no-repeat center/contain;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   animation:bBubbleFloat 2.4s ease-in-out infinite}
@@ -1230,7 +1230,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    ::after 라 앞발 위로 그려져 말풍선이 앞에 있는 것처럼 보인다.
    폭은 커밋본과 같은 화면 폭 6.32%. */
 .splash .splash-inner::after{content:'';position:absolute;left:88%;top:6%;
-  width:16.74%;aspect-ratio:146/142;opacity:0;
+  width:16.74%;aspect-ratio:97/94;opacity:0;
   background:url("../IMAGE/b/bubble_hi.png") no-repeat center/contain;
   /* 에셋에 그림자가 구워져 있지 않다(반투명 픽셀 0) — 떠 있는 느낌이 안 나므로 넣는다.
      box-shadow 는 사각 박스를 따라가므로 알파 모양을 따르는 drop-shadow 를 쓴다. */
@@ -1459,7 +1459,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background:url("../IMAGE/b/ic_question.png") no-repeat center / contain;
   border-radius:0;box-shadow:none;font-size:0;color:transparent;z-index:6;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
-  display:block;padding:0;
+  /* slide 7 의 LIO 옆 ? 말풍선은 쓰지 않는다 (요청). 위치·크기 값은 기록으로 남겨 둔다 —
+     별도 규칙으로 display:none 을 앞에 두면 여기 있는 display 에 덮이므로 이 값을 바꾼다. */
+  display:none;padding:0;
   /* slide 5 의 HI! · slide 6 의 GO 말풍선과 같이 둥둥 뜨게 (같은 키프레임 재사용) */
   animation:bBubbleFloat 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){
@@ -1585,7 +1587,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    만들고 안쪽 원색은 그대로 남겼다(흰색 기준 언믹스만 쓰면 주황 글자가 옅어진다).
    위치·크기·그림자·둥둥 뜨는 연출은 slide 5 의 HI! 말풍선과 같은 방식. */
 .scr-session_end .qe-scrim::after{content:'';position:absolute;left:84%;top:4%;
-  width:17.5%;aspect-ratio:146/141;
+  width:17.5%;aspect-ratio:97/94;
   background:url("../IMAGE/b/bubble_bye.png") no-repeat center/contain;
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
   animation:bBubbleFloat 2.4s ease-in-out infinite}
