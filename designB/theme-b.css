@@ -522,7 +522,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .introseq .introseq-next,
 .introseq .introseq-next.btn,
 .introseq .introseq-next.btn.primary{
-  position:absolute;left:60.1%;bottom:21.2%;transform:none;
+  /* 라벨 길이가 화면마다 달라(Let's Go! ~ Let's get started!) 왼쪽을 고정하면 오른쪽이
+     들쭉날쭉해진다. 문구 중 가장 긴 문장의 끝(실측 89.9%)에 우측을 맞춘다 —
+     폭이 auto 인 화면도 왼쪽으로 늘어나므로 모든 인트로에서 오른쪽 선이 같다. */
+  position:absolute;right:10.1%;left:auto;bottom:21.2%;transform:none;
   width:21.5%;height:9.1%;min-height:0;
   padding:0 calc(var(--cta-chev) + clamp(8px,1cqw,13px)) 0 clamp(8px,1cqw,13px);
   box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;
@@ -535,7 +538,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 /* slide 9 (Game_Intro) 만 버튼 라벨이 다르다. 라벨은 flow-data 가 아니라 여기서 CSS 로
    그리므로(.introseq-next img 는 display:none) 화면별로 덮어쓴다.
    "Let's Go!"(9자) → "Let's get started!"(18자) 로 두 배가 되어 고정 폭 21.5% 에서는
-   글자가 겹친다 → 이 화면만 내용에 맞춰 늘리고(왼쪽 끝·높이는 그대로) 줄바꿈을 막는다.
+   글자가 겹친다 → 이 화면만 내용에 맞춰 늘리고(오른쪽 끝·높이는 그대로) 줄바꿈을 막는다.
    좌우 여백을 같게 줘야 pill 안에서 글자가 가운데 온다(기본 규칙은 오른쪽에 셰브론 자리를
    비워두느라 좌우가 비대칭이다).
    ⚠ Design A 는 같은 버튼을 ctaImg(ui/btn_letsplay.png) 이미지로 그리므로 영향 없다. */
@@ -548,7 +551,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .scr-game_intro .introseq .introseq-next,
 .scr-game_intro .introseq .introseq-next.btn,
 .scr-game_intro .introseq .introseq-next.btn.primary{
-  width:auto;white-space:nowrap;
+  width:auto;white-space:nowrap;left:auto;
   padding:0 calc(var(--cta-chev) + clamp(10px,1.4cqw,20px)) 0 clamp(20px,2.4cqw,34px)}
 .scr-plan .introseq .introseq-next::before{content:"Let's get started!"}
 .scr-skill_video_intro .introseq .introseq-next::before{content:"Let's watch!"}
