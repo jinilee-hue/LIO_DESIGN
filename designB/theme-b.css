@@ -1696,6 +1696,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   color:#0f6d61; font-weight:700;
   font-size:clamp(11px,1.15cqw,17px); line-height:1;
   vertical-align:middle;
+  /* 스피커·X 와 같은 보정 — middle 만으로는 글자 잉크 중앙보다 1.7px 낮게 앉는다.
+     KR 은 자체 글자 크기가 작아(약 13.6px) 같은 .07em 이면 보정이 부족하다.
+     스피커와 같은 실제 픽셀(약 1.4px)이 되도록 .10em 을 쓴다. */
+  position:relative; top:-.10em;
 }
 .activity .kr.on{ background:#0f6d61; color:#fff }
 
