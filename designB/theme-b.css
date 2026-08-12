@@ -1671,10 +1671,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    기준(.listen-btn) : 지름 clamp(30px,3.2cqw,46px) · 배경 #e6f4f1 · 글자 #0f6d61 · 테두리 없음
    스피커는 <img> 라 padding 으로 원 안에 아이콘을 앉힌다(아이콘은 26px 로 Listen 과 같다). */
 .activity .tts-ic{
-  /* 대화창은 spk_bubble.svg(stroke #0A0A0A · 검정)를, 지문은 spk_listen.svg(#0F6D61 · 청록)를
-     쓴다. 색을 맞추려고 지문과 같은 파일로 갈아 끼운다 — img 의 src 는 engine 이 정하므로
-     content 로 그려지는 이미지만 바꾼다(공용 markup 은 손대지 않아 A 는 그대로다). */
-  content:url("../IMAGE/ui/spk_listen.svg");
+  /* 대화창은 spk_bubble.svg(검정), 지문은 spk_listen.svg(청록)를 쓴다. 둘 다 파랑으로
+     맞추려고 같은 그림의 파란 버전(spk_listen_blue.svg)으로 갈아 끼운다 — img 의 src 는
+     공용 engine 이 정하므로 content 로 그려지는 이미지만 바꾼다(A 는 그대로다). */
+  content:url("../IMAGE/ui/spk_listen_blue.svg");
   box-sizing:border-box;
   width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
   padding:clamp(5px,.5cqw,7px);
@@ -1701,14 +1701,22 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .listen-btn,
 .activity .tts-ic,
 .activity .kr{
-  background:#c9ece4;
-  border:1.5px solid #55b6a6;
+  background:#dde7ff;
+  border:1.5px solid #8aa9ee;
   box-sizing:border-box;
 }
-.activity .kr{ color:#0b5c51; font-weight:800 }
-.listen-btn{ color:#0b5c51 }
+.activity .kr{ color:#1b49c0; font-weight:800 }
+.listen-btn{ color:#1b49c0 }          /* base 의 .ls-stop 은 currentColor 라 정지 사각형도 따라온다 */
 .listen-btn:hover,
 .activity .tts-ic:hover,
-.activity .kr:hover{ background:#b6e3d9 }
-/* 재생 중 안쪽 링은 진해진 배경 위에서도 보이게 */
-.listen-btn.playing{ box-shadow:inset 0 0 0 2px rgba(11,92,81,.55) }
+.activity .kr:hover{ background:#cbdaff }
+/* 재생(정지 버튼) 상태는 KR 닫기 X 와 같은 색으로 — 배경 #dfe6f3 · 표시 #41527a.
+   .ls-stop 은 base 에서 background:currentColor 라 color 만 주면 사각형도 따라온다. */
+.listen-btn.playing{
+  background:#dfe6f3;
+  border-color:#b8c4dc;
+  color:#41527a;
+  box-shadow:inset 0 0 0 2px rgba(65,82,122,.32);
+}
+/* 아이콘도 파랑으로 — 원본 SVG 는 stroke #0F6D61 이라 같은 그림의 파란 버전을 쓴다 */
+.listen-btn .ls-ic{ content:url("../IMAGE/ui/spk_listen_blue.svg") }
