@@ -925,7 +925,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen.found .skillsel-halo{display:none}          /* Figma B 는 후광 없음 */
 /* Figma B_Skill_selected 실측 :
    대형 카드 x 48.3~81.2% · y 19.5~79.0% (폭 32.9% / 비율 519:638)
-   헤드라인 "I found your skills!" x 5~29% · y 47.0~56.6% (마스코트 왼쪽)
+   헤드라인 "I found your skill!" x 5~29% · y 47.0~56.6% (마스코트 왼쪽)
    마스코트는 그 오른쪽에서 화면 하단까지 */
 .skillscreen.selected .skillsel-card,
 .skillscreen.found .skillsel-card{position:absolute;left:calc(64.75% + 60px);top:49.25%;
@@ -966,7 +966,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   .skillscreen.found .skillsel-mascot{animation:none}
 }
 /* 헤드라인은 마스코트 왼쪽에 놓고 위로 올린다 (기존엔 마스코트에 가려 잘렸다) */
-/* Figma 114:1305 "I found\n  your skills!" — 2줄, 둘째 줄 들여쓰기 */
+/* Figma 114:1305 "I found\n  your skill!" — 2줄, 둘째 줄 들여쓰기 */
 .skillscreen.selected .skill-headline,
 .skillscreen.found .skill-headline{position:absolute;left:5%;top:46.5%;
   max-width:26%;text-align:left;z-index:6;line-height:1.15}

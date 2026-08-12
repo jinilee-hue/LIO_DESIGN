@@ -465,7 +465,7 @@
     const faded = F.SKILLS.map(s =>
       `<div class="skill-card"><div class="sc-icon"><img src="${skillIcon(s)}" alt=""></div></div>`).join('');
     return `<div class="skillscreen a-skill selected">
-        <div class="skill-headline">I found your skills!</div>
+        <div class="skill-headline">I found your skill!</div>
         <div class="skill-grid dim">${faded}</div>
         <img class="skillsel-mascot" src="${mascot('lio6.png')}" alt="LIO">
         <div class="skillsel-halo"><span class="rays"></span><span class="glow"></span></div>
@@ -911,6 +911,9 @@
     if (THEME === 'B' && scr.layout === 'skill' && !scr.skillSelected && !scr.skillPick) {
       buildSkillLanesB();   // 컬럼 단위 세로 무한 스크롤
       bindSkillPickB();
+      /* 화면 문구도 읽어준다 — 인트로와 같은 속도(1.1). 스킬 확정 문구는 selectSkillB 에서.
+         speak 은 앞 발화를 끊으므로 룰렛(약 2.5s)이 끝나기 전에 이 문구가 끝난다. */
+      later(() => speak("Let's find your skill!", null, () => {}, 1.1), 420);
       // 최초 진입만 자동 제안. 'Let's do another one!' 로 온 경우는 학생이 직접 고른다.
       if (!skillManualPick) autoPickSkillB();
       skillManualPick = false;
@@ -2145,7 +2148,7 @@
   }
 
   /* Design B 전용 : 스킬 카드를 탭하면 Figma B_Skill_selected 구성으로 전환한다.
-     - 뒤 카드 그리드는 흐려지고(.dim) 헤드라인이 "I found your skills!" 로 바뀐다
+     - 뒤 카드 그리드는 흐려지고(.dim) 헤드라인이 "I found your skill!" 로 바뀐다
      - 선택한 스킬의 대형 카드 + 마스코트 오버레이가 올라온다
      - 잠시 보여준 뒤 다음 화면(Topic)으로 진행
      A 는 runSkillRoulette 경로를 그대로 쓰고 이 함수는 호출되지 않는다. */
@@ -2179,9 +2182,10 @@
       iconSrc = iconSrc || skillIcon(pick);
       ss.classList.add('selected');
       grid.classList.add('dim');
-      // Figma B_Skill_selected (114:1305) : "I found\n  your skills!"
+      // Figma B_Skill_selected (114:1305) : "I found\n  your skill!"
       const hd = ss.querySelector('.skill-headline');
-      if (hd) hd.innerHTML = 'I found<br><span class="skill-headline-l2">your skills!</span>';
+      if (hd) hd.innerHTML = 'I found<br><span class="skill-headline-l2">your skill!</span>';
+      later(() => speak('I found your skill!', null, () => {}, 1.1), 260);   // 문구와 함께 읽어준다
       ss.querySelectorAll('.skillfound-overlay').forEach(n => n.remove());
       const ov = document.createElement('div');
       ov.className = 'skillfound-overlay';
@@ -2231,7 +2235,7 @@
     const today = F.SKILLS.find(s => s.today) || F.SKILLS[0];
     ss.classList.add('found');
     const grid = ss.querySelector('.skill-grid'); if (grid) grid.classList.add('dim');
-    const hd = ss.querySelector('.skill-headline'); if (hd) hd.textContent = 'I found your skills!';
+    const hd = ss.querySelector('.skill-headline'); if (hd) hd.textContent = 'I found your skill!';
     const overlay = document.createElement('div');
     overlay.className = 'skillfound-overlay';
     overlay.innerHTML =
