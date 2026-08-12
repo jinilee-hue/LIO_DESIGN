@@ -1966,8 +1966,17 @@
          </div>`;
       bindKr(defBox);
       const tts = defBox.querySelector('.tts-ic');
-      if (tts) tts.onclick = () => speak(k.w, null, () => {});
+      if (tts) tts.onclick = () => (THEME === 'B' ? sayChain([k.w, k.def]) : speak(k.w, null, () => {}));
       defBox.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    };
+
+    /* 여러 문구를 순서대로 읽는다 — 하나가 끝나면 잠깐 쉬고 다음. */
+    const sayChain = (parts) => {
+      const list = parts.filter(Boolean);
+      (function step(i) {
+        if (i >= list.length) return;
+        speak(list[i], null, () => later(() => step(i + 1), 240));
+      })(0);
     };
 
     const revealWord = (w, fromPassageEl) => {
@@ -1978,9 +1987,14 @@
         const sent = fromPassageEl.closest('.sent');
         stage.querySelectorAll('.passage .sent.hl-yellow').forEach(s => s.classList.remove('hl-yellow'));
         if (sent) sent.classList.add('hl-yellow');
-        speak(sentText(fromPassageEl) || w, null, () => {});
+        /* 기획 : 단어 → 단어 뜻 → 그 단어가 있는 지문 문장 순서로 읽는다(B).
+           A 는 문장만 읽던 기존 동작을 유지한다. */
+        if (THEME === 'B' && k) sayChain([k.w, k.def, sentText(fromPassageEl)]);
+        else speak(sentText(fromPassageEl) || w, null, () => {});
       } else if (k) {
-        speak(k.w, null, () => {});
+        // 카드를 탭한 경우엔 지문 문장을 특정할 수 없어 단어 → 뜻 까지만
+        if (THEME === 'B') sayChain([k.w, k.def]);
+        else speak(k.w, null, () => {});
       }
       if (card && !card.classList.contains('flip')) {
         card.classList.add('flip');
