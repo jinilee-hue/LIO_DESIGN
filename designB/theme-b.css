@@ -1681,6 +1681,9 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   background:#e6f4f1; border-radius:50%;
   flex:0 0 auto; margin-left:clamp(3px,.4cqw,6px);
   vertical-align:middle; cursor:pointer;
+  /* 닫기 X 와 같은 보정 — middle 은 라틴 x-height 중앙에 맞아 한글 옆에서는 1.5px 낮게
+     앉는다. em 이라 글자 크기와 함께 움직인다(img 는 부모 font-size 를 물려받는다). */
+  position:relative; top:-.07em;
 }
 .activity .kr{
   box-sizing:border-box;
