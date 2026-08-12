@@ -87,6 +87,19 @@
     return en[0] || null;
   }
 
+  /* 말이 끝나면 LIO·말풍선을 함께 사라지게 한다 — 아래 Next 버튼을 가리지 않도록.
+     자리는 비워도 된다(절대배치라 다른 요소를 밀지 않는다). */
+  function fadeOutCheer(host) {
+    const wrap = host.querySelector('.c16-cheer');
+    if (!wrap) return;
+    wrap.classList.add('c16-away');
+    /* 클래스만으로는 계산값이 바뀌지 않는 경우가 있어(같은 요소를 겨누는 다른 규칙과
+       다툰다) 인라인으로 확실히 지정한다. 절대배치라 사라져도 레이아웃은 그대로다. */
+    wrap.style.transition = 'opacity .5s ease';
+    wrap.style.opacity = '0';
+    setTimeout(function () { if (wrap.isConnected) wrap.style.visibility = 'hidden'; }, 520);
+  }
+
   /* 지정한 화면으로 넘어간다 (go 가 없으면 그대로 머문다) */
   function advance(go) {
     if (!go) return;
@@ -227,7 +240,9 @@
       }
       if (c.grade && c.grade.length) {
         watchGrade(dev, function (wrong) {
-          sayAll(c.grade, bubble, lio, wrong, function () { advance(c.go); });
+          /* 말이 끝나면 LIO 도 함께 사라진다 — 아래 Next 버튼과 겹치지 않게 하려고
+             자동 진행을 버튼으로 넘겼다(진행은 Next 의 act:'goPreRetry'). */
+          sayAll(c.grade, bubble, lio, wrong, function () { fadeOutCheer(host); });
         });
       }
       return;

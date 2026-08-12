@@ -55,5 +55,10 @@
       if (b.items && b.items[0]) b.items[0].state = 'correct';   // A (기획서 slide 16 의 정답)
       break;
     }
+    /* Next 버튼도 되살린다 — 16 을 빼면서 함께 사라졌던 것이다(16 의 act:'goPreRetry').
+       LIO 는 말이 끝나면 사라지므로 버튼과 겹치지 않는다(c-lio-guide.js). */
+    if (!mq.blocks.some(function (b) { return b.t === 'buttons'; })) {
+      mq.blocks.push({ t:'buttons', items:[{ html:'Next ▶', style:'primary', act:'goPreRetry' }] });
+    }
   }
 })();
