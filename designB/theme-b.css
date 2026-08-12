@@ -1667,12 +1667,25 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 }
 .tx-kr .tx-kr-x:hover{ background-color:#cfd8ea }
 .tx-kr .tx-kr-x:focus-visible{ outline:2px solid var(--primary); outline-offset:1px }
-/* 대화창 스피커 아이콘 — base 는 14px 로 작다. 같은 줄의 Listen 버튼 안 아이콘(26px)과
-   같은 크기로 키우고 텍스트 줄 중앙에 맞춘다(고정 오프셋 대신 middle). */
-.msg .bubble .tts-ic,
-.qtext .tts-ic,
-.ctext .tts-ic{
-  width:clamp(20px,2.2cqw,32px); height:clamp(20px,2.2cqw,32px);
+/* 대화창의 스피커·KR 을 지문 Listen 버튼과 같은 원형 버튼으로 통일한다.
+   기준(.listen-btn) : 지름 clamp(30px,3.2cqw,46px) · 배경 #e6f4f1 · 글자 #0f6d61 · 테두리 없음
+   스피커는 <img> 라 padding 으로 원 안에 아이콘을 앉힌다(아이콘은 26px 로 Listen 과 같다). */
+.activity .tts-ic{
+  box-sizing:border-box;
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  padding:clamp(5px,.5cqw,7px);
+  background:#e6f4f1; border-radius:50%;
   flex:0 0 auto; margin-left:clamp(3px,.4cqw,6px);
+  vertical-align:middle; cursor:pointer;
+}
+.activity .kr{
+  box-sizing:border-box;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
+  padding:0; margin-left:clamp(3px,.4cqw,6px);
+  background:#e6f4f1; border:none; border-radius:50%;
+  color:#0f6d61; font-weight:700;
+  font-size:clamp(11px,1.15cqw,17px); line-height:1;
   vertical-align:middle;
 }
+.activity .kr.on{ background:#0f6d61; color:#fff }
