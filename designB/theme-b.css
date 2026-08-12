@@ -1746,3 +1746,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   font-size:clamp(15px,1.55cqw,22px);
   font-weight:600;
 }
+
+/* LIO 말풍선이 연달아 나오면 첫 줄만 아바타를 보여준다.
+   .lio-dup 은 engine 의 dedupeLioAvatars 가 붙인다 — 사이에 숨은 말풍선이 끼어 있어
+   CSS 인접 선택자(+)로는 잘못 잡힌다(실측 33곳).
+   display:none 을 주면 .msg 가 flex 라 말풍선이 왼쪽으로 붙어 위 줄과 어긋난다 —
+   자리는 남기고 visibility 로만 감춘다. */
+.msg.lio.lio-dup > .avatar{ visibility:hidden }

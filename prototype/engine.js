@@ -828,6 +828,27 @@
     document.getElementById('spec-slide').textContent = scr.title || ('Slide ' + scr.slide);
   }
 
+  /* 연속된 LIO 말풍선은 첫 줄만 아바타를 보여준다(B 계열).
+     두 말풍선 사이에 숨은 말풍선(.reveal-hidden 등)이 끼어 있을 수 있어 CSS 인접
+     선택자로는 잘못 잡힌다 — '보이는' 것만 순서대로 훑어 .lio-dup 을 붙인다.
+     reveal 로 숨은 것이 열리면 다시 계산해야 하므로 클래스 변화를 관찰한다.
+     감추기는 theme-b 의 .msg.lio.lio-dup > .avatar (자리는 남기고 visibility). */
+  let dedupeBusy = false;
+  function dedupeLioAvatars() {
+    if (THEME !== 'B' || dedupeBusy) return;
+    const stage = document.getElementById('stage');
+    if (!stage) return;
+    dedupeBusy = true;
+    let prevLio = false;
+    stage.querySelectorAll('.msg').forEach(m => {
+      if (getComputedStyle(m).display === 'none') return;   // 숨은 말풍선은 건너뛴다
+      const isLio = m.classList.contains('lio');
+      m.classList.toggle('lio-dup', isLio && prevLio);
+      prevLio = isLio;
+    });
+    dedupeBusy = false;
+  }
+
   /* ---------------- KR 토글 (모듈 공용) ---------------- */
   function toggleKrBtn(btn) {
     const host = btn.closest('.bubble, .qtext, .ctext, .mi-tx, .eo-tx, .wp-line, .choice, .menu-item, .emoji-opt, .tx-host');
@@ -1332,6 +1353,7 @@
     if (scr.walkPara)               wireWalkPara();
     if (scr.wcResult)               wordCheckResult = scr.wcResult;   // 지나온 Word Check 결과 기억
     if (scr.freechat)               wireFreeChat(scr);
+    dedupeLioAvatars();             // 연속 LIO 아바타 정리 (B)
   }
 
   /* ================= Free Chat (M22) — 레이아웃 유지, 단계만 표출 ================= */
@@ -2451,6 +2473,24 @@
     p.classList.toggle('hidden', !show);
   }
 
+  /* reveal 로 말풍선이 열리거나 새 말풍선이 붙으면 연속 LIO 아바타를 다시 계산한다 */
+  function watchLioRuns() {
+    if (THEME !== 'B') return;
+    const stage = document.getElementById('stage');
+    if (!stage) return;
+    let t = null;
+    new MutationObserver((recs) => {
+      // .lio-dup 만 바뀐 것은 우리가 건 변화라 무시한다 (되돌이 방지)
+      const own = recs.every(r => r.type === 'attributes' && r.attributeName === 'class'
+        && r.target.classList && r.target.classList.contains('msg')
+        && /lio-dup/.test((r.oldValue || '') + r.target.className));
+      if (own) return;
+      clearTimeout(t);
+      t = setTimeout(dedupeLioAvatars, 40);
+    }).observe(stage, { subtree: true, childList: true, attributes: true,
+                        attributeFilter: ['class', 'style'], attributeOldValue: true });
+  }
+
   /* ---------------- boot ---------------- */
   function boot() {
     // 브라우저 자동재생 정책: 첫 클릭/키 이후 BGM 허용
@@ -2482,6 +2522,7 @@
       if (e.key === 'ArrowLeft') goPrev();
     });
     buildJump();
+    watchLioRuns();   // 연속 LIO 아바타 재계산 관찰 (B)
     // ?s=슬라이드번호 또는 ?id=화면id 로 특정 화면부터 시작 (검증/공유용)
     const qs = new URLSearchParams(location.search);
     const qid = qs.get('id'); const sp = qs.get('s');
