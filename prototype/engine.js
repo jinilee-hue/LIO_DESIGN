@@ -837,8 +837,13 @@
       if (!keepEn) en.setAttribute('hidden', '');
       kr.removeAttribute('hidden');
       // 병기 모드 : 한글 끝에 X 아이콘을 달고 KR 버튼은 감춘다 (닫기는 그 X 로 한다)
-      if (keepEn) { addKrClose(kr, () => toggleKrBtn(btn)); btn.hidden = true; }
+      if (keepEn) {
+        addKrClose(kr, () => toggleKrBtn(btn));
+        pullSpeaker(kr, host);        // X 옆에 나란히
+        btn.hidden = true;
+      }
     } else {
+      restoreSpeaker(host);
       kr.setAttribute('hidden', '');
       en.removeAttribute('hidden');
       btn.hidden = false;
@@ -862,6 +867,21 @@
     // 아이콘은 CSS 가 SVG 로 그린다 — 글리프를 넣지 않는다(font-size 를 살려 em 계산이 되게).
     x.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); onClose(); });
     krEl.appendChild(x);
+  }
+
+  /* 한글이 열리면 스피커 아이콘을 한글 줄 끝(X 옆)으로 옮긴다 — 그러지 않으면
+     .tx-kr 이 블록이라 스피커가 다음 줄로 떨어진다. 닫으면 원래 자리로 되돌린다. */
+  function pullSpeaker(krEl, host) {
+    const ic = host.querySelector('.tts-ic');
+    if (!ic || krEl.contains(ic)) return;
+    ic._krHome = { parent: ic.parentNode, next: ic.nextSibling };
+    krEl.appendChild(ic);
+  }
+  function restoreSpeaker(host) {
+    const ic = host.querySelector('.tts-ic');
+    if (!ic || !ic._krHome) return;
+    ic._krHome.parent.insertBefore(ic, ic._krHome.next);
+    ic._krHome = null;
   }
 
   function bindKr(root) {
@@ -1075,10 +1095,14 @@
       ic.addEventListener('click', (e) => {
         e.stopPropagation();
         const host = ic.closest('.bubble, .qtext, .choice, .wp-word'); if (!host) return;
+        // 재생 중 다시 누르면 멈춘다 — 지문 Listen 과 같은 동작(.playing 은 CSS 가 정지 아이콘으로 그린다)
+        if (ic.classList.contains('playing')) { stopSpeak(); ic.classList.remove('playing'); return; }
+        stage.querySelectorAll('.tts-ic.playing').forEach(o => o.classList.remove('playing'));
         const en = host.querySelector('.tx-en');
         const shown = host.querySelector('.tx-kr:not([hidden])') || en;
         const txt = (shown ? shown.textContent : host.textContent).replace(/\s*KR\s*/g, ' ').trim();
-        speak(txt, null, () => {});
+        ic.classList.add('playing');
+        speak(txt, null, () => ic.classList.remove('playing'));
       }));
 
     // KR 버튼 → 해당 문장 영어↔한국어 토글 (동적 삽입 콘텐츠는 각 wire에서 bindKr 재호출)
