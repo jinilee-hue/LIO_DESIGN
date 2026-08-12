@@ -924,11 +924,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skillscreen.selected .skillsel-halo,
 .skillscreen.found .skillsel-halo{display:none}          /* Figma B 는 후광 없음 */
 /* Figma B_Skill_selected 실측 :
-   대형 카드 x 48.3~81.2% · y 19.5~79.0% (폭 32.9% / 비율 519:638)
-   헤드라인 "I found your skill!" x 5~29% · y 47.0~56.6% (마스코트 왼쪽)
-   마스코트는 그 오른쪽에서 화면 하단까지 */
+   대형 카드 폭 32.9% / 비율 519:638 · y 19.5~79.0%
+   원래 배치는 [헤드라인·버튼]왼쪽 – LIO – 카드 였는데, 요청대로 헤드라인과 Let's Go 를
+   LIO·카드의 '오른쪽' 으로 옮겼다. 오른쪽에 남은 자리가 13.7% 뿐이라 LIO 와 카드를
+   함께 18.3% 왼쪽으로 밀어 자리를 만들었다 — 사자가 카드를 가리키는 겹침은 그대로다.
+     LIO 박스 23.5→5.2% · 카드 중심 69.85→51.55% · 텍스트 left 71% */
 .skillscreen.selected .skillsel-card,
-.skillscreen.found .skillsel-card{position:absolute;left:calc(64.75% + 60px);top:49.25%;
+.skillscreen.found .skillsel-card{position:absolute;left:51.55%;top:49.25%;
   transform:translate(-50%,-50%);z-index:3;pointer-events:none;
   width:32.9%;aspect-ratio:519/638;border-radius:26px;background:var(--scB,#3593FF);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2%;
@@ -951,7 +953,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    사자 머리-발이 534/562 라 height 69.07% 로 올려 기존 lio6.png 와 같은 504px 로 맞춘다.
    src 교체가 안 되는 것은 .skill-mascot 과 같은 사정 — content 로 비트맵을 지운다. */
 .skillscreen.selected .skillsel-mascot,
-.skillscreen.found .skillsel-mascot{position:absolute;left:calc(26% - 30px);top:49.25%;bottom:auto;
+.skillscreen.found .skillsel-mascot{position:absolute;left:5.2%;top:49.25%;bottom:auto;
   /* 사자 머리-발 504px — 같은 slide 7 의 탐색 상태(.skill-mascot)와 같은 크기.
      기존 정지 에셋의 머리에 맞춰 74.48% 로 키웠던 것을 되돌렸다. */
   height:69.07%;width:auto;aspect-ratio:468/562;z-index:4;pointer-events:none;
@@ -965,20 +967,21 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   .skillscreen.selected .skillsel-mascot,
   .skillscreen.found .skillsel-mascot{animation:none}
 }
-/* 헤드라인은 마스코트 왼쪽에 놓고 위로 올린다 (기존엔 마스코트에 가려 잘렸다) */
+/* 헤드라인은 카드 오른쪽에 놓는다 (원래는 마스코트 왼쪽이었다) */
 /* Figma 114:1305 "I found\n  your skill!" — 2줄, 둘째 줄 들여쓰기 */
 .skillscreen.selected .skill-headline,
-.skillscreen.found .skill-headline{position:absolute;left:5%;top:46.5%;
+.skillscreen.found .skill-headline{position:absolute;left:71%;top:46.5%;
   max-width:26%;text-align:left;z-index:6;line-height:1.15}
 .skillscreen.selected .skill-headline-l2,
 .skillscreen.found .skill-headline-l2{display:inline-block;margin-left:1.2em}
 
 /* Let's Go : Figma Button_go (258:1860) — 흰 pill + 파란 셰브론.
-   프레임 대비 x109 y726 / 340×120 → left 6.9% · bottom 21.1% · w 21.6% · h 11.2% */
+   크기는 프레임 대비 340×120 → w 21.6% · h 9.3% 그대로, 위치만 헤드라인과 같은
+   오른쪽(left 71%)으로 옮겼다. */
 .skillfound-overlay{position:absolute;inset:0;z-index:5;pointer-events:none}
 .skillscreen.selected .skillsel-go,
 .skillscreen.found .skillsel-go{
-  position:absolute;left:6.9%;bottom:21.1%;z-index:7;pointer-events:auto;cursor:pointer;
+  position:absolute;left:71%;bottom:21.1%;z-index:7;pointer-events:auto;cursor:pointer;
   width:21.6%;height:9.3%;min-height:0;
   padding:0 calc(var(--cta-chev) + clamp(8px,1cqw,13px)) 0 clamp(8px,1cqw,13px);
   box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;border:none;
