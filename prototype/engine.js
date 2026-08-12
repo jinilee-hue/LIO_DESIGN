@@ -2341,42 +2341,63 @@
     const old = dev.querySelector('.word-popup'); if (old) old.remove();
     const pop = document.createElement('div');
     pop.className = 'word-popup';
+    /* 단어 이모지 — 팝업의 '첫 열' 로 따로 놓는다(theme-b 의 2열 그리드). 단어 안에 넣으면
+       뜻 줄의 왼쪽이 이모지 폭만큼 어긋난다. 이모지가 없는 단어는 그냥 빠진다.
+       A 는 기존 팝업을 유지하므로 B 계열만. */
+    const emo = (THEME === 'B' && k && k.emoji) ? `<span class="wp-emo">${k.emoji}</span>` : '';
     pop.innerHTML =
       `<button class="wp-close" aria-label="close">×</button>
-       <div class="wp-word">${k ? k.w : raw} <img class="tts-ic" src="${IMG}ui/spk_bubble.svg" alt=""></div>
-       <div class="wp-def">${k ? k.def : ''}</div>
-       ${k && k.ex ? `<div class="wp-ex" data-en="&ldquo;${k.ex}&rdquo;" data-kr="${k.kr}">&ldquo;${k.ex}&rdquo;</div>` : ''}
-       ${k && k.kr ? `<button class="wp-kr">KR</button>` : ''}`;
+       ${emo}
+       <div class="wp-word">${k ? k.w : raw} <img class="tts-ic" src="${IMG}ui/spk_bubble.svg" alt="">${
+         /* KR 은 Listen 옆(단어 줄)에 둔다. 누르면 아래 '뜻' 에 한글이 병기된다. */
+         k && k.kr ? `<button class="wp-kr">KR</button>` : ''}</div>
+       <div class="wp-def"${k && k.kr ? ` data-kr="${k.kr}"` : ''}>${k ? k.def : ''}</div>
+       ${k && k.ex ? `<div class="wp-ex" data-en="&ldquo;${k.ex}&rdquo;" data-kr="${k.kr}">&ldquo;${k.ex}&rdquo;</div>` : ''}`;
     dev.appendChild(pop);
     requestAnimationFrame(() => pop.classList.add('show'));
     pop.querySelector('.wp-close').onclick = () => pop.remove();
     const tts = pop.querySelector('.tts-ic');
-    if (tts) tts.onclick = () => speak(k ? k.w : raw, null, () => {});
+    /* B : 단어를 읽고 이어서 뜻까지 읽는다. 한 문장으로 붙이지 않고 두 번에 나눠 읽어
+       단어와 설명 사이에 쉼이 생기게 한다. A 는 단어만 읽는 기존 동작. */
+    /* 단어를 읽고 이어서 뜻까지 읽는다(B). 한 문장으로 붙이지 않고 두 번에 나눠 읽어
+       단어와 설명 사이에 쉼이 생기게 한다. A 는 단어만 읽는 기존 동작.
+       팝업이 열릴 때와 Listen 을 누를 때 같은 순서를 쓴다. */
+    const sayWord = () => {
+      if (tts) {
+        // 재생 중 다시 누르면 멈춘다 — 지문·대화창 Listen 과 같은 동작(.playing 이 정지 아이콘)
+        if (tts.classList.contains('playing')) { stopSpeak(); tts.classList.remove('playing'); return; }
+        tts.classList.add('playing');
+      }
+      const word = k ? k.w : raw;
+      const done = () => { if (tts) tts.classList.remove('playing'); };
+      if (THEME !== 'B' || !k || !k.def) { speak(word, null, done); return; }
+      speak(word, null, () => later(() => speak(k.def, null, done), 260));
+    };
+    if (tts) tts.onclick = sayWord;
     const krBtn = pop.querySelector('.wp-kr'), exEl = pop.querySelector('.wp-ex');
-    /* 단어 팝업의 예문도 본문 토글과 같은 방식으로 — B 는 영문을 남기고 한글을 아래에
-       덧붙이고(.tx-kr 이 theme-b 에서 블록), 버튼은 '닫기'. A 는 기존 교체 그대로. */
-    if (krBtn && exEl) {
+    const defEl = pop.querySelector('.wp-def');
+    /* B : 예문 줄을 빼면서 KR 은 '뜻' 의 한글을 병기하는 버튼이 된다 — 대화창과 같은 방식
+       (영문을 남기고 아래에 한글 + 끝에 X, 여는 동안 KR 버튼은 감춘다).
+       A 는 예문을 영↔한 교체하던 기존 동작 그대로다. */
+    if (krBtn && THEME === 'B' && defEl && defEl.dataset.kr) {
+      krBtn.onclick = () => {
+        const line = document.createElement('span');
+        line.className = 'tx-kr';
+        line.textContent = defEl.dataset.kr;
+        defEl.appendChild(line);
+        addKrClose(line, () => { line.remove(); krBtn.hidden = false; });
+        krBtn.hidden = true;
+      };
+    } else if (krBtn && exEl) {
       let kr = false;
       krBtn.onclick = () => {
         kr = !kr;
         krBtn.classList.toggle('on', kr);
-        if (THEME === 'B') {
-          exEl.textContent = exEl.dataset.en;
-          if (kr) {
-            const line = document.createElement('span');
-            line.className = 'tx-kr';
-            line.textContent = exEl.dataset.kr;
-            exEl.appendChild(line);
-            addKrClose(line, () => krBtn.click());   // 한글 끝 X 로 닫는다
-          }
-          krBtn.hidden = kr;                         // 열려 있는 동안 KR 버튼은 감춘다
-        } else {
-          exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en;
-          krBtn.textContent = kr ? 'EN' : 'KR';
-        }
+        exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en;
+        krBtn.textContent = kr ? 'EN' : 'KR';
       };
     }
-    if (k) speak(k.w, null, () => {});
+    if (k) sayWord();   // 팝업이 열릴 때도 단어 → 뜻 순서로 읽는다
   }
 
   // 정답 파티클 버스트 (특정 지점에서 사방으로)
