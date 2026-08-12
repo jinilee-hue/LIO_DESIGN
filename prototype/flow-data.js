@@ -1485,6 +1485,25 @@ const SCREENS = [
   spec:['ET 2차 오답 → Complete 후 M22 Free Chat','Send / 얼굴 탭 / Done·Skip'],
 },
 
+/* 45d ─ FP2 Free Chat · 학생 성별 분기(여자아이)
+   화면 구성은 slide 59 와 같고 학생 아바타만 다르다. 아바타는 engine 이 userAv 로 고르며
+   지정이 없으면 남아(ui/student.png)를 쓰므로 다른 화면은 영향받지 않는다. */
+{
+  id:'fp2_free_chat_girl', page:62, slide:59, section:'Further Practice 2', title:'Skill1_FP2_Main_Question_정답_경로_학습_마무리_단계_Free_Chat', cut:'여자아이', layout:'reading',
+  passage:true, freechat:true, fcEndGo:'post_skill_pick',
+  userAv:'ui/student_girl.png',
+  blocks:[
+    { t:'lio', html:'You said that you like new places. Where do you want to explore next?', tts:true, kr:true },
+    { t:'user', html:'…land', fc:'turn1' },
+    { t:'lio', html:"Nice, you're talking about a country! 🔊", tts:true, kr:true, fc:'turn1' },
+    { t:'lio', html:"Now it's your turn! You can ask ME anything — you can even ask in Korean! Click my face moving around the screen! 🔊", tts:true, kr:true, fc:'turn1' },
+    { t:'input', placeholder:'Tell me!', send:true, skip:true },
+    { t:'lio', html:'This was so much fun! You did great today. See you next time! 👋🔊', tts:true, kr:true, fc:'end' },
+  ],
+  spec:['학생 성별에 따라 아바타가 다르게 나온다 — 이 화면은 여자아이',
+        '대화 구성·동작은 slide 59 와 같다 (Send / 얼굴 탭 / Done·Skip)'],
+},
+
 /* 46 ─ FP2 Quick Exit 게이트 */
 {
   id:'quick_exit', page:63, slide:60, section:'Further Practice 2', title:'Skill1/2_FP2_Main_Question_오답_경로_진입_전_Quick_Exit', layout:'quickexit',

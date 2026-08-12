@@ -7,6 +7,9 @@
   const F = window.LIO_FLOW;
   const THEME = window.LIO_THEME || 'B';
   const IMG = '../IMAGE/';
+  /* 학생 아바타 — 화면의 userAv 로 성별을 바꾼다(지정이 없으면 남아 student.png). */
+  let userAvatar = 'ui/student.png';
+  const studentAv = () => IMG + userAvatar;
   // 테마 전용 화면 필터 (aOnly: Design A 전용, bOnly: Design B 전용)
   const SCREENS = F.SCREENS.filter(s => !(s.aOnly && THEME !== 'A') && !(s.bOnly && THEME !== 'B'));
 
@@ -297,7 +300,7 @@
       case 'user':
         return `<div class="msg user ${b.side === 'sys' ? 'usys' : ''}${b.hidden ? ' reveal-hidden' : ''}${b.stage2 ? ' reveal2-hidden' : ''}${fcCls(b)}"${interestAttr(b)}>
             <div class="bubble">${stripEmoji(kw(b.html))}</div>
-            ${b.side === 'sys' ? '' : `<img class="avatar user-av" src="${IMG}ui/student.png" alt="" onerror="this.removeAttribute('src')">`}
+            ${b.side === 'sys' ? '' : `<img class="avatar user-av" src="${studentAv()}" alt="" onerror="this.removeAttribute('src')">`}
           </div>`;
       case 'sys':
         return `<div class="sysline"><span>${stripEmoji(b.html)}</span></div>`;
@@ -760,6 +763,8 @@
     document.querySelectorAll('.kw-fly, .particle-layer, .word-popup, .mem-peek').forEach(el => el.remove());   // 이전 화면 잔여 연출 제거
     const scr = SCREENS[idx];
     const stage = document.getElementById('stage');
+    // 학생 아바타(성별)는 HTML 을 만들기 전에 정해야 한다 — 렌더 뒤에 두면 한 화면 늦게 반영된다
+    userAvatar = scr.userAv || 'ui/student.png';
     let body = '';
     switch (scr.layout) {
       case 'splash':    body = layoutSplash(scr); break;
@@ -1442,7 +1447,7 @@
       if (side === 'lio') {
         div.innerHTML = `<img class="avatar" src="${mascot('lio_face2.png')}" alt="LIO"><div class="bubble">${txBlock(html, { tts:true, kr:true })}</div>`;
       } else {
-        div.innerHTML = `<div class="bubble">${stripEmoji(kw(html))}</div><img class="avatar user-av" src="${IMG}ui/student.png" alt="" onerror="this.removeAttribute('src')">`;
+        div.innerHTML = `<div class="bubble">${stripEmoji(kw(html))}</div><img class="avatar user-av" src="${studentAv()}" alt="" onerror="this.removeAttribute('src')">`;
       }
       // turn1 뒤 · end 앞 (기존 블록 순서/레이아웃 유지)
       const endAnchor = stage.querySelector('.fc-end');
