@@ -1099,8 +1099,12 @@
         if (ic.classList.contains('playing')) { stopSpeak(); ic.classList.remove('playing'); return; }
         stage.querySelectorAll('.tts-ic.playing').forEach(o => o.classList.remove('playing'));
         const en = host.querySelector('.tx-en');
-        const shown = host.querySelector('.tx-kr:not([hidden])') || en;
-        const txt = (shown ? shown.textContent : host.textContent).replace(/\s*KR\s*/g, ' ').trim();
+        /* B 는 한글이 병기된 상태에서도 영문만 읽는다(Listen 은 영어 듣기용).
+           A 는 영문↔한글 교체라 화면에 보이는 쪽을 읽는 기존 동작을 유지한다. */
+        const src = (THEME === 'B')
+          ? (en || host)
+          : (host.querySelector('.tx-kr:not([hidden])') || en || host);
+        const txt = src.textContent.replace(/\s*KR\s*/g, ' ').trim();
         ic.classList.add('playing');
         speak(txt, null, () => ic.classList.remove('playing'));
       }));
