@@ -92,8 +92,8 @@ const CHOICES = [
 const STRATEGY = {
   title:'STRATEGY FOR MAIN IDEA',
   items:[
-    { bImg:'skill_making_inferences.png', html:'Find the topic or main character' },
-    { bImg:'skill_recalling_facts_1.png', html:'Find the key details' },
+    { bImg:'skill_making_inferences.png', html:'Find the topic or main character.' },
+    { bImg:'skill_recalling_facts_1.png', html:'Find the key details.' },
     { bImg:'skill_main_ideas.png', html:'Ask "What big idea covers ALL the key details?" — that is the main idea.' },
   ],
 };
