@@ -859,7 +859,7 @@
     x.type = 'button';
     x.className = 'tx-kr-x';
     x.setAttribute('aria-label', '한국어 닫기');
-    x.textContent = '✕';
+    // 아이콘은 CSS 가 SVG 로 그린다 — 글리프를 넣지 않는다(font-size 를 살려 em 계산이 되게).
     x.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); onClose(); });
     krEl.appendChild(x);
   }
