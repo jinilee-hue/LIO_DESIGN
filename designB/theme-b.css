@@ -1671,6 +1671,10 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    기준(.listen-btn) : 지름 clamp(30px,3.2cqw,46px) · 배경 #e6f4f1 · 글자 #0f6d61 · 테두리 없음
    스피커는 <img> 라 padding 으로 원 안에 아이콘을 앉힌다(아이콘은 26px 로 Listen 과 같다). */
 .activity .tts-ic{
+  /* 대화창은 spk_bubble.svg(stroke #0A0A0A · 검정)를, 지문은 spk_listen.svg(#0F6D61 · 청록)를
+     쓴다. 색을 맞추려고 지문과 같은 파일로 갈아 끼운다 — img 의 src 는 engine 이 정하므로
+     content 로 그려지는 이미지만 바꾼다(공용 markup 은 손대지 않아 A 는 그대로다). */
+  content:url("../IMAGE/ui/spk_listen.svg");
   box-sizing:border-box;
   width:clamp(30px,3.2cqw,46px); height:clamp(30px,3.2cqw,46px);
   padding:clamp(5px,.5cqw,7px);
