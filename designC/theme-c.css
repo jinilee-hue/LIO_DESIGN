@@ -2020,3 +2020,13 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   font-size:clamp(15px,1.55cqw,22px);
   font-weight:600;
 }
+
+/* C : 화면 전체로 터지는 파티클은 쓰지 않는다.
+     .particle-layer  한 점에서 사방으로 터지는 버스트 (base 에서 position:fixed;inset:0)
+     .confetti        위에서 쏟아지는 색종이 (base 에서 화면 폭 전체)
+   단, slide 15 는 앞서 LIO 뒤 작은 영역으로 좁혀 둔 것을 그대로 남긴다 —
+   .confetti{display:none} 이 그 규칙까지 덮으므로 여기서 다시 켠다.
+   B 는 손대지 않는다(이 파일은 C 전용). */
+.particle-layer{ display:none !important }
+.confetti{ display:none }
+.scr-fp1_mq .confetti{ display:block }
