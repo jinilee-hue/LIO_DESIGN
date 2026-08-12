@@ -839,12 +839,19 @@
     const stage = document.getElementById('stage');
     if (!stage) return;
     dedupeBusy = true;
-    let prevLio = false;
-    stage.querySelectorAll('.msg').forEach(m => {
-      if (getComputedStyle(m).display === 'none') return;   // 숨은 말풍선은 건너뛴다
-      const isLio = m.classList.contains('lio');
-      m.classList.toggle('lio-dup', isLio && prevLio);
-      prevLio = isLio;
+    /* 대화 블록은 .activity-scroll 의 형제로 나란히 놓인다(말풍선 · 문제 · 보기 · 버튼 …).
+       .msg 만 훑으면 사이에 끼인 문제·보기가 흐름을 끊지 못해, 문제 아래 첫 말풍선까지
+       '연속' 으로 잡혀 아바타가 사라진다 — 형제를 순서대로 보며 말풍선이 아닌 것이
+       나오면 흐름을 끊는다. */
+    stage.querySelectorAll('.activity-scroll').forEach(host => {
+      let prevLio = false;
+      [...host.children].forEach(el => {
+        if (getComputedStyle(el).display === 'none') return;   // 숨은 블록은 건너뛴다
+        if (!el.classList.contains('msg')) { prevLio = false; return; }
+        const isLio = el.classList.contains('lio');
+        el.classList.toggle('lio-dup', isLio && prevLio);
+        prevLio = isLio;
+      });
     });
     dedupeBusy = false;
   }
