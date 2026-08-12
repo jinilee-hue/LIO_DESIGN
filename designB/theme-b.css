@@ -1734,3 +1734,15 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 }
 /* 아이콘도 파랑으로 — 원본 SVG 는 stroke #0F6D61 이라 같은 그림의 파란 버전을 쓴다 */
 .listen-btn .ls-ic{ content:url("../IMAGE/ui/spk_listen_blue.svg") }
+/* 상단 공통 헤더의 "STEP 2 Skill Core" 는 빼고 스킬 이름만 남긴다.
+   구분선(|)도 함께 감춘다 — 안 그러면 선만 덩그러니 남는다.
+   markup 은 공용 engine.js 라 A 까지 바뀌므로 여기서 감추기만 한다. */
+.hd .hd-pill,
+.hd .hd-divider{ display:none }
+/* 헤더에 스킬 이름만 남았으므로 더 크고 또렷하게 — 흰색 + 한 단계 큰 글자.
+   기본 --fz-hd-meta(11.5~16px)는 pill 과 나란히 놓던 때의 크기다. */
+.hd .hd-skill{
+  color:#fff;
+  font-size:clamp(15px,1.55cqw,22px);
+  font-weight:600;
+}

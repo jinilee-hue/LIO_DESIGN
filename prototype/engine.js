@@ -78,8 +78,11 @@
     const extras = (opts.tts ? ' ' + TTS : '');
     if (!opts.kr || !krRaw) return en + extras;
     const kr = stripEmoji(kw(krRaw));
+    /* 스피커와 KR 사이의 공백 문자는 B 에서 뺀다 — 마진(4.7px)에 공백(약 5px)이 더해져
+       버튼 사이가 벌어진다. 한글을 열면 스피커를 한글 줄로 옮기면서 그 공백이 빠지므로
+       X↔스피커 간격과 어긋난다. A 는 기존 간격을 유지한다. */
     return `<span class="tx"><span class="tx-en">${en}</span><span class="tx-kr" hidden>${kr}</span></span>`
-      + extras + ' ' + KR;
+      + extras + (THEME === 'B' ? '' : ' ') + KR;
   };
 
   // 버튼용 작은 라운드 삼각형(▶ 대체)
