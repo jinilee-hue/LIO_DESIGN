@@ -833,14 +833,37 @@
        B 계열만(C 도 LIO_THEME='B') 적용해 A 는 기존 영문↔한글 교체 그대로다.
        한글을 별 줄로 보이게 하는 것은 theme-b.css 의 .tx-kr 규칙이다. */
     const keepEn = THEME === 'B';
-    if (toKr) { if (!keepEn) en.setAttribute('hidden', ''); kr.removeAttribute('hidden'); }
-    else { kr.setAttribute('hidden', ''); en.removeAttribute('hidden'); }
+    if (toKr) {
+      if (!keepEn) en.setAttribute('hidden', '');
+      kr.removeAttribute('hidden');
+      // 병기 모드 : 한글 끝에 X 아이콘을 달고 KR 버튼은 감춘다 (닫기는 그 X 로 한다)
+      if (keepEn) { addKrClose(kr, () => toggleKrBtn(btn)); btn.hidden = true; }
+    } else {
+      kr.setAttribute('hidden', '');
+      en.removeAttribute('hidden');
+      btn.hidden = false;
+    }
     btn.classList.toggle('on', toKr);
-    // 한국어가 보이는 동안의 라벨. B 는 영문을 남긴 채 한글만 덧붙이므로 기획서대로 '닫기'
-    // (누르면 한글이 닫힌다). A 는 영문↔한글 교체라 'EN' 이 동작을 정확히 알려준다.
-    btn.textContent = toKr ? (keepEn ? '닫기' : 'EN') : 'KR';
+    // 병기 모드에서는 KR 버튼이 감춰지고 한글 끝의 X 가 닫기를 맡으므로 라벨은 늘 'KR'.
+    // A(교체 모드)는 한국어가 보이는 동안 'EN' 이 동작을 정확히 알려준다.
+    btn.textContent = (toKr && !keepEn) ? 'EN' : 'KR';
     btn.setAttribute('aria-pressed', toKr ? 'true' : 'false');
   }
+  /* 한글 줄 끝에 붙는 닫기(X) 아이콘. 텍스트 '닫기' 버튼을 대신한다.
+     한글 요소 안에 넣어야 문장 끝에 자연스럽게 따라붙는다. */
+  function addKrClose(krEl, onClose) {
+    if (krEl.querySelector('.tx-kr-x')) return;
+    // 줄바꿈 방지 공백 — X 가 혼자 다음 줄로 떨어지지 않고 마지막 낱말과 함께 움직인다
+    krEl.appendChild(document.createTextNode(' '));
+    const x = document.createElement('button');
+    x.type = 'button';
+    x.className = 'tx-kr-x';
+    x.setAttribute('aria-label', '한국어 닫기');
+    x.textContent = '✕';
+    x.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); onClose(); });
+    krEl.appendChild(x);
+  }
+
   function bindKr(root) {
     root.querySelectorAll('.kr').forEach(btn => {
       if (btn._krBound) return; btn._krBound = true;
@@ -2286,8 +2309,9 @@
             line.className = 'tx-kr';
             line.textContent = exEl.dataset.kr;
             exEl.appendChild(line);
+            addKrClose(line, () => krBtn.click());   // 한글 끝 X 로 닫는다
           }
-          krBtn.textContent = kr ? '닫기' : 'KR';
+          krBtn.hidden = kr;                         // 열려 있는 동안 KR 버튼은 감춘다
         } else {
           exEl.textContent = kr ? exEl.dataset.kr : exEl.dataset.en;
           krBtn.textContent = kr ? 'EN' : 'KR';
