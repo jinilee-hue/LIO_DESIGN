@@ -1237,7 +1237,7 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    폭은 커밋본과 같은 화면 폭 6.32%. */
 .splash .splash-inner::after{content:'';position:absolute;left:88%;top:6%;
   width:16.74%;aspect-ratio:97/94;opacity:0;
-  background:url("../IMAGE/b/bubble_hi.png?v=20260812") no-repeat center/contain;
+  background:url("../IMAGE/b/bubble_hi.png?v=20260813") no-repeat center/contain;
   /* 에셋에 그림자가 구워져 있지 않다(반투명 픽셀 0) — 떠 있는 느낌이 안 나므로 넣는다.
      box-shadow 는 사각 박스를 따라가므로 알파 모양을 따르는 drop-shadow 를 쓴다. */
   filter:drop-shadow(0 clamp(2px,.45cqw,7px) clamp(4px,.85cqw,13px) rgba(6,18,52,.32));
