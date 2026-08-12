@@ -828,7 +828,12 @@
     const en = root.querySelector('.tx-en'), kr = root.querySelector('.tx-kr');
     if (!en || !kr) return;
     const toKr = kr.hasAttribute('hidden');
-    if (toKr) { en.setAttribute('hidden', ''); kr.removeAttribute('hidden'); }
+    /* slide 15(fp1_mq) 는 영문을 그대로 두고 한글을 아래에 덧붙인다 — 나머지 화면은
+       기존대로 영문↔한글 교체다. B 계열만(C 도 LIO_THEME='B') 적용해 A 는 건드리지 않는다.
+       한글을 별 줄로 보이게 하는 것은 theme-b.css 의 .scr-fp1_mq .tx-kr 규칙이다. */
+    const dev = btn.closest('.device');
+    const keepEn = THEME === 'B' && dev && dev.classList.contains('scr-fp1_mq');
+    if (toKr) { if (!keepEn) en.setAttribute('hidden', ''); kr.removeAttribute('hidden'); }
     else { kr.setAttribute('hidden', ''); en.removeAttribute('hidden'); }
     btn.classList.toggle('on', toKr);
     // 한국어 표시 중엔 버튼이 EN (기획서 문구는 '닫기' 지만, 다시 영어로 돌아가는 토글이라
