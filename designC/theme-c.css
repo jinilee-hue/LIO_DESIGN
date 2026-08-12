@@ -2007,3 +2007,16 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    내려간다 — 여백을 모두 0 으로 두고 간격은 .wp-word 의 gap 에 맡긴다. */
 .word-popup .wp-word .tts-ic,
 .word-popup .wp-word .wp-kr{ top:0; margin:0; vertical-align:baseline }
+
+/* 상단 공통 헤더의 "STEP 2 Skill Core" 는 빼고 스킬 이름만 남긴다.
+   구분선(|)도 함께 감춘다 — 안 그러면 선만 덩그러니 남는다.
+   markup 은 공용 engine.js 라 A 까지 바뀌므로 여기서 감추기만 한다. */
+.hd .hd-pill,
+.hd .hd-divider{ display:none }
+/* 헤더에 스킬 이름만 남았으므로 더 크고 또렷하게 — 흰색 + 한 단계 큰 글자.
+   기본 --fz-hd-meta(11.5~16px)는 pill 과 나란히 놓던 때의 크기다. */
+.hd .hd-skill{
+  color:#fff;
+  font-size:clamp(15px,1.55cqw,22px);
+  font-weight:600;
+}
