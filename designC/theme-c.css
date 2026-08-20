@@ -2030,3 +2030,38 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   opacity:0; visibility:hidden;
   transition:opacity .5s ease, visibility 0s linear .5s;
 }
+
+/* ── 헤더 오른쪽 끝 : 배경음악 On/Off 버튼 (c-bgm-toggle.js 가 얹는다) ──────
+   markup 은 공용 engine.js 의 headerHTML() 이라 손대지 않고 JS 로 붙인다.
+   .hd 는 flex, .hd-title 이 margin-left:auto 라 이 버튼이 줄의 마지막에 선다.
+   헤더 아래 물결(.hd::after) 이 z-index:6 이므로 버튼은 그보다 위로 올린다. */
+.hd-bgm{
+  flex:0 0 auto; margin-left:clamp(8px,1.1cqw,14px); position:relative; z-index:8;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:clamp(28px,2.9cqw,38px); height:clamp(28px,2.9cqw,38px);
+  padding:0; border:0; border-radius:50%; cursor:pointer;
+  background:rgba(255,255,255,.16); color:#fff;
+  transition:background .15s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.hd-bgm:hover{background:rgba(255,255,255,.28)}
+.hd-bgm:active{transform:scale(.94)}
+.hd-bgm:focus-visible{outline:2px solid #FFE169; outline-offset:2px}
+/* 꺼진 상태 : 바닥만 한 톤 죽인다. 콘 · 파형은 흰색 그대로 둔다 —
+   글리프까지 흐리면 버튼 크기(28~38px)에서 형태가 뭉개져 무슨 아이콘인지
+   읽히지 않았다. 상태를 알리는 일은 원본처럼 핑크 슬래시 한 획이 맡는다. */
+.hd-bgm.is-off{background:rgba(255,255,255,.08)}
+.hd-bgm.is-off:hover{background:rgba(255,255,255,.16)}
+
+/* 아이콘은 AI-Studio 의 speaker / muted 를 그대로 가져왔다 (도형은 c-bgm-toggle.js).
+   콘은 자기 fill 색으로 한 번 더 stroke 해서 굴리고 키운다 — 원본의 방식이고,
+   이게 없으면 버튼 크기에서 글리프가 가늘어져 작은 표시처럼 읽힌다.
+   보라 그라디언트만 흰색으로 바꿨다 — 로열블루 헤더 위에서 읽히지 않기 때문이다.
+   슬래시의 핑크는 원본 그대로라 markup 에 색이 박혀 있다(상태를 나타내는 한 획).
+   그린 글리프가 48 박스의 68% 만 채우므로 박스를 조금 크게 잡아 무게를 맞춘다. */
+.hd-bgm-ic{width:74%; height:74%; display:block; overflow:visible}
+.hd-bgm-cone{
+  fill:currentColor; stroke:currentColor; stroke-width:2.6;
+  stroke-linejoin:round; stroke-linecap:round;
+}
+.hd-bgm-wave{fill:none; stroke:currentColor; stroke-width:4.2; stroke-linecap:round}

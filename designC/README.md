@@ -50,6 +50,9 @@ C 만의 화면 흐름이나 문구가 필요해지면 공용 파일 수정이 �
 designC/
   index.html        DESIGN C · Simple  (공용 prototype/* 을 로드)
   theme-c.css       theme-b.css 사본 — 단순화 작업은 여기서
+  c-flow.js         C 의 축소된 FLOW — engine 이 읽기 전에 화면을 걷어낸다
   lio-footsteps.js  slide 5 LIO 등장 발소리 (C 전용 사본)
   quiz-reaction.js  정 · 오답 LIO 반응 (C 전용 사본)
+  c-lio-guide.js    하단 LIO 안내 말풍선 (Figma C_SLIDE16)
+  c-bgm-toggle.js   헤더 오른쪽 끝 배경음악 On/Off 버튼 (♫ · localStorage 기억)
 ```
