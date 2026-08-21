@@ -1069,19 +1069,22 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
   border-radius:20px;flex:0 0 auto;aspect-ratio:213/290;width:100%;
   background-color:var(--tc);
   background-image:var(--tc-img),linear-gradient(180deg,var(--tc-from),var(--tc-to));
-  background-size:70%,auto;background-position:center,0 0;background-repeat:no-repeat;
+  background-size:var(--tc-size,70%),auto;
+  background-position:var(--tc-pos,center),0 0;background-repeat:no-repeat;
   box-shadow:0 20px 25px -5px rgba(0,0,0,.10),0 8px 10px -6px rgba(0,0,0,.10)}
-/* 카드별 광학 균형 — 기본 70%, 여백 많은 장은 키움 */
-.topic-card:nth-child(2) .tc-img,
-.topic-card:nth-child(3) .tc-img,
-.topic-card:nth-child(4) .tc-img{background-size:80%,auto}
-.topic-card:nth-child(1) .tc-img,
-.topic-card:nth-child(6) .tc-img{background-size:88%,auto}
-.topic-card:nth-child(5) .tc-img{background-size:98%,auto;background-position:58% center,0 0}
+/* 카드별 광학 균형 — 기본 70%, 여백 많은 장은 키움.
+   1페이지(scr-topic · 기존 6개)만 자리 기준으로 잡는다. 2페이지 이후는 카드 순서가
+   페이지마다 다르므로 c-topic-pages.js 가 카드마다 --tc-size 를 직접 준다. */
+.scr-topic .topic-card:nth-child(2) .tc-img,
+.scr-topic .topic-card:nth-child(3) .tc-img,
+.scr-topic .topic-card:nth-child(4) .tc-img{background-size:80%,auto}
+.scr-topic .topic-card:nth-child(1) .tc-img,
+.scr-topic .topic-card:nth-child(6) .tc-img{background-size:88%,auto}
+.scr-topic .topic-card:nth-child(5) .tc-img{background-size:98%,auto;background-position:58% center,0 0}
 /* Figma 114:1496 — Nunito Black 24 / leading 32 / #1e2939 */
 .topic-card .tc-name{
   font-family:var(--font-head);font-weight:900;
-  font-size:clamp(14px,1.52cqw,24px);line-height:1.33;
+  font-size:var(--tc-name-fs,clamp(14px,1.52cqw,24px));line-height:1.33;
   color:#1e2939;padding:clamp(4px,.8cqw,10px) 2px 0;overflow:visible;
   white-space:nowrap}
 /* Figma Button 114:1497 — 73.5×44.6, off #D5D5D5+흰✓ / on #3262F0+노란✓ */
@@ -1118,6 +1121,26 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 @media (prefers-reduced-motion:reduce){
   .topicscreen .continue-btn:not(:disabled):hover{animation:none}
 }
+
+/* ── 토픽 페이지 인디케이터 (c-topic-pages.js) ──
+   토픽 종류가 20개로 늘어 선택 화면을 6개씩 4장으로 나눴다. 몇 장 중 몇 번째인지
+   보여주는 표시다. 카드 · Continue 의 수직 배치를 밀지 않도록 absolute 로 띄웠고,
+   마스코트와 헤드라인이 가운데 정렬이라 비어 있는 오른쪽 위에 둔다.
+   ※ 프로토타입에서 페이지 구분을 보여주기 위한 것 — 실제 화면 요구사항은 아니다.
+     (c-topic-pages.js 의 PAGER = false 로 끌 수 있다) */
+.topicscreen{position:relative}
+.topic-pager{
+  position:absolute;top:clamp(2px,.6cqw,10px);right:clamp(8px,1.6cqw,22px);
+  display:flex;align-items:center;gap:clamp(4px,.6cqw,8px);z-index:3}
+.topic-pager .tp-dot{
+  width:clamp(7px,.78cqw,12px);height:clamp(7px,.78cqw,12px);
+  padding:0;border:none;border-radius:50%;cursor:pointer;
+  background:#cdd7ee;transition:background .15s, transform .15s}
+.topic-pager .tp-dot:hover{background:#9db2e0;transform:scale(1.15)}
+.topic-pager .tp-dot.on{background:#155DFC}
+.topic-pager .tp-count{
+  font-family:var(--font-head);font-weight:700;color:#5f7091;
+  font-size:clamp(10px,1.02cqw,16px);margin-left:clamp(2px,.3cqw,4px)}
 
 /* ── word peek ── */
 .wp-line{color:#22315e}
