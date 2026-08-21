@@ -82,9 +82,9 @@
       { name:'Weather Days',    img:'Weather_Days.png',    c:'sky',     wh:[791,775] },
     ],
     [ // page 3 — 동물과 장소
-      { name:'Pets and Animals',       img:'Pets_and_Animals.png',       c:'lime',    wh:[762,741] },
-      { name:'Bugs and Small Animals', img:'Bugs_and_Small_Animals.png', c:'purple',  wh:[884,892],
-        fs:'clamp(11px,1.24cqw,19.5px)' },
+      { name:'Pets & Animals',         img:'Pets_and_Animals.png',       c:'lime',    wh:[762,741] },
+      { name:'Bugs & Small Animals',   img:'Bugs_and_Small_Animals.png', c:'purple',  wh:[884,892],
+        fs:'clamp(13px,1.37cqw,21.6px)' },
       { name:'Animal Homes',           img:'Animal_Homes.png',           c:'emerald', wh:[748,796] },
       { name:'Friends',                img:'Friends.png',                c:'pink',    wh:[832,825] },
       { name:'Places Nearby',          img:'Places_Nearby.png',          c:'teal',    wh:[788,850] },
@@ -94,6 +94,22 @@
       { name:'Class Jobs',  img:'Class_Jobs.png',  c:'indigo', wh:[618,651] },
       { name:'Group Rules', img:'Group_Rules.png', c:'yellow', wh:[947,789] },
     ],
+  ];
+
+  /* ── 1페이지 명칭 덮어쓰기 ────────────────────────────────────────────────
+     확정 명칭은 'Trips & Visits' · 'Games & Play' 인데 1페이지 카드 이름은 공용
+     prototype/flow-data.js 의 TOPICS 에서 온다. 거기서 고치면 A · B 의 기존 값을
+     바꾸게 되므로(designC/README.md 의 격리 규칙) C 에서만 라벨을 덧쓴다.
+     자리 순서대로 6칸 — null 은 flow-data.js 값을 그대로 쓴다는 뜻이다.
+     ※ A · B 는 아직 'Trips and Visits' · 'Games and Play' 로 보인다. 세 시안을
+       맞추려면 flow-data.js 의 name 두 개를 바꿔야 하는데 합의 후에 한다. */
+  var P1_NAMES = [
+    'Trips & Visits',   // was 'Trips and Visits'
+    null,               // 'Animals and Nature'  ← 확정 목록에 없는 이름
+    null,               // 'Special Days'
+    null,               // 'Growing Things'
+    null,               // 'Friends and Family'  ← 확정 목록에 없는 이름
+    'Games & Play',     // was 'Games and Play'
   ];
 
   var COLS = 6;   // theme-c.css 의 .topic-grid grid-template-columns
@@ -178,6 +194,12 @@
     grid.dataset.cPage = String(ORDER.indexOf(id) + 1);
 
     var topics = BY_ID[id];
+    if (id === 'topic') {
+      // 1페이지는 engine 이 그린 그대로 두고 라벨만 고친다 (색 · 크기 · 이미지 유지)
+      device.querySelectorAll('.topic-card .tc-name').forEach(function (nm, j) {
+        if (P1_NAMES[j]) nm.textContent = P1_NAMES[j];
+      });
+    }
     if (topics) {
       var cards = device.querySelectorAll('.topic-card');
       // 카드가 6장보다 적은 페이지는 남는 카드를 지우고 가운데 열로 밀어 넣는다

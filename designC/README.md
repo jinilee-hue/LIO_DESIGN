@@ -66,10 +66,33 @@ designC/
 
 | 화면 id | cut 라벨 | 카드 |
 |---|---|---|
-| `topic` | Topic page 1/4 | Trips and Visits · Animals and Nature · Special Days · Growing Things · Friends and Family · Games and Play |
+| `topic` | Topic page 1/4 | Trips & Visits · Animals and Nature · Special Days · Growing Things · Friends and Family · Games & Play |
 | `topic_p2` | Topic page 2/4 | My Day · My School · My Family · Favorite Things · Things I See · Weather Days |
-| `topic_p3` | Topic page 3/4 | Pets and Animals · Bugs and Small Animals · Animal Homes · Friends · Places Nearby · Helping Hands |
+| `topic_p3` | Topic page 3/4 | Pets & Animals · Bugs & Small Animals · Animal Homes · Friends · Places Nearby · Helping Hands |
 | `topic_p4` | Topic page 4/4 | Class Jobs · Group Rules |
+
+### 명칭
+
+확정 목록(스프레드시트) 기준이다. 4건이 `and` → `&` 로 바뀌었다.
+
+| 확정 명칭 | 이전 | 어디 |
+|---|---|---|
+| Trips & Visits | Trips and Visits | 1페이지 |
+| Games & Play | Games and Play | 1페이지 |
+| Pets & Animals | Pets and Animals | 3페이지 |
+| Bugs & Small Animals | Bugs and Small Animals | 3페이지 |
+
+1페이지 두 건은 이름이 공용 `prototype/flow-data.js` 의 `TOPICS` 에서 오므로 거기서
+고치면 A · B 의 기존 값을 바꾸게 된다. `c-topic-pages.js` 의 `P1_NAMES` 로 C 에서만
+라벨을 덧썼다. **A · B 는 아직 `Trips and Visits` · `Games and Play` 로 보인다** —
+세 시안을 맞추려면 `flow-data.js` 의 `name` 두 개를 바꿔야 하는데 합의 후에 한다.
+
+확정 목록은 18종인데 프로토타입은 20종이다. 1페이지의 **`Animals and Nature` ·
+`Friends and Family` 두 이름이 확정 목록에 없다.** 확정 목록에 `Pets & Animals` ·
+`Animal Homes` · `Bugs & Small Animals` · `Friends` · `My Family` 가 따로 있어
+쪼개진 것으로 보인다. 이 둘을 빼면 18종 = **6개씩 정확히 3페이지**가 되어 지금의
+2장짜리 마지막 페이지도 없어진다. 다만 두 항목 모두 공용 `flow-data.js` 소속이고
+카드를 빼는 것은 내용 결정이라 확인 후에 한다.
 
 신규 14종의 일러스트는 `IMAGE/topic-images/` 다. 1페이지는 기존 6종
 (`IMAGE/topic1~6.png` · `flow-data.js` 의 `TOPICS`) 그대로라 손대지 않았다.
