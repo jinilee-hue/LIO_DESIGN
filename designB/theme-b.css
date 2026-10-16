@@ -905,6 +905,16 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
 .skill-card[data-skill="7"]{--scB:#FF974C}   /* Characters */
 .skill-card[data-skill="8"]{--scB:#FF7CCF}   /* Author's Purpose */
 .skill-card[data-skill="9"]{--scB:#4FC73F}   /* Literary Genres */
+/* B 전용 추가 스킬 (designB/skill-extra.js) — 가운데 2열 */
+.skill-card[data-skill="10"]{--scB:#1FB5B0}  /* Conflicts & Solutions */
+.skill-card[data-skill="11"]{--scB:#D45FE0}  /* Character's Motives */
+/* 추가 스킬 아이콘 광학 보정 — 목록 카드와 선택(확대) 카드 둘 다(src 로 잡는다).
+   캔버스(690²)는 다른 아이콘과 같지만 그림이 납작하거나(퍼즐 높이 70%) 가늘어서 작아 보인다 → 1.2배.
+   라벨과 겹치지 않게 아래 기준으로 키워 위쪽 투명 여백으로만 커지게 한다.
+   Motives 는 말풍선까지 합친 그림이 가운데라 사람(가로 중심 35.9%)이 왼쪽에 쏠려 보인다
+   → 사람이 가운데 오도록 (50 - 35.9)% × 1.2 = 16.9% 오른쪽으로 민다. */
+.skillscreen img[src$="skill_analyzing_conflicts.png"]{transform:scale(1.2);transform-origin:50% 100%}
+.skillscreen img[src$="skill_character_motives.png"]{transform:translateX(16.9%) scale(1.2);transform-origin:50% 100%}
 
 /* ── Skill_selected : Figma B_Skill_selected (114:1230) ──
    ⚠ 이 상태의 마크업은 engine.js 가 `skillscreen a-skill selected` 로 하드코딩해
@@ -1442,7 +1452,8 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
                      to  {transform:translate3d(0,0,0)}}
 /* 이동 거리(laneH + setH)가 컬럼마다 달라 체감 속도가 같도록 duration 을 맞춘다 */
 .skill-grid.b-laned .b-lane:nth-child(1) .b-lane-inner{--dur:12s}   /* 카드 3장 · 위로 */
-.skill-grid.b-laned .b-lane:nth-child(2) .b-lane-inner{--dur:9s}    /* 카드 1장 · 아래로 */
+/* 2열은 추가 스킬 2장이 들어가 카드 3장이 됐다 — 새 카드가 잘 보이도록 9s → 13s 로 늦춘다 */
+.skill-grid.b-laned .b-lane:nth-child(2) .b-lane-inner{--dur:13s}   /* 카드 3장 · 아래로 */
 .skill-grid.b-laned .b-lane:nth-child(3) .b-lane-inner{--dur:11s}   /* 카드 2장 · 위로 */
 .skill-grid.b-laned .b-lane:nth-child(4) .b-lane-inner{--dur:14s}   /* 카드 4장 · 아래로 */
 /* 선택 상태에서는 흐름을 멈춘다 */
@@ -1814,3 +1825,15 @@ body{background:radial-gradient(1200px 600px at 50% -10%,#dfe8ff,#e9eefb)}
    내려간다 — 여백을 모두 0 으로 두고 간격은 .wp-word 의 gap 에 맡긴다. */
 .word-popup .wp-word .tts-ic,
 .word-popup .wp-word .wp-kr{ top:0; margin:0; vertical-align:baseline }
+
+/* ── 하단 컨트롤 바 : 좁은 창에서 버튼 글자가 세로로 접히던 문제 ──
+   base.css 의 .controls 는 줄바꿈을 막지 않아 창 폭이 좁으면(약 900px 이하) 버튼이
+   "이/전" · "페/이/지" 처럼 접히며 바가 틀어졌다. 버튼·라벨은 접히지 않게 두고,
+   폭이 모자라면 가운데 슬라이드 정보(Slide N · 타이틀)만 말줄임으로 줄인다. */
+.controls .navbtn,
+.controls .pj-label{white-space:nowrap;flex-shrink:0}
+.controls .pagejump{flex-shrink:0}
+.controls .cinfo{min-width:0;flex:0 1 auto;overflow:hidden}
+.controls .cinfo .cs,
+.controls .cinfo .ct{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:900px){ .controls{gap:10px;padding:10px 14px} }

@@ -2230,7 +2230,8 @@
      세트를 laneH 보다 길게 채워야 이음매가 안 보이므로 필요한 만큼 복제한다.
      컬럼마다 이동 거리(--set)가 달라 keyframes 에서 var() 로 받는다.
      홀수 컬럼은 위로, 짝수 컬럼은 아래로 (교차). A 는 호출되지 않는다(THEME 가드). */
-  const B_SKILL_COLS = [[0, 5, 8], [4], [1, 3, 6], [2, 7, 9]];   // Figma B_Skill_list_AI 선택 기준   // 컬럼별 data-skill (Figma 배치)
+  // designB 페이지가 window.LIO_B_SKILL_COLS 로 배치를 덮을 수 있다(designB/skill-extra.js) — 없으면 기본값
+  const B_SKILL_COLS = window.LIO_B_SKILL_COLS || [[0, 5, 8], [4], [1, 3, 6], [2, 7, 9]];   // Figma B_Skill_list_AI 선택 기준   // 컬럼별 data-skill (Figma 배치)
   const B_CARD_H = 19.8;                                             // .b-cell 높이(cqw) — theme-b.css 와 동기
   const B_CARD_GAP = 2.2;                                            // .b-lane-set gap / padding-bottom
   const B_CARD_PITCH = B_CARD_H + B_CARD_GAP;                        // 22.0
@@ -2303,6 +2304,9 @@
     {
       const pick = F.SKILLS[i];
       iconSrc = iconSrc || skillIcon(pick);
+      // scB 에 없는 스킬(designB 에서 덧붙인 것)은 카드에 걸린 --scB(theme-b.css)를 쓴다
+      const card = grid.querySelector(`.skill-card[data-skill="${i}"]`);
+      const bg = scB[i] || (card && getComputedStyle(card).getPropertyValue('--scB').trim()) || '#3593FF';
       ss.classList.add('selected');
       grid.classList.add('dim');
       // Figma B_Skill_selected (114:1305) : "I found\n  your skill!"
@@ -2314,7 +2318,7 @@
       ov.className = 'skillfound-overlay';
       ov.innerHTML =
         `<img class="skillsel-mascot" src="${mascot('lio6.png')}" alt="LIO">
-         <div class="skillsel-card" style="--scB:${scB[i]};background:${scB[i]}">
+         <div class="skillsel-card" style="--scB:${bg};background:${bg}">
            <img src="${iconSrc}" alt="${pick.name}">
            <div class="sc-name">${skillNameHtml(pick)}</div>
          </div>
